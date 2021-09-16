@@ -1,5 +1,7 @@
 # Installation
 
+First install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+
 Use node 14.16.0
 
 ``` bash
