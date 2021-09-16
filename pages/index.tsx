@@ -2,7 +2,11 @@ import React from 'react'
 
 const Home = (props) => {
   return (
-    <p>This is the begining of something epic!</p>
+    <>
+      <div className="w-full h-screen flex items-center justify-center font-medium text-2xl">
+        Tailwind works
+      </div>
+    </>
   )
 };
 
