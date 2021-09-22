@@ -1,6 +1,8 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/871e29b9-fa9b-414b-9294-1e3e2d084245/deploy-status)](https://app.netlify.com/sites/wannahangout/deploys)
+
 # Installation
 
-First install [nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+First install nvm ([MacOS](https://github.com/nvm-sh/nvm#installing-and-updating))
 
 Use node 14.16.0
 
