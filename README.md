@@ -1,5 +1,6 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/871e29b9-fa9b-414b-9294-1e3e2d084245/deploy-status)](https://app.netlify.com/sites/wannahangout/deploys)
-[Launch site ↗](https://wannahangout.netlify.app/)
+
+We use Netlify to deploy our app, you can [try the app here](https://wannahangout.netlify.app/)
 
 # Installation
 
