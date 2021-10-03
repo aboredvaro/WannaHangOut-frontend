@@ -3,32 +3,45 @@
 We use Netlify to deploy our app, you can [try the app here](https://wannahangout.netlify.app/)
 
 # Installation
-
+  #### MacOS
 First install nvm ([MacOS](https://github.com/nvm-sh/nvm#installing-and-updating))
 
-Use node 14.16.0
-
+  #### Linux (debian)
+Download & Install nvm
 ``` bash
-nvm install 14.16.0
-nvm use 14.16.0
+$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash
 ```
 
-Use yarn
-
+Configuration nvm
 ``` bash
-npm i -g yarn
+$ export NVM_DIR="$HOME/.nvm" 
+$ [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+$ [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 ```
 
-#### Build Setup
+### Use node 14.16.0
+
+``` bash
+$ nvm install 14.16.0
+$ nvm use 14.16.0
+```
+
+### Use yarn
+
+``` bash
+$ npm i -g yarn
+```
+
+### Build Setup
 
 ``` bash
 # install dependencies
-yarn
+$ yarn
 
 # serve with hot reload at localhost:3001
-yarn run dev
+$ yarn run dev
 
 # build electron application for production
-yarn run build
+$ yarn run build
 
 ```
