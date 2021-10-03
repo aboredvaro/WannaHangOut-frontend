@@ -52,19 +52,20 @@ CREATE TABLE taste (
 
 CREATE TABLE activity (
     id_activity INT AUTO_INCREMENT,
-    id_entity INT AUTO_INCREMENT,
+    id_entity INT NOT NULL,
+    id_tags INT NOT NULL,
     
     title VARCHAR(100) NOT NULL,
     description VARCHAR(500) NOT NULL,
     seats INT NOT NULL,
     price DOUBLE NOT NULL,
     location VARCHAR(100) NOT NULL,
-    typeAct VARCHAR(100) NOT NULL,
     dateAct DATE NOT NULL,
     min_duration INT NOT NULL,
     
     PRIMARY KEY(id_activity),
     FOREIGN KEY (id_entity) REFERENCES entity (id_entity)
+    FOREIGN KEY (id_tags) REFERENCES tags (id_tags),
 );
 
 
@@ -73,7 +74,7 @@ CREATE TABLE review (
     id_activity INT NOT NULL,
     
     title VARCHAR(100) NOT NULL,
-    description VARCHAR(500) NOT NULL,
+    description VARCHAR(500),
     points TINYINT NOT NULL,
     
     PRIMARY KEY(id_review),
