@@ -53,7 +53,7 @@ CREATE TABLE taste (
 CREATE TABLE activity (
     id_activity INT AUTO_INCREMENT,
     id_entity INT NOT NULL,
-    id_tags INT NOT NULL,
+    id_tags TINYINT NOT NULL,
     
     title VARCHAR(100) NOT NULL,
     description VARCHAR(500) NOT NULL,
@@ -64,8 +64,8 @@ CREATE TABLE activity (
     min_duration INT NOT NULL,
     
     PRIMARY KEY(id_activity),
-    FOREIGN KEY (id_entity) REFERENCES entity (id_entity)
-    FOREIGN KEY (id_tags) REFERENCES tags (id_tags),
+    FOREIGN KEY (id_entity) REFERENCES entity (id_entity),
+    FOREIGN KEY (id_tags) REFERENCES tags (id_tags)
 );
 
 

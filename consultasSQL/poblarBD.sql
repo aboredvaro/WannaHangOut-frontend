@@ -21,7 +21,7 @@ INSERT INTO tags VALUES
 INSERT INTO entity VALUES
     (1, 2, "Dracarys", "Daenerys", "Targaryen","Lorem ipsum dolor sit amet,... ", "ddt@got.com", 999555111, "Braavos", "1234", "urlFoto"),
     (2, 2, "Bastardo", "Jon", "Snow","Lorem ipsum dolor sit amet,... ", "bjs@got.com", 999555222, "Invernalia", "1234", "urlFoto"),
-    (3, 1, "Tasquilla", "100 Montaditos", ,"Lorem ipsum dolor sit amet,... ", "100@got.com", 999555333, "Desembarco del rey", "1234", "urlFoto");
+    (3, 1, "Tasquilla", "100 Montaditos", null,"Lorem ipsum dolor sit amet,... ", "100@got.com", 999555333, "Desembarco del rey", "1234", "urlFoto");
 
 INSERT INTO taste VALUES
     (1,1),
@@ -50,10 +50,10 @@ INSERT INTO activity VALUES
 INSERT INTO review VALUES
     (1, 1, "Estupendo", "Me lo pasé estupendamente", 10),
     (2, 1, "Puta mierda", "Para nada aconsejable", 0),
-    (3, 1, "OK", , 9),
-    (4, 1, "KO", , 1),
-    (5, 2, "ni bien ni mal", , 5),
-    (6, 2, "bueno", , 6),
-    (7, 3, "Guay", , 7),
-    (8, 3, "Me lo esperaba mejor", , 4);
+    (3, 1, "OK", null, 9),
+    (4, 1, "KO", null, 1),
+    (5, 2, "ni bien ni mal", null, 5),
+    (6, 2, "bueno", null, 6),
+    (7, 3, "Guay", null, 7),
+    (8, 3, "Me lo esperaba mejor", null, 4);
     
