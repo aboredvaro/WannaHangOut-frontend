@@ -23,23 +23,6 @@ INSERT INTO entity VALUES
     (2, 2, "Bastardo", "Jon", "Snow","Lorem ipsum dolor sit amet,... ", "bjs@got.com", 999555222, "Invernalia", "1234", "urlFoto"),
     (3, 1, "Tasquilla", "100 Montaditos", null,"Lorem ipsum dolor sit amet,... ", "100@got.com", 999555333, "Desembarco del rey", "1234", "urlFoto");
 
-INSERT INTO taste VALUES
-    (1,1),
-    (1,2),
-    (1,3),
-    (1,4),
-    (1,5),
-    (2,6),
-    (2,7),
-    (2,8),
-    (2,9),
-    (2,2),
-    (2,3),
-    (3,5),
-    (3,4),
-    (3,8),
-    (3,3);
-
 
 INSERT INTO activity VALUES
     (1, 2, 7, "Party de Halloween", "Nos vamos de botellona por el centro...", 152, 12.50, "Valencia", "2021-12-31", 15),
@@ -56,4 +39,21 @@ INSERT INTO review VALUES
     (6, 2, "bueno", null, 6),
     (7, 3, "Guay", null, 7),
     (8, 3, "Me lo esperaba mejor", null, 4);
-    
+
+ 
+INSERT INTO taste VALUES
+    (1,1),
+    (1,2),
+    (1,3),
+    (1,4),
+    (1,5),
+    (2,6),
+    (2,7),
+    (2,8),
+    (2,9),
+    (2,2),
+    (2,3),
+    (3,5),
+    (3,4),
+    (3,8),
+    (3,3);   
