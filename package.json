@@ -26,5 +26,8 @@
   },
   "devDependencies": {
     "@types/react": "^17.0.21"
+  },
+  "engines": {
+    "node": ">=v14.17.3"
   }
 }
