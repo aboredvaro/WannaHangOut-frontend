@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React from 'react'
 
 const Home = (props) => {
@@ -20,3 +21,4 @@ const Home = (props) => {
 };
 
 export default Home;
+  
