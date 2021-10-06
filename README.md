@@ -45,3 +45,14 @@ $ yarn run dev
 $ yarn run build
 
 ```
+
+### Code styling
+
+``` bash
+# check code styling errors and warnings
+$ yarn run lint
+
+# fix potentially fixable errors automatically
+$ yarn run lint --fix
+
+```
