@@ -1,0 +1,1 @@
+export default function url() { return process.env.NODE_ENV === 'dev' ? process.env.REACT_APP_SERVER_DEV : process.env.REACT_APP_SERVER_PRODUCTION }
