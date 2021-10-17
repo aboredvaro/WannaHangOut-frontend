@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import url from '../utils/server.js'
 
-const ActivityPage = (props) => {
+const ActivityPage = ({
+	activity
+}) => {
 
 	return (
 		<>
@@ -11,6 +15,30 @@ const ActivityPage = (props) => {
 			</div>
 		</>
 	)
+}
+
+export async function getServerSideProps(ctx) {
+
+	const { id } = ctx.query
+
+	const getAllActivities = async() => {
+		return new Promise(resolve => {
+			fetch(`${url}/api/getActivityByID/${id}`)
+				.then(response => response.json())
+				.then(response => {
+					resolve(response)
+				})
+		})
+	}
+
+	const activity = await getAllActivities()
+
+	return {
+		props: {
+			activity
+		}
+	}
+
 }
 
 export default ActivityPage
