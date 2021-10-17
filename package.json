@@ -24,7 +24,6 @@
     "reset-css": "^5.0.1",
     "sass": "^1.41.0",
     "tailwindcss": "^2.2.15",
-    "typescript": "^4.4.3",
     "useragent": "^2.3.0"
   },
   "devDependencies": {

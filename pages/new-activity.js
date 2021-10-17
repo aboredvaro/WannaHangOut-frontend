@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Home = (props) => {
+const CreateActivity = (props) => {
 	return (
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
@@ -12,4 +12,4 @@ const Home = (props) => {
 	)
 }
 
-export default Home
+export default CreateActivity

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Home = (props) => {
+const Signup = (props) => {
 
 	return (
 		<>
@@ -13,4 +13,4 @@ const Home = (props) => {
 	)
 }
 
-export default Home
+export default Signup
