@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import url from '../utils/server.js'
 
 const ActivityPage = ({
@@ -19,6 +18,7 @@ const ActivityPage = ({
 
 export async function getServerSideProps(ctx) {
 
+	/*
 	const { id } = ctx.query
 
 	const getAllActivities = async() => {
@@ -38,6 +38,7 @@ export async function getServerSideProps(ctx) {
 			activity
 		}
 	}
+	*/
 
 }
 
