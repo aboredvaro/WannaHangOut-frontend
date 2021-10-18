@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import url from '../utils/server.js'
+import log from '../utils/log.js'
+import ActivityItem from '../components/activity-item.js'
 
 const ActivityPage = ({
 	activity
@@ -7,9 +9,27 @@ const ActivityPage = ({
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
         
-				<h1 className="text-4xl">Página de actividad</h1>
+				<h1 className="text-4xl font-medium">Actividad</h1>
+
+				<div className="flex flex-col space-y-4">
+					{
+						<ActivityItem
+							key={activity.id_activity}
+							id_activity={activity.id_activity}
+							title={activity.title}
+							description={activity.description}
+							id_entity_host={activity.id_entity_creador}
+							seats={activity.seats}
+							price={activity.price}
+							location={activity.location}
+							dateAct={activity.dateAct}
+							min_duration={activity.min_duration}
+						/>
+					}
+
+				</div>
 
 			</div>
 		</>
@@ -20,10 +40,12 @@ export async function getServerSideProps(ctx) {
 
 	/*
 	const { id } = ctx.query
-
-	const getAllActivities = async() => {
+	//	log(id)
+	
+	/*
+	const getActivityByID = async() => {
 		return new Promise(resolve => {
-			fetch(`${url}/api/getActivityByID/${id}`)
+			fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 				.then(response => response.json())
 				.then(response => {
 					resolve(response)
@@ -31,7 +53,16 @@ export async function getServerSideProps(ctx) {
 		})
 	}
 
-	const activity = await getAllActivities()
+	const res = await getActivityByID()
+	const activity = res[0]
+	log(activity)
+
+*/
+
+	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
+	const activityAux = await res.json()
+	const activity = activityAux[0]
+	log(activity)
 
 	return {
 		props: {
