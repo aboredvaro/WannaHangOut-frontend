@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import url from '../utils/server.js'
+import log from '../utils/log.js'
+import ActivityItem from '../components/activity-item.js'
 
 const ActivityPage = ({
 	activity
@@ -7,14 +9,27 @@ const ActivityPage = ({
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
         
-				<h1 className="text-4xl">Página de actividad</h1>
-				<p className="mb-2 text-2xl font-medium">{activity.title} </p>
-				<p className="mb-2 text-sm text-orange-500">{activity.date}</p>
-				<p className="text-sm text-gray-400">{activity.location}</p>
-				<p className="mb-2 text-sm text-gray-400">{activity.price}€</p>
-				<p>Creado por {activity.id_entity_host} </p>
+				<h1 className="text-4xl font-medium">Actividad</h1>
+
+				<div className="flex flex-col space-y-4">
+					{
+						<ActivityItem
+							key={activity.id_activity}
+							id_activity={activity.id_activity}
+							title={activity.title}
+							description={activity.description}
+							id_entity_host={activity.id_entity_creador}
+							seats={activity.seats}
+							price={activity.price}
+							location={activity.location}
+							dateAct={activity.dateAct}
+							min_duration={activity.min_duration}
+						/>
+					}
+
+				</div>
 
 			</div>
 		</>
@@ -24,11 +39,12 @@ const ActivityPage = ({
 export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
-
+	//	log(id)
+	
+	/*
 	const getActivityByID = async() => {
 		return new Promise(resolve => {
-			fetch(`${url}/api/getActivityByID/${id}`)
-			//	.then(res => console.log(res))
+			fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 				.then(response => response.json())
 				.then(response => {
 					resolve(response)
@@ -36,7 +52,16 @@ export async function getServerSideProps(ctx) {
 		})
 	}
 
-	const activity = await getActivityByID()
+	const res = await getActivityByID()
+	const activity = res[0]
+	log(activity)
+
+*/
+
+	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
+	const activityAux = await res.json()
+	const activity = activityAux[0]
+	log(activity)
 
 	return {
 		props: {
@@ -47,57 +72,3 @@ export async function getServerSideProps(ctx) {
 }
 
 export default ActivityPage
-
-// Cosas que intentado entre otras 
-
-/*
-	const getActivityByID = async() => {
-		return new Promise(resolve => {
-			fetch(`${url}/api/getActivityByID/${id}`)
-			//	.then(res => console.log(res))
-				.then(response => response.json())  .text?
-				.then(response => {
-					resolve(response)
-				})
-		})
-	}
-
-	const activity = await getActivityByID()
-*/
-
-// - - - - - - - -
-
-/*
- 	const res = await fetch(`${url}/api/getActivityByID/${id}`)
-	const activity = await res.json()
-
-*/
-
-// - - - - - - - - 
-
-/**
-
-const getFetch = async (invoicesUrl, params) => {
-	return fetch(invoicesUrl, params)
-}
-
-export async function getServerSideProps(ctx) {
-
-	const { id } = ctx.query
-
-	const invoicesUrl = `${url}/api/getActivityByID/${id}`
-  	const params = {
-    	method: 'get', // post?
-    	headers: {
-     	 Accept: 'application/json',
-    	'Content-Type': 'application/json',
-    	}
-  	}
-  	
-     	const activity = await getFetch(invoicesUrl, params)
-     		console.log('Data Json: ', activity)
-
-  	return { props: { activity } }
-
-}
- */
