@@ -38,7 +38,6 @@ const ActivityPage = ({
 
 export async function getServerSideProps(ctx) {
 
-	/*
 	const { id } = ctx.query
 	//	log(id)
 	
@@ -62,14 +61,13 @@ export async function getServerSideProps(ctx) {
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 	const activityAux = await res.json()
 	const activity = activityAux[0]
-	log(activity)
+	// log(activity)
 
 	return {
 		props: {
 			activity
 		}
 	}
-	*/
 
 }
 
