@@ -40,8 +40,9 @@ export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
 
-	const activity = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-	 	.then(response => response.json()[0])
+	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
+	 	.then(response => response.json())
+	const activity = res[0]
 	
 	return {
 		props: {
