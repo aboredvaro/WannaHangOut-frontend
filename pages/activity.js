@@ -39,30 +39,10 @@ const ActivityPage = ({
 export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
-	//	log(id)
+
+	const activity = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
+	 	.then(response => response.json()[0])
 	
-	/*
-	const getActivityByID = async() => {
-		return new Promise(resolve => {
-			fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-				.then(response => response.json())
-				.then(response => {
-					resolve(response)
-				})
-		})
-	}
-
-	const res = await getActivityByID()
-	const activity = res[0]
-	log(activity)
-
-*/
-
-	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-	const activityAux = await res.json()
-	const activity = activityAux[0]
-	log(activity)
-
 	return {
 		props: {
 			activity
@@ -72,3 +52,20 @@ export async function getServerSideProps(ctx) {
 }
 
 export default ActivityPage
+
+/*
+		const getActivityByID = async() => {
+			return new Promise(resolve => {
+				fetch(`${url}/api/getActivityByID?id_activity=${id}`)
+					.then(response => response.json())
+					.then(response => {
+						resolve(response)
+					})
+			})
+		}
+
+		const res = await getActivityByID()
+		const activity = res[0]
+		log(activity)
+
+	*/
