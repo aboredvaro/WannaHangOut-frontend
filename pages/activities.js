@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
@@ -43,24 +43,15 @@ const Activities = ({
 
 export async function getServerSideProps() {
 
-	const getAllActivities = async() => {
-		return new Promise(resolve => {
-			fetch(`${url}/api/getAllActivities`)
-				.then(response => response.json())
-				.then(response => {
-					resolve(response)
-				})
-		})
-	}
-
-	const activities = await getAllActivities()
+	const res = await fetch(`${url}/api/getAllActivities`)
+		.then(response => response.json())
+	const activities = res
 
 	return {
-		props: {
-			activities
-		}
+  		props:{
+	   		activities
+   		}
 	}
-
 }
 
 export default Activities

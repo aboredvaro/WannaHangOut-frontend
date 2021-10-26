@@ -28,7 +28,7 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
-
+					<p>Created by </p>
 				</div>
 
 			</div>
@@ -42,7 +42,8 @@ export async function getServerSideProps(ctx) {
 
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 	 	.then(response => response.json())
-	const activity = res[0]
+	log(res)
+	const activity = res
 	
 	return {
 		props: {
@@ -53,20 +54,3 @@ export async function getServerSideProps(ctx) {
 }
 
 export default ActivityPage
-
-/*
-		const getActivityByID = async() => {
-			return new Promise(resolve => {
-				fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-					.then(response => response.json())
-					.then(response => {
-						resolve(response)
-					})
-			})
-		}
-
-		const res = await getActivityByID()
-		const activity = res[0]
-		log(activity)
-
-	*/

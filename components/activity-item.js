@@ -22,23 +22,9 @@ const ActivityItem = ({
 				<p className="mb-2 text-sm text-orange-500">{dateAct}</p>
 				<p className="text-sm text-gray-400">{location}</p>
 				<p className="mb-2 text-sm text-gray-400">{price}€</p>
-				<p>Created by {} </p>
 			</a>
 		</>
 	)
-}
-
-export async function getServerSideProps(){
-	
-	const res = await fetch(`${url}/api/getEntityByID?id_activity=${id_entity_host}`)
-		.then(response => response.json()) 
-	const user = res[0]
-
-	return{
-		props:{
-			user
-		}
-	}
 }
 
 export default ActivityItem
