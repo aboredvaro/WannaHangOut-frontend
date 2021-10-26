@@ -115,9 +115,7 @@ const CreateActivity = ({
 						<label htmlFor="longitude">Longitude </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="longitude" name="longitude" placeholder="Longitude"/>
 					</div>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>	
-					<button type="submit" className="rounded-full border-2 ">Modificate</button>
-					<button type="submit" className="rounded-full border-2 ">Delete</button>	
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
 
 			</div>

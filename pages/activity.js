@@ -28,9 +28,9 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
-					<p>Created by </p>
+					<button type="submit" className="rounded-full border-2 ">Modificate</button>
+					<button type="submit" className="rounded-full border-2 ">Delete</button>
 				</div>
-
 			</div>
 		</>
 	)
