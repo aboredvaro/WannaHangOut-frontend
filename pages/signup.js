@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Listbox } from '@headlessui/react'
 
-const Signup = (props) => {
+const Signup = ({ tags }) => {
 
 	const roles = [
 		{id: 1, name: 'Shop'},
@@ -37,6 +37,7 @@ const Signup = (props) => {
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
+						<label className="text-gray-800">Rol: </label>
 						<Listbox value={selectedRole} onChange={setSelectedRole}>
 							<Listbox.Button>{selectedRole.name}</Listbox.Button>
 							<Listbox.Options>
@@ -72,8 +73,45 @@ const Signup = (props) => {
 					//////////Fin 
 
 					<div>
-						<label className="text-gray-800">Descripción: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600 box-content h-32"type="text" id="description" name="description" placeholder=" Descripción"/>
+						<div><label className="text-gray-800">Descripción: </label></div>
+						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Email: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Teléfono: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"/>
+					</div>
+					<div>
+						<label >Choose tags: </label>
+						{
+							tags.map(({id_tags,name}, i) =>
+								<div className="w-full sm:w-auto" key={i}>
+									<label className="inline-flex items-center">
+							  		<input className="form-radio" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+							  		<span className="ml-2">{name}</span>
+									</label>
+						 		 </div>
+							)
+						}
+					</div>
+					<div>
+						<label className="text-gray-800">Código Postal: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Localidad: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Provincia: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Dirección: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Localidad"/>
 					</div>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
