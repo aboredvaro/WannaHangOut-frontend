@@ -44,6 +44,7 @@ const CreateActivity = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
+			.then(response => response.json())
 
 	}
 

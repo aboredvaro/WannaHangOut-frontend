@@ -7,6 +7,40 @@ const ActivityPage = ({
 	activity
 }) => {
 
+	module.exports = {
+		async redirects() {
+		  return [{
+			  source: `${url}/api/deleteActivityById`,
+			  destination: `${url}/api/activities`,
+			  permanent: true,
+			},
+		  ]
+		},
+	  }
+
+	const deleteActivity = async(event, id) => {
+		event.preventDefault()
+
+		const response = await fetch(
+			`${url}/api/deleteActivityById`,{
+				body: JSON.stringify({	
+					id_activity: id
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(response => console.log(response))
+			.then(response => response.json())
+
+		redirects()
+	}
+
+	const modificateActivity = async(event, id) => {
+
+	}
+
 	return (
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
@@ -28,8 +62,15 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
-					<button type="submit" className="rounded-full border-2 ">Modificate</button>
-					<button type="submit" className="rounded-full border-2 ">Delete</button>
+
+					<form className="flex flex-col space-y-4" onSubmit={(event) => this.modificateActivity(event, activity.id_activity)}>
+						<button type="submit" className="rounded-full border-2 ">Modificar</button>
+					</form>
+
+					<form className="flex flex-col space-y-4" onSubmit={(event) => this.deleteActivity(event, activity.id_activity)}>
+						<button type="submit" className="rounded-full border-2 ">Borrar</button>
+					</form>
+					
 				</div>
 			</div>
 		</>
@@ -42,7 +83,6 @@ export async function getServerSideProps(ctx) {
 
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 	 	.then(response => response.json())
-	log(res)
 	const activity = res
 	
 	return {
