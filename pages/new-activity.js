@@ -18,7 +18,7 @@ const CreateActivity = ({
 		return array
 	}
 
-	const handleSubmit = async event=> {
+	const handleSubmit = async event => {
 		event.preventDefault()	
 
 		const res = await fetch(
@@ -44,7 +44,9 @@ const CreateActivity = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-			.then(response => response.json())
+			.then(response => {
+				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
+			})
 
 	}
 

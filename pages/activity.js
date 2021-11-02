@@ -7,24 +7,13 @@ const ActivityPage = ({
 	activity
 }) => {
 
-	module.exports = {
-		async redirects() {
-		  return [{
-			  source: `${url}/api/deleteActivityById`,
-			  destination: `${url}/api/activities`,
-			  permanent: true,
-			},
-		  ]
-		},
-	  }
-
-	const deleteActivity = async(event, id) => {
+	const deleteActivity = async event => {
 		event.preventDefault()
 
-		const response = await fetch(
+		const res = await fetch(
 			`${url}/api/deleteActivityById`,{
 				body: JSON.stringify({	
-					id_activity: id
+					id_activity: activity.id_activity
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -32,13 +21,9 @@ const ActivityPage = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-			.then(response => response.json())
-
-		redirects()
-	}
-
-	const modificateActivity = async(event, id) => {
-
+		//	.then(response => {
+		//		window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
+		//	})
 	}
 
 	return (
@@ -62,12 +47,12 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
-
-					<form className="flex flex-col space-y-4" onSubmit={(event) => this.modificateActivity(event, activity.id_activity)}>
+					
+					<form className="flex flex-col space-y-4">
 						<button type="submit" className="rounded-full border-2 ">Modificar</button>
 					</form>
 
-					<form className="flex flex-col space-y-4" onSubmit={(event) => this.deleteActivity(event, activity.id_activity)}>
+					<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
 					
