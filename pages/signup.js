@@ -87,7 +87,7 @@ const Signup = ({ tags }) => {
 						<label className="text-gray-800">Teléfono: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"/>
 					</div>
-					<div>
+					{/*<div>
 						<label >Choose tags: </label>
 						{
 							tags.map(({id_tags,name}, i) =>
@@ -99,7 +99,7 @@ const Signup = ({ tags }) => {
 						 		 </div>
 							)
 						}
-					</div>
+					</div> */}
 					<div>
 						<label className="text-gray-800">Código Postal: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"/>
