@@ -4,7 +4,9 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 
 
-const Signup = ({ tags }) => {
+const Signup = ({ 
+	tags
+ }) => {
 
 	const roles = [
 		{id: 1, name: 'Shop'},
@@ -68,12 +70,12 @@ const Signup = ({ tags }) => {
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
 					</div>
 
-					///////////Parte para "Shop"
+					{/*///////////Parte para "Shop"
 					<div>
 						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
 					</div>
-					//////////Fin 
+					//////////Fin */}
 
 					<div>
 						<div><label className="text-gray-800">Descripción: </label></div>
@@ -87,7 +89,7 @@ const Signup = ({ tags }) => {
 						<label className="text-gray-800">Teléfono: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"/>
 					</div>
-					{/*<div>
+					<div>
 						<label >Choose tags: </label>
 						{
 							tags.map(({id_tags,name}, i) =>
@@ -99,7 +101,7 @@ const Signup = ({ tags }) => {
 						 		 </div>
 							)
 						}
-					</div> */}
+					</div>
 					<div>
 						<label className="text-gray-800">Código Postal: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"/>
@@ -121,7 +123,21 @@ const Signup = ({ tags }) => {
 
 			</div>
 		</>
-	)
-}
+	    )
+	}
+
+	export async function getServerSideProps() {
+		const res = await fetch(`${url}/api/getAllTags`)
+		    .then(response => response.json())
+		const tags = res
+
+		return{
+			props:{
+				tags
+			}
+		}
+		 
+	}
+
 
 export default Signup
