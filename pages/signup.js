@@ -42,7 +42,7 @@ const Signup = ({ tags }) => {
 					<div>
 						<label className="text-gray-800">Rol: </label>
 						<Listbox value={selectedRole} onChange={setSelectedRole}>
-							<Listbox.Button>{selectedRole.name}</Listbox.Button>
+							<Listbox.Button >{selectedRole.name}</Listbox.Button>
 							<Listbox.Options>
 								{roles.map((role) => (
 									<Listbox.Option
