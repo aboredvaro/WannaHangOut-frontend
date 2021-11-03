@@ -7,21 +7,13 @@ import url from '../utils/server.js'
 const Signup = ({ 
 	tags
  }) => {
-	//#region Selección User/Shop
+
 	const roles = [
 		{id: 1, name: 'Shop'},
 		{id: 2, name: 'User'},
 	]
 
 	const [selectedRole, setSelectedRole] = useState(roles[0])
-
-	function RoleSelection(props) {
-		const isUser = props.isUser
-		if (isUser) {
-			return <SelectedUser />
-		}
-		return <SelectedShop />
-	}
 
 	function SelectedUser(props) {
 		return (
@@ -52,47 +44,16 @@ const Signup = ({
 			</>
 		)
 	}
-	//#endregion
 
-	function getSelectedTags(){
-		var array = []
-		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-
-		for(var i = 0; i < checkboxes.length; i++){
-			array.push(checkboxes[i].value)
-		}
-		log(array)
-
-		return array
-	}
-
-	function getSelectedRole(){
-		if(selectedRole==="User") return 2
-		return 1
-	}
 
 	const handleSubmit = async event=> {
 		event.preventDefault()	
 
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
-				body: JSON.stringify({	
-					id_role: getSelectedRole(),
+				body: JSON.stringify({
+					id_rol: event.target.role.value,
 					nick: event.target.nick.value,
-					name: event.target.name.value,
-					//surname: event.target.surname.value,
-					description: event.target.description.value,
-					mail: event.target.mail.value,
-					phone: event.target.phone.value,
-					//pass: NO HAY CAMPO PARA CONTRASEÑAÑAÑÑAÑAÑÑAÑAÑÑAÑAÑAÑÑAÑAÑÑA
-					//preguntar cómo pasar la contraseña a la base de datos
-					//AVATAR
-					
-					codPos: event.target.codPos.value,
-					location: event.target.location.value,
-					direction: event.target.direction.value,
-					latitude: event.target.latitude.value,
-					longitud: event.target.longitude.value,
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -100,12 +61,16 @@ const Signup = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-			.then((result) => {
-				console.log(result)
-			})
 
 	}
 
+	function RoleSelection(props) {
+		const isUser = props.isUser
+		if (isUser) {
+			return <SelectedUser />
+		} 
+		return <SelectedShop />
+	}
 
 	return (
 		<>
@@ -197,12 +162,8 @@ const Signup = ({
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Localidad"/>
 					</div>
 					<div>
-						<label htmlFor="latitude">Latitude </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="latitude" name="latitude" placeholder="Latitude"/>
-					</div>
-					<div>
-						<label htmlFor="longitude">Longitude </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="longitude" name="longitude" placeholder="Longitude"/>
+						<label className="text-gray-800">Dirección: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Localidad"/>
 					</div>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
