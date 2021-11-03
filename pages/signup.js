@@ -34,6 +34,44 @@ const Signup = ({
 
 	}
 
+	function RoleSelection(props) {
+		const isUser = props.isUser
+		if (isUser) {
+			return <SelectedUser />
+		}
+		return <SelectedShop />
+	}
+
+	function SelectedUser(props) {
+		return (
+			<>
+				<div className="space-y-4 items-center font-medium">
+					<div>
+						<label className="text-gray-800">Nombre: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Apellidos: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
+					</div>
+				</div>
+			</>
+		)
+	}
+
+	function SelectedShop(props) {
+		return(
+			<>
+				<div className="space-y-4 items-center font-medium">
+					<div>
+						<label className="text-gray-800">Razón social: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
+					</div>
+				</div>
+			</>
+		)
+	}
+
 	return (
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
@@ -42,10 +80,10 @@ const Signup = ({
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
-						<label className="text-gray-800">Rol: </label>
+						<div><label className="text-gray-800">Rol: </label></div>
 						<Listbox value={selectedRole} onChange={setSelectedRole}>
 							<Listbox.Button >{selectedRole.name}</Listbox.Button>
-							<Listbox.Options>
+							<Listbox.Options className="text-gray-800">
 								{roles.map((role) => (
 									<Listbox.Option
 										key={role.id}
@@ -61,6 +99,7 @@ const Signup = ({
 						<label className="text-gray-800">Nick: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"/>
 					</div>
+					{/*PARTE USER
 					<div>
 						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
@@ -68,6 +107,10 @@ const Signup = ({
 					<div>
 						<label className="text-gray-800">Apellidos: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
+					</div>*/}
+					
+					<div>
+						<RoleSelection isUser={selectedRole.name==="User"} />
 					</div>
 
 					{/*///////////Parte para "Shop"
