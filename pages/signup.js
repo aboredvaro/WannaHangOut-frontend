@@ -45,6 +45,26 @@ const Signup = ({
 		)
 	}
 
+	function RoleSelection(props) {
+		const isUser = props.isUser
+		if (isUser) {
+			return <SelectedUser />
+		} 
+		return <SelectedShop />
+	}
+
+	function getSelected(){
+		var array = []
+		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+
+		for(var i = 0; i < checkboxes.length; i++){
+			array.push(checkboxes[i].value)
+		}
+		log(array)
+
+		return array
+	}
+
 
 	const handleSubmit = async event=> {
 		event.preventDefault()	
@@ -52,8 +72,21 @@ const Signup = ({
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({
-					id_rol: event.target.role.value,
+					id_role: selectedRole.id,
+					phone: event.target.phone.value,
 					nick: event.target.nick.value,
+					name: event.target.name.value,
+					surname: event.target.surname.value,
+					description: event.target.description.value,
+					mail: event.target.mail.value,
+					pass: event.target.pass.value,
+					avatar: event.target.direction.value,
+					tags_ent: getSelected(),
+					codPos: event.target.codPos.value,
+					latitude: event.target.latitude.value,
+					longitude: event.target.longitude.value,
+					location: event.target.location.value,
+					direction: event.target.direction.value
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -62,14 +95,6 @@ const Signup = ({
 			})
 			.then(response => console.log(response))
 
-	}
-
-	function RoleSelection(props) {
-		const isUser = props.isUser
-		if (isUser) {
-			return <SelectedUser />
-		} 
-		return <SelectedShop />
 	}
 
 	return (
@@ -155,15 +180,31 @@ const Signup = ({
 					</div>
 					<div>
 						<label className="text-gray-800">Provincia: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="province" name="province" placeholder=" Provincia"/>
 					</div>
 					<div>
 						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Localidad"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"/>
 					</div>
 					<div>
-						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Localidad"/>
+						<label className="text-gray-800">Latitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Longitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Contraseña: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="pass" name="pass" placeholder=" Contraseña"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Repita Su Contraseña: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="passBis" name="passBis" placeholder=" Contraseña"/>
+					</div>
+					<div>
+						<label className="text-gray-800">Fotaca: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"/>
 					</div>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
