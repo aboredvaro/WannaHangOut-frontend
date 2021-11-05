@@ -3,9 +3,9 @@ import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
-
-const Signup = ({ 
-	tags
+const Modificar = ({ 
+	tags,
+	entity
  }) => {
 
 	const roles = [
@@ -75,10 +75,12 @@ const Signup = ({
 			alert('errrror')
 		}
 		const res = await fetch(
-			`${url}/api/createNewEntity`,{
+			`${url}/api/updateEntity`,{
 				body: JSON.stringify({
+					//id_entity: pasarlaaaaaaaa
 					id_role: selectedRole.id,
 					phone: event.target.phone.value,
+					//deleted: 
 					nick: event.target.nick.value,
 					name: event.target.name.value,
 					surname: event.target.surname.value,
@@ -107,7 +109,7 @@ const Signup = ({
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
         
-				<h1 className="text-4xl">Página de registro</h1>
+				<h1 className="text-4xl">Modificar entidad</h1>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
@@ -220,18 +222,26 @@ const Signup = ({
 	    )
 	}
 
-	export async function getServerSideProps() {
-		const res = await fetch(`${url}/api/getAllTags`)
+	export async function getServerSideProps(ctx) {
+
+		const { id } = 1
+
+		const res = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
+		const ent= await res.json()
+		const entity = ent[0]
+		log(entity)
+
+		const res1 = await fetch(`${url}/api/getAllTags`)
 		    .then(response => response.json())
-		const tags = res
+		const tags = res1
 
 		return{
 			props:{
-				tags
+				tags,
+				entity
 			}
 		}
 		 
 	}
 
-
-export default Signup
+export default Modificar
