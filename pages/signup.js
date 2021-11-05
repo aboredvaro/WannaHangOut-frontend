@@ -13,7 +13,7 @@ const Signup = ({
 		{id: 2, name: 'User'},
 	]
 
-	const [selectedRole, setSelectedRole] = useState(roles[0])
+	var [selectedRole, setSelectedRole] = useState(roles[0])
 
 	function SelectedUser(props) {
 		return (
@@ -68,7 +68,11 @@ const Signup = ({
 
 	const handleSubmit = async event=> {
 		event.preventDefault()	
-
+		var valor = selectedRole.id
+		var x = parseInt(valor)
+		if (isNaN(x) || (typeof valor) === 'undefined'){
+			alert('errrror')
+		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({
@@ -93,7 +97,8 @@ const Signup = ({
 				},
 				method: 'POST'
 			})
-			.then(response => console.log(response))
+			.then(response => response.text())
+			.then(body=>{alert(body)})
 
 	}
 
