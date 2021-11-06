@@ -69,7 +69,7 @@ export async function getServerSideProps(ctx) {
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 	 	.then(response => response.json())
 	const activity = res
-	
+
 	return {
 		props: {
 			activity
