@@ -8,12 +8,19 @@ const Signup = ({
 	tags
  }) => {
 
-	const roles = [
-		{id: 1, name: 'Shop'},
-		{id: 2, name: 'User'},
-	]
+	function getSelected(){
+		var array = []
+		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
-	var [selectedRole, setSelectedRole] = useState(roles[0])
+		for(var i = 0; i < checkboxes.length; i++){
+			array.push(checkboxes[i].value)
+		}
+		log(array)
+
+		return array
+	}
+
+	var [selectedRole, setSelectedRole] = useState('2')
 
 	function SelectedUser(props) {
 		return (
@@ -46,38 +53,19 @@ const Signup = ({
 	}
 
 	function RoleSelection(props) {
-		const isUser = props.isUser
-		if (isUser) {
+		if (selectedRole === '2') {
 			return <SelectedUser />
 		} 
 		return <SelectedShop />
 	}
 
-	function getSelected(){
-		var array = []
-		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-
-		for(var i = 0; i < checkboxes.length; i++){
-			array.push(checkboxes[i].value)
-		}
-		log(array)
-
-		return array
-	}
-
-
-	const handleSubmit = async event=> {
+	const handleSubmit = async event => {
 		event.preventDefault()	
-		var valor = selectedRole.id
-		var x = parseInt(valor)
-		alert(x)
-		if (isNaN(x) || (typeof valor) === 'undefined'){
-			alert('errrror')
-		}
+
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
-				body: JSON.stringify({
-					id_role: selectedRole.id,
+				body: JSON.stringify({	
+					id_role: selectedRole,
 					phone: event.target.phone.value,
 					nick: event.target.nick.value,
 					name: event.target.name.value,
@@ -98,8 +86,7 @@ const Signup = ({
 				},
 				method: 'POST'
 			})
-			.then(response => response.text())
-			.then(body=>{alert(body)})
+			.then(response => console.log(response.text()))
 
 	}
 
@@ -111,45 +98,24 @@ const Signup = ({
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
-						<div><label className="text-gray-800">Rol: </label></div>
-						<Listbox value={selectedRole} onChange={setSelectedRole}>
-							<Listbox.Button >{selectedRole.name}</Listbox.Button>
-							<Listbox.Options className="text-gray-800">
-								{roles.map((role) => (
-									<Listbox.Option
-										key={role.id}
-										value={role}
-									>
-										{role.name}
-									</Listbox.Option>
-								))}
-							</Listbox.Options>
-						</Listbox>
+						<label className="text-gray-800">Rol: </label>
+						<select
+							value = {selectedRole}
+							onChange = { (e) => setSelectedRole(e.target.value)}
+						>
+							<option value='1'>Shop</option>
+							<option value='2'>User</option>
+						</select>
+						<p>{selectedRole}</p>
 					</div>
 					<div>
 						<label className="text-gray-800">Nick: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"/>
 					</div>
-					{/*PARTE USER
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
-					</div>
-					<div>
-						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
-					</div>*/}
 					
 					<div>
-						<RoleSelection isUser={selectedRole.name==="User"} />
+						<RoleSelection/>
 					</div>
-
-					{/*///////////Parte para "Shop"
-					<div>
-						<label className="text-gray-800">Razón social: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
-					</div>
-					//////////Fin */}
 
 					<div>
 						<div><label className="text-gray-800">Descripción: </label></div>
@@ -220,17 +186,17 @@ const Signup = ({
 	    )
 	}
 
-	export async function getServerSideProps() {
-		const res = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
-		const tags = res
+	export async function getServerSideProps(){
 
+		const res = await fetch(`${url}/api/getAllTags`)
+			 .then(response => response.json())
+		const tags = res
+	
 		return{
 			props:{
 				tags
 			}
 		}
-		 
 	}
 
 
