@@ -18,7 +18,10 @@ const Activities = ({
 		for(var i = 0; i < checkboxes.length; i++){
 			array.push(checkboxes[i].value)
 		}
-		log(array)
+		
+		if(array.length == 0){
+			return undefined
+		}
 
 		return array
 	}
@@ -70,7 +73,7 @@ const Activities = ({
 							<div>
 								<label>Localidad </label>
 								<select id='location'>
-      								<option> - - - -</option>
+      								<option></option>
 									{
 										  locations.map(({location}, i) => 
 										  	<option key={i} value={location}>{location}</option>
@@ -107,7 +110,7 @@ const Activities = ({
 							<div>
 								<label>Creado por </label>
 								<select id='id_entity'>
-      								<option> - - - -</option>
+      								<option></option>
 									{
 										  entities.map(({id_entity, nick}, i) => 
 										  	<option key={i} value={id_entity}>{nick}</option>
