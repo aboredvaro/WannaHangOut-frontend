@@ -21,9 +21,9 @@ const ActivityPage = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-		//	.then(response => {
-		//		window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
-		//	})
+			.then(response => {
+				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
+			})
 	}
 
 	return (
