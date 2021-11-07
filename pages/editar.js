@@ -3,7 +3,7 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 
 const editar = (props) => {
-
+    const id_entity = 1
     const [id, setId] = useState('')
 
     const Borrar = async e => {
@@ -43,6 +43,7 @@ const editar = (props) => {
                     </div>
                     <button className="rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={Borrar}>Borrar Entidad</button>
                     <button className="rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={Modificar}>Modificar</button>
+                    <a href={'/profile?id=' + id_entity} className="bg-gray-100 p-6 rounded-xl"></a>
                 </form>
 			</div>
 		</>

@@ -20,7 +20,7 @@ const Signup = ({
 		return array
 	}
 
-	var [selectedRole, setSelectedRole] = useState('2')
+	const [selectedRole, setSelectedRole] = useState('2')
 
 	function SelectedUser(props) {
 		return (

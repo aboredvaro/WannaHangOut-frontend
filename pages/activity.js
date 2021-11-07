@@ -55,7 +55,6 @@ export async function getServerSideProps(ctx) {
 	const res = await getActivityByID()
 	const activity = res[0]
 	log(activity)
-
 */
 
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
