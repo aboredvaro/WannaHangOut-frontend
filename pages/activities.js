@@ -11,7 +11,7 @@ const Activities = ({
 	tags
 }) => {
 
-	function getSelected(){
+	function getSelectedTags(){
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
@@ -26,13 +26,35 @@ const Activities = ({
 		return array
 	}
 
+	function getSelectedLocation(){
+		var selectElement = document.querySelector('#location')
+		var selected = selectElement.value
+
+		if(selected == ''){
+			return undefined
+		}
+
+		return selected
+	}
+
+	function getSelectedEntity(){
+		var selectElement = document.querySelector('#id_entity')
+		var selected = selectElement.value
+
+		if(selected == ''){
+			return undefined
+		}
+
+		return selected
+	}
+
 	const handleSubmit = async event => {
 		event.preventDefault()
 
 		const res = await fetch(
 			`${url}/api/filterActivitiesBy`,{
 				body: JSON.stringify({
-					location: event.target.location.value,
+					location: getSelectedLocation(),
 					price_min: event.target.precioMin.value,
 					price_max: event.target.precioMax.value,
 					min_duration_min: event.target.duracionMin.value,
@@ -41,8 +63,8 @@ const Activities = ({
 					seats_max: event.target.plazasMax.value,
 					dateAct_min: event.target.dateMin.value,
 					dateAct_max: event.target.dateMax.value,
-					id_tags: getSelected(),
-					id_entity_creator: event.target.id_entity.value
+					id_tags: getSelectedTags(),
+					id_entity_creator: getSelectedEntity()
 				}),
 				headers: {
 					'Content-Type': 'application/json'
