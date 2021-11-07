@@ -1,15 +1,18 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
 const Activities = ({
 	activities,
-	//	filteredActivities,
 	locations,
 	entities,
 	tags
 }) => {
+	
+	const [listActivities, setListActivities] = useState(activities)
+
+
 
 	function getSelectedTags(){
 		var array = []
@@ -71,16 +74,11 @@ const Activities = ({
 				},
 				method: 'POST'
 			})
-			.then(response => console.log(response))
+			.then(response => response.json())
 
-		const filteredActivities = res
-		log(filteredActivities)
+		var filteredActivities = res
 
-	//	return {
-	//		props: {
-	//			filteredActivities
-	//		}
-	//	}
+		setListActivities(filteredActivities)
 	}
 
 	return (
@@ -164,9 +162,8 @@ const Activities = ({
 
 				<div className="flex flex-col space-y-4">
 					{
-						activities.map(activity => {
-							return (
-
+						listActivities.map(activity => {
+							return (	// añadir mensaje si no hay ninguna actividad
 								<ActivityItem
 									key={activity.id_activity}
 									id_activity={activity.id_activity}
@@ -179,7 +176,6 @@ const Activities = ({
 									dateAct={activity.dateAct}
 									min_duration={activity.min_duration}
 								/>
-
 							)
 						})
 					}
