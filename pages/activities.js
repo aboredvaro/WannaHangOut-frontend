@@ -12,8 +12,6 @@ const Activities = ({
 	
 	const [listActivities, setListActivities] = useState(activities)
 
-
-
 	function getSelectedTags(){
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
