@@ -73,7 +73,7 @@ const Signup = ({
 					description: event.target.description.value,
 					mail: event.target.mail.value,
 					pass: event.target.pass.value,
-					avatar: event.target.direction.value,
+					avatar: event.target.avatar.value,
 					tags_ent: getSelected(),
 					codPos: event.target.codPos.value,
 					latitude: event.target.latitude.value,
@@ -86,7 +86,7 @@ const Signup = ({
 				},
 				method: 'POST'
 			})
-			.then(response => console.log(response.text()))
+			.then(response => console.log(response))
 
 	}
 
@@ -175,7 +175,7 @@ const Signup = ({
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="passBis" name="passBis" placeholder=" Contraseña"/>
 					</div>
 					<div>
-						<label className="text-gray-800">Fotaca: </label>
+						<label className="text-gray-800">Foto: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"/>
 					</div>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
