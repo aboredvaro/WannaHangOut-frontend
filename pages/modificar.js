@@ -5,7 +5,8 @@ import url from '../utils/server.js'
 
 const Modificar = ({ 
 	tags,
-	entity
+	entity,
+	address
  }) => {
 
 	function getSelected(){
@@ -20,16 +21,18 @@ const Modificar = ({
 		return array.length>0?array:undefined
 	}
 
-	const [selectedRole, setSelectedRole] = useState(entity.id_role)
+	const [selectedRole, setSelectedRole] = useState(entity.id_role.toString())
 	const [nickValue, setNick] = useState(entity.nick)
+	const [nameValue, setName] = useState(entity.name)
+	const [surnameValue, setSurname] = useState(entity.surname)
 	const [descriptionValue, setDescription] = useState(entity.description)
 	const [emailValue, setEmail] = useState(entity.mail)
-	const [phoneValue, setPhone] = useState(entity.phone)
-	const [cpValue, setCP] = useState(entity.codPos)
-	const [locationValue, setLocation] = useState(entity.location)
-	const [directionValue, setDirection] = useState(entity.direction)
-	const [latitudeValue, setLatitude] = useState(entity.latitude)
-	const [longitudeValue, setLongitude] = useState(entity.longitude)
+	const [phoneValue, setPhone] = useState(entity.phone.toString())
+	const [cpValue, setCP] = useState(address.codPos.toString())
+	const [locationValue, setLocation] = useState(address.location)
+	const [directionValue, setDirection] = useState(address.direction)
+	const [latitudeValue, setLatitude] = useState(address.latitude.toString())
+	const [longitudeValue, setLongitude] = useState(address.longitude.toString())
 	const [passwordValue, setPassword] = useState(entity.pass)
 	const [passbiValue, setPassbi] = useState(entity.pass)
 	const [photoValue, setPhoto] = useState(entity.avatar)
@@ -40,11 +43,16 @@ const Modificar = ({
 				<div className="space-y-4 items-center font-medium">
 					<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" required/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required/>
 					</div>
 					<div>
 						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" required/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
+							value = {surnameValue}
+							onChange = { (e) => setSurname(e.target.value)} />
 					</div>
 				</div>
 			</>
@@ -57,7 +65,10 @@ const Modificar = ({
 				<div className="space-y-4 items-center font-medium">
 				<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required/>
 					</div>
 				</div>
 			</>
@@ -74,26 +85,12 @@ const Modificar = ({
 	const handleSubmit = async event => {
 		event.preventDefault()	
 
-		const ses = await fetch(`${url}/api/existNick`, {
-			body: JSON.stringify({
-				nick: nickValue
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-		.then(response => console.log(response.text()))
-		if(!ses) {
-			alert('El nick ' + nickValue + ' ya está en uso, pruebe otro')
-		}
-		
 		if(!/^\d+$/.test(phoneValue)) {
 			alert('No puede haber letras en su número de teléfono')
 			return
 		}
 		if(phoneValue.trim().length!==9) {
-			alert('Su número de teléfono debe tener 9 cifras')
+			alert(typeof(phoneValue)+ 'Su número de teléfono debe tener 9 cifras')
 			return
 		} 
 		if(!/^\d+$/.test(cpValue)) {
@@ -104,7 +101,7 @@ const Modificar = ({
 			alert('Su código postal debe tener 5 cifras')
 			return
 		}
-		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
+		if(isNaN(latitudeValue) || isNaN(longitudeValue)) {
 			alert('No puede haber letras en los campos de latitud y longitud')
 			return
 		}
@@ -113,9 +110,11 @@ const Modificar = ({
 			return
 		}
 		const res = await fetch(
-			`${url}/api/createNewEntity`,{
+			`${url}/api/updateEntity`,{
 				body: JSON.stringify({	
+					id_entity: entity.id_entity.toString(),
 					id_role: selectedRole,
+					deleted: entity.deleted,
 					phone: phoneValue,
 					nick: nickValue,
 					name: event.target.name.value,
@@ -124,7 +123,8 @@ const Modificar = ({
 					mail: emailValue,
 					pass: passwordValue,
 					avatar: photoValue,
-					tags_ent: getSelected(),
+					//tags_ent: getSelected(),
+					id_address: address.id_address.toString(),
 					codPos: cpValue,
 					latitude: latitudeValue,
 					longitude: longitudeValue,
@@ -134,7 +134,7 @@ const Modificar = ({
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				method: 'POST'
+				method: 'PUT'
 			})
 			.then(response => console.log(response))
 
@@ -144,7 +144,7 @@ const Modificar = ({
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
         
-				<h1 className="text-4xl">Página de registro</h1>
+				<h1 className="text-4xl">Modifique su cuenta</h1>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
@@ -270,21 +270,25 @@ const Modificar = ({
 
 	export async function getServerSideProps(ctx) {
 
-		const { id } = 1
+		const { id } = ctx.query
 
 		const res = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
-		const ent= await res.json()
-		const entity = ent[0]
-		log(entity)
+			.then(response => response.json())
+		const entity = res
 
 		const res1 = await fetch(`${url}/api/getAllTags`)
 		    .then(response => response.json())
 		const tags = res1
 
+		const res2 = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+			.then(response => response.json())
+		const address = res2
+
 		return{
 			props:{
 				tags,
-				entity
+				entity,
+				address
 			}
 		}
 		 
