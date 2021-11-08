@@ -109,6 +109,11 @@ const Modificar = ({
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return
 		}
+		var tags = getSelected()
+		if(tags==='') {
+			alert('Debe seleccionar al menos una etiqueta')
+			return 
+		}
 		const res = await fetch(
 			`${url}/api/updateEntity`,{
 				body: JSON.stringify({	
@@ -123,7 +128,7 @@ const Modificar = ({
 					mail: emailValue,
 					pass: passwordValue,
 					avatar: photoValue,
-					tags_ent: getSelected(),
+					tags_ent: tags,
 					id_address: address.id_address.toString(),
 					codPos: cpValue,
 					latitude: latitudeValue,
@@ -138,6 +143,22 @@ const Modificar = ({
 			})
 			.then(response => console.log(response.text()))
 
+	}
+
+	const handleDeleteSubmit = async event => {
+		event.preventDefault()	
+
+		const res = await fetch(
+			`${url}/api/deleteEntityById`,{
+				body: JSON.stringify({	
+					id_entity: entity.id_entity.toString()
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(response => console.log(response.text()))
 	}
 
 	return (
@@ -260,7 +281,14 @@ const Modificar = ({
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
 					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar</button>		
+				</form>
+
+				<h1 className="text-4xl">Darse de baja</h1>
+
+				<form className="flex flex-col space-y-4" onSubmit={handleDeleteSubmit}>
+					
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Darse de baja</button>		
 				</form>
 
 			</div>

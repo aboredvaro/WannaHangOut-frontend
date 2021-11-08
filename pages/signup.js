@@ -17,13 +17,13 @@ const Signup = ({
 		}
 		log(array)
 
-		return array.length>0?array:undefined
+		return array.length>0?array:''
 	}
 
 	const [selectedRole, setSelectedRole] = useState('2')
 	const [nickValue, setNick] = useState('')
-	const [nameValue, setName] = useState(entity.name)
-	const [surnameValue, setSurname] = useState(entity.surname)
+	const [nameValue, setName] = useState('')
+	const [surnameValue, setSurname] = useState('')
 	const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
 	const [phoneValue, setPhone] = useState('')
@@ -93,10 +93,8 @@ const Signup = ({
 			},
 			method: 'POST'
 		})
-		.then(response => console.log(response.text()))
-		if(!ses) {
-			alert('El nick ' + nickValue + ' ya está en uso, pruebe otro')
-		}
+		.then(response => response.json())
+		alert(ses)
 		
 		if(!/^\d+$/.test(phoneValue)) {
 			alert('No puede haber letras en su número de teléfono')
@@ -122,6 +120,11 @@ const Signup = ({
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return
 		}
+		var tags = getSelected()
+		if(tags==='') {
+			alert('Debe seleccionar al menos una etiqueta')
+			return 
+		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({	
@@ -134,7 +137,7 @@ const Signup = ({
 					mail: emailValue,
 					pass: passwordValue,
 					avatar: photoValue,
-					tags_ent: getSelected(),
+					tags_ent: tags,
 					codPos: cpValue,
 					latitude: latitudeValue,
 					longitude: longitudeValue,
@@ -270,7 +273,7 @@ const Signup = ({
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
 					<img class="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>		
 				</form>
 
 			</div>
