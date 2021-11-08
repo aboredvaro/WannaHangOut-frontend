@@ -21,6 +21,18 @@ const Signup = ({
 	}
 
 	const [selectedRole, setSelectedRole] = useState('2')
+	const [nickValue, setNick] = useState('')
+	const [descriptionValue, setDescription] = useState('')
+	const [emailValue, setEmail] = useState('')
+	const [phoneValue, setPhone] = useState('')
+	const [cpValue, setCP] = useState('')
+	const [locationValue, setLocation] = useState('')
+	const [directionValue, setDirection] = useState('')
+	const [latitudeValue, setLatitude] = useState('')
+	const [longitudeValue, setLongitude] = useState('')
+	const [passwordValue, setPassword] = useState('')
+	const [passbiValue, setPassbi] = useState('')
+	const [photoValue, setPhoto] = useState('')
 
 	function SelectedUser(props) {
 		return (
@@ -43,8 +55,8 @@ const Signup = ({
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium">
-					<div>
-						<label className="text-gray-800">Razón social: </label>
+				<div>
+						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
 					</div>
 				</div>
@@ -61,25 +73,25 @@ const Signup = ({
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
-
+		
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({	
 					id_role: selectedRole,
-					phone: event.target.phone.value,
-					nick: event.target.nick.value,
+					phone: phoneValue,
+					nick: nickValue,
 					name: event.target.name.value,
-					surname: event.target.surname.value,
-					description: event.target.description.value,
-					mail: event.target.mail.value,
-					pass: event.target.pass.value,
-					avatar: event.target.avatar.value,
+					surname: selectedRole==='1'?'':event.target.surname.value,
+					description: descriptionValue,
+					mail: emailValue,
+					pass: passwordValue,
+					avatar: photoValue,
 					tags_ent: getSelected(),
-					codPos: event.target.codPos.value,
-					latitude: event.target.latitude.value,
-					longitude: event.target.longitude.value,
-					location: event.target.location.value,
-					direction: event.target.direction.value
+					codPos: cpValue,
+					latitude: latitudeValue,
+					longitude: longitudeValue,
+					location: locationValue,
+					direction: directionValue
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -106,11 +118,13 @@ const Signup = ({
 							<option value='1'>Shop</option>
 							<option value='2'>User</option>
 						</select>
-						<p>{selectedRole}</p>
+						{/*}<p>{selectedRole}</p>{*/}
 					</div>
 					<div>
 						<label className="text-gray-800">Nick: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+							value = {nickValue}
+							onChange = { (e) => setNick(e.target.value)}/>
 					</div>
 					
 					<div>
@@ -119,15 +133,21 @@ const Signup = ({
 
 					<div>
 						<div><label className="text-gray-800">Descripción: </label></div>
-						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"/>
+						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"
+							value = {descriptionValue}
+							onChange = { (e) => setDescription(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Email: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"
+							value = {emailValue}
+							onChange = { (e) => setEmail(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Teléfono: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"
+							value = {phoneValue}
+							onChange = { (e) => setPhone(e.target.value)}/>
 					</div>
 					<div>
 						<label >Choose tags: </label>
@@ -144,40 +164,63 @@ const Signup = ({
 					</div>
 					<div>
 						<label className="text-gray-800">Código Postal: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"
+							value = {cpValue}
+							onChange = { (e) => setCP(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Localidad: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"/>
-					</div>
-					<div>
-						<label className="text-gray-800">Provincia: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="province" name="province" placeholder=" Provincia"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"
+							value = {locationValue}
+							onChange = { (e) => setLocation(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"
+							value = {directionValue}
+							onChange = { (e) => setDirection(e.target.value)}/>
 					</div>
 					<div>
-						<label className="text-gray-800">Latitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"/>
+						<label classirection="text-gray-800">Latitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"
+							value = {latitudeValue}
+							onChange = { (e) => setLatitude(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Longitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"
+							value = {longitudeValue}
+							onChange = { (e) => setLongitude(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Contraseña: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="pass" name="pass" placeholder=" Contraseña"/>
+						<input 
+							className="rounded-lg border border-gray-600 focus:border-gray-600"
+							type="password" 
+							id="pass" 
+							name="pass" 
+							placeholder=" Contraseña"
+							value = {passwordValue}
+							onChange = { (e) => setPassword(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Repita Su Contraseña: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="passBis" name="passBis" placeholder=" Contraseña"/>
+						<input 
+							className="rounded-lg border border-gray-600 focus:border-gray-600"
+							type="password" 
+							id="passBis" 
+							name="passBis" 
+							placeholder=" Contraseña"
+							value = {passbiValue}
+							onChange = { (e) => setPassbi(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"
+							value = {photoValue}
+							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
+					<img class="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
 
