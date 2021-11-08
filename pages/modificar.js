@@ -8,12 +8,31 @@ const Modificar = ({
 	entity
  }) => {
 
-	const roles = [
-		{id: 1, name: 'Shop'},
-		{id: 2, name: 'User'},
-	]
+	function getSelected(){
+		var array = []
+		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
-	var [selectedRole, setSelectedRole] = useState(roles[0])
+		for(var i = 0; i < checkboxes.length; i++){
+			array.push(checkboxes[i].value)
+		}
+		log(array)
+
+		return array.length>0?array:undefined
+	}
+
+	const [selectedRole, setSelectedRole] = useState(entity.id_role)
+	const [nickValue, setNick] = useState(entity.nick)
+	const [descriptionValue, setDescription] = useState(entity.description)
+	const [emailValue, setEmail] = useState(entity.mail)
+	const [phoneValue, setPhone] = useState(entity.phone)
+	const [cpValue, setCP] = useState(entity.codPos)
+	const [locationValue, setLocation] = useState(entity.location)
+	const [directionValue, setDirection] = useState(entity.direction)
+	const [latitudeValue, setLatitude] = useState(entity.latitude)
+	const [longitudeValue, setLongitude] = useState(entity.longitude)
+	const [passwordValue, setPassword] = useState(entity.pass)
+	const [passbiValue, setPassbi] = useState(entity.pass)
+	const [photoValue, setPhoto] = useState(entity.avatar)
 
 	function SelectedUser(props) {
 		return (
@@ -21,11 +40,11 @@ const Modificar = ({
 				<div className="space-y-4 items-center font-medium">
 					<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" required/>
 					</div>
 					<div>
 						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" required/>
 					</div>
 				</div>
 			</>
@@ -36,8 +55,8 @@ const Modificar = ({
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium">
-					<div>
-						<label className="text-gray-800">Razón social: </label>
+				<div>
+						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
 					</div>
 				</div>
@@ -46,62 +65,78 @@ const Modificar = ({
 	}
 
 	function RoleSelection(props) {
-		const isUser = props.isUser
-		if (isUser) {
+		if (selectedRole === '2') {
 			return <SelectedUser />
 		} 
 		return <SelectedShop />
 	}
 
-	function getSelected(){
-		var array = []
-		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-
-		for(var i = 0; i < checkboxes.length; i++){
-			array.push(checkboxes[i].value)
-		}
-		log(array)
-
-		return array
-	}
-
-
-	const handleSubmit = async event=> {
+	const handleSubmit = async event => {
 		event.preventDefault()	
-		var valor = selectedRole.id
-		var x = parseInt(valor)
-		alert(x)
-		if (isNaN(x) || (typeof valor) === 'undefined'){
-			alert('errrror')
+
+		const ses = await fetch(`${url}/api/existNick`, {
+			body: JSON.stringify({
+				nick: nickValue
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+		.then(response => console.log(response.text()))
+		if(!ses) {
+			alert('El nick ' + nickValue + ' ya está en uso, pruebe otro')
+		}
+		
+		if(!/^\d+$/.test(phoneValue)) {
+			alert('No puede haber letras en su número de teléfono')
+			return
+		}
+		if(phoneValue.trim().length!==9) {
+			alert('Su número de teléfono debe tener 9 cifras')
+			return
+		} 
+		if(!/^\d+$/.test(cpValue)) {
+			alert('No puede haber letras en su Código Postal')
+			return
+		}
+		if(cpValue.trim().length!==5) {
+			alert('Su código postal debe tener 5 cifras')
+			return
+		}
+		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
+			alert('No puede haber letras en los campos de latitud y longitud')
+			return
+		}
+		if(passwordValue.localeCompare(passbiValue)!==0) {
+			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
+			return
 		}
 		const res = await fetch(
-			`${url}/api/updateEntity`,{
-				body: JSON.stringify({
-					//id_entity: pasarlaaaaaaaa
-					id_role: selectedRole.id,
-					phone: event.target.phone.value,
-					//deleted: 
-					nick: event.target.nick.value,
+			`${url}/api/createNewEntity`,{
+				body: JSON.stringify({	
+					id_role: selectedRole,
+					phone: phoneValue,
+					nick: nickValue,
 					name: event.target.name.value,
-					surname: event.target.surname.value,
-					description: event.target.description.value,
-					mail: event.target.mail.value,
-					pass: event.target.pass.value,
-					avatar: event.target.direction.value,
+					surname: selectedRole==='1'?'':event.target.surname.value,
+					description: descriptionValue,
+					mail: emailValue,
+					pass: passwordValue,
+					avatar: photoValue,
 					tags_ent: getSelected(),
-					codPos: event.target.codPos.value,
-					latitude: event.target.latitude.value,
-					longitude: event.target.longitude.value,
-					location: event.target.location.value,
-					direction: event.target.direction.value
+					codPos: cpValue,
+					latitude: latitudeValue,
+					longitude: longitudeValue,
+					location: locationValue,
+					direction: directionValue
 				}),
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
 			})
-			.then(response => response.text())
-			.then(body=>{alert(body)})
+			.then(response => console.log(response))
 
 	}
 
@@ -109,61 +144,49 @@ const Modificar = ({
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
         
-				<h1 className="text-4xl">Modificar entidad</h1>
+				<h1 className="text-4xl">Página de registro</h1>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
-						<div><label className="text-gray-800">Rol: </label></div>
-						<Listbox value={selectedRole} onChange={setSelectedRole}>
-							<Listbox.Button >{selectedRole.name}</Listbox.Button>
-							<Listbox.Options className="text-gray-800">
-								{roles.map((role) => (
-									<Listbox.Option
-										key={role.id}
-										value={role}
-									>
-										{role.name}
-									</Listbox.Option>
-								))}
-							</Listbox.Options>
-						</Listbox>
+						<label className="text-gray-800">Rol: </label>
+						<select
+							value = {selectedRole}
+							onChange = { (e) => setSelectedRole(e.target.value)}
+						>
+							<option value='1'>Shop</option>
+							<option value='2'>User</option>
+						</select>
+						{/*}<p>{selectedRole}</p>{*/}
 					</div>
 					<div>
 						<label className="text-gray-800">Nick: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+							value = {nickValue}
+							onChange = { (e) => setNick(e.target.value)} 
+							required/>
 					</div>
-					{/*PARTE USER
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
-					</div>
-					<div>
-						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
-					</div>*/}
 					
 					<div>
-						<RoleSelection isUser={selectedRole.name==="User"} />
+						<RoleSelection/>
 					</div>
-
-					{/*///////////Parte para "Shop"
-					<div>
-						<label className="text-gray-800">Razón social: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
-					</div>
-					//////////Fin */}
 
 					<div>
 						<div><label className="text-gray-800">Descripción: </label></div>
-						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"/>
+						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"
+							value = {descriptionValue}
+							onChange = { (e) => setDescription(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Email: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"
+							value = {emailValue}
+							onChange = { (e) => setEmail(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Teléfono: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"
+							value = {phoneValue}
+							onChange = { (e) => setPhone(e.target.value)}/>
 					</div>
 					<div>
 						<label >Choose tags: </label>
@@ -180,40 +203,63 @@ const Modificar = ({
 					</div>
 					<div>
 						<label className="text-gray-800">Código Postal: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"
+							value = {cpValue}
+							onChange = { (e) => setCP(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Localidad: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"/>
-					</div>
-					<div>
-						<label className="text-gray-800">Provincia: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="province" name="province" placeholder=" Provincia"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"
+							value = {locationValue}
+							onChange = { (e) => setLocation(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"
+							value = {directionValue}
+							onChange = { (e) => setDirection(e.target.value)}/>
 					</div>
 					<div>
-						<label className="text-gray-800">Latitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"/>
+						<label classirection="text-gray-800">Latitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"
+							value = {latitudeValue}
+							onChange = { (e) => setLatitude(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Longitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"
+							value = {longitudeValue}
+							onChange = { (e) => setLongitude(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Contraseña: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="pass" name="pass" placeholder=" Contraseña"/>
+						<input 
+							className="rounded-lg border border-gray-600 focus:border-gray-600"
+							type="password" 
+							id="pass" 
+							name="pass" 
+							placeholder=" Contraseña"
+							value = {passwordValue}
+							onChange = { (e) => setPassword(e.target.value)}/>
 					</div>
 					<div>
 						<label className="text-gray-800">Repita Su Contraseña: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="passBis" name="passBis" placeholder=" Contraseña"/>
+						<input 
+							className="rounded-lg border border-gray-600 focus:border-gray-600"
+							type="password" 
+							id="passBis" 
+							name="passBis" 
+							placeholder=" Contraseña"
+							value = {passbiValue}
+							onChange = { (e) => setPassbi(e.target.value)}/>
 					</div>
 					<div>
-						<label className="text-gray-800">Fotaca: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"/>
+						<label className="text-gray-800">Foto: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"
+							value = {photoValue}
+							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
+					<img class="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
 
