@@ -36,6 +36,7 @@ const Modificar = ({
 	const [passwordValue, setPassword] = useState(entity.pass)
 	const [passbiValue, setPassbi] = useState(entity.pass)
 	const [photoValue, setPhoto] = useState(entity.avatar)
+	const [pswVisible, setPswVisible] = useState(false)
 
 	function RoleSelection(props) {
 		if (selectedRole === '2') {
