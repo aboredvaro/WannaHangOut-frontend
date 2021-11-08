@@ -254,7 +254,7 @@ const Signup = ({
 					</div>
 					
 					<div>
-						{RoleSelection }
+						{RoleSelection() }
 					</div>
 
 					<div>
