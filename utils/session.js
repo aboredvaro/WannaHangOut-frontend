@@ -4,6 +4,10 @@ export const session = () => {
 	return window.localStorage.getItem('sessionID') ? true : false
 }
 
+export const getSession = () => {
+	return window.localStorage.getItem('sessionID') ?? false
+}
+
 export const setSession = async(mail, password) => {
 	return await fetch(`${url}/api/isEntityRegistred`, {
   	method: 'POST',
