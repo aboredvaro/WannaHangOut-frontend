@@ -37,49 +37,105 @@ const Modificar = ({
 	const [passbiValue, setPassbi] = useState(entity.pass)
 	const [photoValue, setPhoto] = useState(entity.avatar)
 
-	function SelectedUser(props) {
-		return (
-			<>
-				<div className="space-y-4 items-center font-medium">
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
-							value = {nameValue}
-							onChange = { (e) => setName(e.target.value)} 
-							required/>
+	function RoleSelection(props) {
+		if (selectedRole === '2') {
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Nombre: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
+								value = {nameValue}
+								onChange = { (e) => setName(e.target.value)} 
+								required
+								key="user1"/>
+						</div>
+						<div>
+							<label className="text-gray-800">Apellidos: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
+								value = {surnameValue}
+								onChange = { (e) => setSurname(e.target.value)} 
+								key="user2"/>
+						</div>
 					</div>
-					<div>
-						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
-							value = {surnameValue}
-							onChange = { (e) => setSurname(e.target.value)} />
-					</div>
-				</div>
-			</>
-		)
-	}
-
-	function SelectedShop(props) {
+				</>
+			)
+		} 
 		return(
 			<>
-				<div className="space-y-4 items-center font-medium">
+				<div className="space-y-4 items-center font-medium"key='shop1'>
 				<div>
 						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
 							onChange = { (e) => setName(e.target.value)} 
-							required/>
+							required
+							key="shop1"/>
 					</div>
 				</div>
 			</>
 		)
 	}
 
-	function RoleSelection(props) {
-		if (selectedRole === '2') {
-			return <SelectedUser />
-		} 
-		return <SelectedShop />
+	function ShowPassword(props) {
+		if(!pswVisible){
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}
+								required/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								id="pass" 
+								name="pass" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}
+								required/>
+						</div>
+					</div>
+				</>
+			)
+		} else if(pswVisible) {
+			return(
+				<>
+				<div className="space-y-4 items-center font-medium">
+						<div>						
+							<label className="text-gray-800">Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}
+								required/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}
+								required/>
+						</div>
+					</div>
+				</>
+			)
+		}
+		
 	}
 
 	const handleSubmit = async event => {
@@ -188,7 +244,7 @@ const Modificar = ({
 					</div>
 					
 					<div>
-						<RoleSelection/>
+						{RoleSelection() }	
 					</div>
 
 					<div>
@@ -253,26 +309,12 @@ const Modificar = ({
 							onChange = { (e) => setLongitude(e.target.value)}/>
 					</div>
 					<div>
-						<label className="text-gray-800">Contraseña: </label>
-						<input 
-							className="rounded-lg border border-gray-600 focus:border-gray-600"
-							type="password" 
-							id="pass" 
-							name="pass" 
-							placeholder=" Contraseña"
-							value = {passwordValue}
-							onChange = { (e) => setPassword(e.target.value)}/>
+						{ShowPassword ()}
 					</div>
 					<div>
-						<label className="text-gray-800">Repita Su Contraseña: </label>
-						<input 
-							className="rounded-lg border border-gray-600 focus:border-gray-600"
-							type="password" 
-							id="passBis" 
-							name="passBis" 
-							placeholder=" Contraseña"
-							value = {passbiValue}
-							onChange = { (e) => setPassbi(e.target.value)}/>
+						<input type="checkbox" 
+						value={pswVisible}
+						onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>

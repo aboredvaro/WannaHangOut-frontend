@@ -35,6 +35,7 @@ const Signup = ({
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
+	const [pswVisible, setPswVisible] = useState(false)
 
 	function RoleSelection(props) {
 		if (selectedRole === '2') {
@@ -76,10 +77,69 @@ const Signup = ({
 		)
 	}
 
+	function ShowPassword(props) {
+		if(!pswVisible){
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								id="pass" 
+								name="pass" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								id="pass" 
+								name="pass" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}/>
+						</div>
+					</div>
+				</>
+			)
+		} else if(pswVisible) {
+			return(
+				<>
+				<div className="space-y-4 items-center font-medium">
+						<div>						
+							<label className="text-gray-800">Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}/>
+						</div>
+					</div>
+				</>
+			)
+		}
+		
+	}
+
 	const handleSubmit = async event => {
 		event.preventDefault()	
 		
-		var seguir = true
+		var seguir = false
 
 		const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
@@ -90,16 +150,12 @@ const Signup = ({
 			},
 			method: 'POST'
 		})
-		.then(response => response.json())
-		.then(
-			nickExists => {
-				if (nickExists) {
-					seguir = false
-				}
-			}
-		)
-
-		if(!seguir) {
+		.then(response => {
+			if (response.ok)
+			return response.json()})
+		
+		console.log(ses)
+		if(ses) {
 			alert("Nick en uso")
 			return false
 		}
@@ -158,7 +214,7 @@ const Signup = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-
+			
 	}
 
 	function showPSW() {
@@ -198,7 +254,7 @@ const Signup = ({
 					</div>
 					
 					<div>
-						{RoleSelection() }
+						{RoleSelection }
 					</div>
 
 					<div>
@@ -263,26 +319,12 @@ const Signup = ({
 							onChange = { (e) => setLongitude(e.target.value)}/>
 					</div>
 					<div>
-						<label className="text-gray-800">Contraseña: </label>
-						<input 
-							className="rounded-lg border border-gray-600 focus:border-gray-600"
-							type="password" 
-							id="pass" 
-							name="pass" 
-							placeholder=" Contraseña"
-							value = {passwordValue}
-							onChange = { (e) => setPassword(e.target.value)}/>
+						{ShowPassword ()}
 					</div>
 					<div>
-						<label className="text-gray-800">Repita Su Contraseña: </label>
-						<input 
-							className="rounded-lg border border-gray-600 focus:border-gray-600"
-							type="password" 
-							id="pass" 
-							name="pass" 
-							placeholder=" Contraseña"
-							value = {passbiValue}
-							onChange = { (e) => setPassbi(e.target.value)}/>
+						<input type="checkbox" 
+						value={pswVisible}
+						onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
