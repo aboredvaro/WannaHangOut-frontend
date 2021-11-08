@@ -8,7 +8,7 @@ const Signup = ({
 	tags
  }) => {
 
-	function getSelected(){
+	function getSelectedTags(){
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
@@ -36,49 +36,44 @@ const Signup = ({
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
 
-	function SelectedUser(props) {
-		return (
-			<>
-				<div className="space-y-4 items-center font-medium">
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
-							value = {nameValue}
-							onChange = { (e) => setName(e.target.value)} 
-							required/>
+	function RoleSelection(props) {
+		if (selectedRole === '2') {
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Nombre: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
+								value = {nameValue}
+								onChange = { (e) => setName(e.target.value)} 
+								required
+								key="user1"/>
+						</div>
+						<div>
+							<label className="text-gray-800">Apellidos: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
+								value = {surnameValue}
+								onChange = { (e) => setSurname(e.target.value)} 
+								key="user2"/>
+						</div>
 					</div>
-					<div>
-						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
-							value = {surnameValue}
-							onChange = { (e) => setSurname(e.target.value)} />
-					</div>
-				</div>
-			</>
-		)
-	}
-
-	function SelectedShop(props) {
+				</>
+			)
+		} 
 		return(
 			<>
-				<div className="space-y-4 items-center font-medium">
+				<div className="space-y-4 items-center font-medium"key='shop1'>
 				<div>
 						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
 							onChange = { (e) => setName(e.target.value)} 
-							required/>
+							required
+							key="shop1"/>
 					</div>
 				</div>
 			</>
 		)
-	}
-
-	function RoleSelection(props) {
-		if (selectedRole === '2') {
-			return <SelectedUser />
-		} 
-		return <SelectedShop />
 	}
 
 	const handleSubmit = async event => {
@@ -133,7 +128,7 @@ const Signup = ({
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return false
 		}
-		var tags = getSelected()
+		var tags = getSelectedTags()
 		if(tags==='') {
 			alert('Debe seleccionar al menos una etiqueta')
 			return false
@@ -203,7 +198,7 @@ const Signup = ({
 					</div>
 					
 					<div>
-						<RoleSelection/>
+						{RoleSelection() }
 					</div>
 
 					<div>
@@ -278,7 +273,6 @@ const Signup = ({
 							value = {passwordValue}
 							onChange = { (e) => setPassword(e.target.value)}/>
 					</div>
-
 					<div>
 						<label className="text-gray-800">Repita Su Contraseña: </label>
 						<input 
@@ -289,9 +283,6 @@ const Signup = ({
 							placeholder=" Contraseña"
 							value = {passbiValue}
 							onChange = { (e) => setPassbi(e.target.value)}/>
-					</div>
-					<div>
-						<input type="checkbox" onclick="showPSW()" /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
