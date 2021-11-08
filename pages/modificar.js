@@ -117,13 +117,13 @@ const Modificar = ({
 					deleted: entity.deleted,
 					phone: phoneValue,
 					nick: nickValue,
-					name: event.target.name.value,
-					surname: selectedRole==='1'?'':event.target.surname.value,
+					name: nameValue,
+					surname: selectedRole==='1'?'':surnameValue,
 					description: descriptionValue,
 					mail: emailValue,
 					pass: passwordValue,
 					avatar: photoValue,
-					//tags_ent: getSelected(),
+					tags_ent: getSelected(),
 					id_address: address.id_address.toString(),
 					codPos: cpValue,
 					latitude: latitudeValue,
@@ -136,7 +136,7 @@ const Modificar = ({
 				},
 				method: 'PUT'
 			})
-			.then(response => console.log(response))
+			.then(response => console.log(response.text()))
 
 	}
 
@@ -259,7 +259,7 @@ const Modificar = ({
 							value = {photoValue}
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
-					<img class="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
+					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Create</button>		
 				</form>
 

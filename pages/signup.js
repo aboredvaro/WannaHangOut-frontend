@@ -22,6 +22,8 @@ const Signup = ({
 
 	const [selectedRole, setSelectedRole] = useState('2')
 	const [nickValue, setNick] = useState('')
+	const [nameValue, setName] = useState(entity.name)
+	const [surnameValue, setSurname] = useState(entity.surname)
 	const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
 	const [phoneValue, setPhone] = useState('')
@@ -40,11 +42,16 @@ const Signup = ({
 				<div className="space-y-4 items-center font-medium">
 					<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" required/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required/>
 					</div>
 					<div>
 						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" required/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
+							value = {surnameValue}
+							onChange = { (e) => setSurname(e.target.value)} />
 					</div>
 				</div>
 			</>
@@ -57,7 +64,10 @@ const Signup = ({
 				<div className="space-y-4 items-center font-medium">
 				<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required/>
 					</div>
 				</div>
 			</>
@@ -118,8 +128,8 @@ const Signup = ({
 					id_role: selectedRole,
 					phone: phoneValue,
 					nick: nickValue,
-					name: event.target.name.value,
-					surname: selectedRole==='1'?'':event.target.surname.value,
+					name: nameValue,
+					surname: selectedRole==='1'?'':surnameValue,
 					description: descriptionValue,
 					mail: emailValue,
 					pass: passwordValue,
