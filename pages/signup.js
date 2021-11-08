@@ -83,6 +83,8 @@ const Signup = ({
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
+		
+		var seguir = true
 
 		const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
@@ -94,36 +96,47 @@ const Signup = ({
 			method: 'POST'
 		})
 		.then(response => response.json())
-		alert(ses)
+		.then(
+			nickExists => {
+				if (nickExists) {
+					seguir = false
+				}
+			}
+		)
+
+		if(!seguir) {
+			alert("Nick en uso")
+			return false
+		}
 		
 		if(!/^\d+$/.test(phoneValue)) {
 			alert('No puede haber letras en su número de teléfono')
-			return
+			return false
 		}
 		if(phoneValue.trim().length!==9) {
 			alert('Su número de teléfono debe tener 9 cifras')
-			return
+			return false
 		} 
 		if(!/^\d+$/.test(cpValue)) {
 			alert('No puede haber letras en su Código Postal')
-			return
+			return false
 		}
 		if(cpValue.trim().length!==5) {
 			alert('Su código postal debe tener 5 cifras')
-			return
+			return false
 		}
 		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
 			alert('No puede haber letras en los campos de latitud y longitud')
-			return
+			return false
 		}
 		if(passwordValue.localeCompare(passbiValue)!==0) {
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
-			return
+			return false
 		}
 		var tags = getSelected()
 		if(tags==='') {
 			alert('Debe seleccionar al menos una etiqueta')
-			return 
+			return false
 		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
@@ -151,6 +164,16 @@ const Signup = ({
 			})
 			.then(response => console.log(response))
 
+	}
+
+	function showPSW() {
+		var x = document.getElementById('pass')
+		if(x.type === 'password') {
+			x.type = 'text'
+		} else {
+			x.type = 'password'
+		}
+		
 	}
 
 	return (
@@ -255,16 +278,20 @@ const Signup = ({
 							value = {passwordValue}
 							onChange = { (e) => setPassword(e.target.value)}/>
 					</div>
+
 					<div>
 						<label className="text-gray-800">Repita Su Contraseña: </label>
 						<input 
 							className="rounded-lg border border-gray-600 focus:border-gray-600"
 							type="password" 
-							id="passBis" 
-							name="passBis" 
+							id="pass" 
+							name="pass" 
 							placeholder=" Contraseña"
 							value = {passbiValue}
 							onChange = { (e) => setPassbi(e.target.value)}/>
+					</div>
+					<div>
+						<input type="checkbox" onclick="showPSW()" /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
@@ -272,7 +299,7 @@ const Signup = ({
 							value = {photoValue}
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
-					<img class="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
+					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
 					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>		
 				</form>
 
