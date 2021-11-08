@@ -17,7 +17,7 @@ const Signup = ({
 		}
 		log(array)
 
-		return array
+		return array.length>0?array:undefined
 	}
 
 	const [selectedRole, setSelectedRole] = useState('2')
@@ -40,11 +40,11 @@ const Signup = ({
 				<div className="space-y-4 items-center font-medium">
 					<div>
 						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" required/>
 					</div>
 					<div>
 						<label className="text-gray-800">Apellidos: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos"/>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" required/>
 					</div>
 				</div>
 			</>
@@ -73,7 +73,45 @@ const Signup = ({
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
+
+		const ses = await fetch(`${url}/api/existNick`, {
+			body: JSON.stringify({
+				nick: nickValue
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+		.then(response => console.log(response.text()))
+		if(!ses) {
+			alert('El nick ' + nickValue + ' ya está en uso, pruebe otro')
+		}
 		
+		if(!/^\d+$/.test(phoneValue)) {
+			alert('No puede haber letras en su número de teléfono')
+			return
+		}
+		if(phoneValue.trim().length!==9) {
+			alert('Su número de teléfono debe tener 9 cifras')
+			return
+		} 
+		if(!/^\d+$/.test(cpValue)) {
+			alert('No puede haber letras en su Código Postal')
+			return
+		}
+		if(cpValue.trim().length!==5) {
+			alert('Su código postal debe tener 5 cifras')
+			return
+		}
+		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
+			alert('No puede haber letras en los campos de latitud y longitud')
+			return
+		}
+		if(passwordValue.localeCompare(passbiValue)!==0) {
+			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
+			return
+		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({	
@@ -124,7 +162,8 @@ const Signup = ({
 						<label className="text-gray-800">Nick: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
 							value = {nickValue}
-							onChange = { (e) => setNick(e.target.value)}/>
+							onChange = { (e) => setNick(e.target.value)} 
+							required/>
 					</div>
 					
 					<div>
