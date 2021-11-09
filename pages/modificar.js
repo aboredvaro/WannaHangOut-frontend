@@ -107,7 +107,7 @@ const Modificar = ({
 		} else if(pswVisible) {
 			return(
 				<>
-				<div className="space-y-4 items-center font-medium">
+					<div className="space-y-4 items-center font-medium">
 						<div>						
 							<label className="text-gray-800">Contraseña: </label>
 							<input 
@@ -180,7 +180,8 @@ const Modificar = ({
 		}
 		var tags = getSelected()
 		if(tags !=='') {
-			bodyFetch={...bodyFetch, tags_ent: tags}
+			alert('Debe seleccionar al menos una etiqueta')
+			return false
 		}
 		if(passwordValue !== '') {
 			bodyFetch={...bodyFetch, pass: passwordValue}
