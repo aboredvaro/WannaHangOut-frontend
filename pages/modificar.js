@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
-import { useRouter } from 'next/router'
 
+const Modificar = ({ 
+	tags,
+	entity,
+	address
+ }) => {
 
-const Signup = ({ tags }) => {
-
-	const router = useRouter()
-
-	function getSelectedTags(){
+	function getSelected(){
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
@@ -21,21 +21,21 @@ const Signup = ({ tags }) => {
 		return array.length>0?array:''
 	}
 
-	const [selectedRole, setSelectedRole] = useState('2')
-	const [nickValue, setNick] = useState('')
-	const [nameValue, setName] = useState('')
-	const [surnameValue, setSurname] = useState('')
-	const [descriptionValue, setDescription] = useState('')
-	const [emailValue, setEmail] = useState('')
-	const [phoneValue, setPhone] = useState('')
-	const [cpValue, setCP] = useState('')
-	const [locationValue, setLocation] = useState('')
-	const [directionValue, setDirection] = useState('')
+	const [selectedRole, setSelectedRole] = useState(entity.id_role.toString())
+	const [nickValue, setNick] = useState(entity.nick)
+	const [nameValue, setName] = useState(entity.name)
+	const [surnameValue, setSurname] = useState(entity.surname)
+	const [descriptionValue, setDescription] = useState(entity.description)
+	const [emailValue, setEmail] = useState(entity.mail)
+	const [phoneValue, setPhone] = useState(entity.phone.toString())
+	const [cpValue, setCP] = useState(address.codPos.toString())
+	const [locationValue, setLocation] = useState(address.location)
+	const [directionValue, setDirection] = useState(address.direction)
 	const [latitudeValue, setLatitude] = useState('')
 	const [longitudeValue, setLongitude] = useState('')
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
-	const [photoValue, setPhoto] = useState('')
+	const [photoValue, setPhoto] = useState(entity.avatar)
 	const [pswVisible, setPswVisible] = useState(false)
 
 	function RoleSelection(props) {
@@ -48,15 +48,13 @@ const Signup = ({ tags }) => {
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
 								value = {nameValue}
 								onChange = { (e) => setName(e.target.value)} 
-								required
-								key="user1"/>
+								required/>
 						</div>
 						<div>
 							<label className="text-gray-800">Apellidos: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
 								value = {surnameValue}
-								onChange = { (e) => setSurname(e.target.value)} 
-								key="user2"/>
+								onChange = { (e) => setSurname(e.target.value)}/>
 						</div>
 					</div>
 				</>
@@ -66,7 +64,7 @@ const Signup = ({ tags }) => {
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
 				<div>
-						<label className="text-gray-800">Nombre: </label>
+						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
 							onChange = { (e) => setName(e.target.value)} 
@@ -84,12 +82,10 @@ const Signup = ({ tags }) => {
 				<>
 					<div className="space-y-4 items-center font-medium">
 						<div>
-							<label className="text-gray-800">Contraseña: </label>
+							<label className="text-gray-800">Nueva contraseña: </label>
 							<input 
 								className="rounded-lg border border-gray-600 focus:border-gray-600"
 								type="password" 
-								id="pass" 
-								name="pass" 
 								placeholder=" Contraseña"
 								value = {passwordValue}
 								onChange = { (e) => setPassword(e.target.value)}/>
@@ -138,133 +134,99 @@ const Signup = ({ tags }) => {
 	}
 
 	const handleSubmit = async event => {
-		event.preventDefault()
+		event.preventDefault()	
 
-		const ses = await fetch(`${url}/api/existNick`, {
-			body: JSON.stringify({
-				nick: nickValue
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-		.then(response => {
-			if (response.ok)
-			return response.json()})
-		
-		console.log(ses)
-		if(ses) {
-			alert("Nick en uso")
-			return false
-		}
-		
 		if(!/^\d+$/.test(phoneValue)) {
 			alert('No puede haber letras en su número de teléfono')
-			return false
+			return
 		}
 		if(phoneValue.trim().length!==9) {
-			alert('Su número de teléfono debe tener 9 cifras')
-			return false
+			alert(typeof(phoneValue)+ 'Su número de teléfono debe tener 9 cifras')
+			return
 		} 
 		if(!/^\d+$/.test(cpValue)) {
 			alert('No puede haber letras en su Código Postal')
-			return false
+			return
 		}
 		if(cpValue.trim().length!==5) {
 			alert('Su código postal debe tener 5 cifras')
-			return false
+			return
 		}
-		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
+		if(isNaN(latitudeValue) || isNaN(longitudeValue)) {
 			alert('No puede haber letras en los campos de latitud y longitud')
-			return false
+			return
 		}
 		if(passwordValue.localeCompare(passbiValue)!==0) {
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
-			return false
+			return
 		}
-		var tags = getSelectedTags()
-		var bodyFetch
-		if(tags==='') {
-			bodyFetch = JSON.stringify({	
-				id_role: selectedRole,
-				phone: phoneValue,
-				nick: nickValue,
-				name: nameValue,
-				surname: selectedRole==='1'?'':surnameValue,
-				description: descriptionValue,
-				mail: emailValue,
-				pass: passwordValue,
-				avatar: photoValue,
-				codPos: cpValue,
-				latitude: latitudeValue,
-				longitude: longitudeValue,
-				location: locationValue,
-				direction: directionValue
-			})
-		}else{
+		var bodyFetch = {
+			id_entity: entity.id_entity.toString(),
+			id_role: selectedRole,
+			phone: phoneValue,
+			nick: nickValue,
+			name: nameValue,
+			surname: selectedRole==='1'?'':surnameValue,
+			description: descriptionValue,
+			mail: emailValue,
+			avatar: photoValue,
+			codPos: cpValue,
+			id_address: address.id_address.toString(),
+			latitude: latitudeValue,
+			longitude: longitudeValue,
+			location: locationValue,
+			direction: directionValue,
+			deleted: 0
+		}
+		var tags = getSelected()
+		if(tags !=='') {
+			bodyFetch={...bodyFetch, tags_ent: tags}
+		}
+		if(passwordValue !== '') {
+			bodyFetch={...bodyFetch, pass: passwordValue}
+		}
 
-			bodyFetch = JSON.stringify({	
-					id_role: selectedRole,
-					phone: phoneValue,
-					nick: nickValue,
-					name: nameValue,
-					surname: selectedRole==='1'?'':surnameValue,
-					description: descriptionValue,
-					mail: emailValue,
-					pass: passwordValue,
-					avatar: photoValue,
-					tags_ent: tags,
-					codPos: cpValue,
-					latitude: latitudeValue,
-					longitude: longitudeValue,
-					location: locationValue,
-					direction: directionValue
-				})
-		}
 		const res = await fetch(
-			`${url}/api/createNewEntity`,{
-				body: bodyFetch,
+			`${url}/api/updateEntity`,{
+				body: JSON.stringify(bodyFetch),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'PUT'
+			})
+			.then(response => console.log(response.text()))
+
+	}
+
+	const handleDeleteSubmit = async event => {
+		event.preventDefault()	
+
+		const res = await fetch(
+			`${url}/api/deleteEntityById`,{
+				body: JSON.stringify({	
+					id_entity: entity.id_entity.toString()
+				}),
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
 			})
-			.then(response => {
-				if (response.ok)
-				return response.json()})
-			if(!isNaN(res)) {
-				router.push('/activities')
-			}
-			
-	}
-
-	const handleCancel = async event =>{
-		router.push('/')
-	}
-
-	function showPSW() {
-		var x = document.getElementById('pass')
-		if(x.type === 'password') {
-			x.type = 'text'
-		} else {
-			x.type = 'password'
-		}
-		
+			.then(response => console.log(response.text()))
 	}
 
 	return (
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
         
-				<h1 className="text-4xl">Página de registro</h1>
+				<h1 className="text-4xl">Modifique su cuenta</h1>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
 						<label className="text-gray-800">Rol: </label>
 						<select
 							value = {selectedRole}
-							onChange = { (e) => setSelectedRole(e.target.value)}
+							readOnly
+							//onChange = { (e) => setSelectedRole(e.target.value)}
 						>
 							<option value='1'>Shop</option>
 							<option value='2'>User</option>
@@ -280,7 +242,7 @@ const Signup = ({ tags }) => {
 					</div>
 					
 					<div>
-						{RoleSelection() }
+						{RoleSelection() }	
 					</div>
 
 					<div>
@@ -359,26 +321,43 @@ const Signup = ({ tags }) => {
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
 					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar</button>		
 				</form>
-				<button className="w-1/5 rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={()=>handleCancel()}>Cancelar</button>
+
+				<h1 className="text-4xl">Darse de baja</h1>
+
+				<form className="flex flex-col space-y-4" onSubmit={handleDeleteSubmit}>
+					
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Darse de baja</button>		
+				</form>
+
 			</div>
 		</>
 	    )
 	}
 
-	export async function getServerSideProps(){
+	export async function getServerSideProps(ctx) {
 
-		const res = await fetch(`${url}/api/getAllTags`)
-			 .then(response => response.json())
-		const tags = res
-	
+		const { id } = ctx.query
+
+		const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
+			.then(response => response.json())
+		
+
+		const tags = await fetch(`${url}/api/getAllTags`)
+		    .then(response => response.json())
+
+		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+			.then(response => response.json())
+
 		return{
 			props:{
-				tags
+				tags,
+				entity,
+				address
 			}
 		}
+		 
 	}
 
-
-export default Signup
+export default Modificar
