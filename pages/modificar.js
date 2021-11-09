@@ -343,10 +343,10 @@ const Modificar = ({tags, entity, address }) => {
 			.then(response => response.json())
 		
 
-		/*const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())*/
+		const tags = await fetch(`${url}/api/getAllTags`)
+		    .then(response => response.json())
 
-		const tags = await fetch(
+		/*const tags = await fetch(
 			`${url}/api/getTagsByIdAndType`,{
 				body: JSON.stringify({	
 					id: entity.id_entity.toString(),
@@ -357,7 +357,7 @@ const Modificar = ({tags, entity, address }) => {
 						},
 						method: 'POST'
 					})
-					.then(response => response.json())
+					.then(response => response.json())*/
 
 		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
 			.then(response => response.json())
