@@ -184,27 +184,13 @@ const Signup = ({ tags }) => {
 			return false
 		}
 		var tags = getSelectedTags()
-		var bodyFetch
 		if(tags==='') {
-			bodyFetch = JSON.stringify({	
-				id_role: selectedRole,
-				phone: phoneValue,
-				nick: nickValue,
-				name: nameValue,
-				surname: selectedRole==='1'?'':surnameValue,
-				description: descriptionValue,
-				mail: emailValue,
-				pass: passwordValue,
-				avatar: photoValue,
-				codPos: cpValue,
-				latitude: latitudeValue,
-				longitude: longitudeValue,
-				location: locationValue,
-				direction: directionValue
-			})
-		}else{
-
-			bodyFetch = JSON.stringify({	
+			alert('Debe seleccionar al menos una etiqueta')
+			return false
+		}
+		const res = await fetch(
+			`${url}/api/createNewEntity`,{
+				body: JSON.stringify({	
 					id_role: selectedRole,
 					phone: phoneValue,
 					nick: nickValue,
@@ -220,11 +206,7 @@ const Signup = ({ tags }) => {
 					longitude: longitudeValue,
 					location: locationValue,
 					direction: directionValue
-				})
-		}
-		const res = await fetch(
-			`${url}/api/createNewEntity`,{
-				body: bodyFetch,
+				}),
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -232,10 +214,10 @@ const Signup = ({ tags }) => {
 			})
 			.then(response => {
 				if (response.ok)
-				return response.json()})
-			if(!isNaN(res)) {
-				router.push('/activities')
-			}
+					return response.json()})
+		if(!isNaN(res)) {
+			router.push('/activities')
+		}
 			
 	}
 
@@ -349,8 +331,8 @@ const Signup = ({ tags }) => {
 					</div>
 					<div>
 						<input type="checkbox" 
-						value={pswVisible}
-						onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
+							value={pswVisible}
+							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>

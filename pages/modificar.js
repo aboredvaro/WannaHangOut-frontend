@@ -3,11 +3,7 @@ import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
-const Modificar = ({ 
-	tags,
-	entity,
-	address
- }) => {
+const Modificar = ({tags, entity, address }) => {
 
 	function getSelected(){
 		var array = []
@@ -31,8 +27,8 @@ const Modificar = ({
 	const [cpValue, setCP] = useState(address.codPos.toString())
 	const [locationValue, setLocation] = useState(address.location)
 	const [directionValue, setDirection] = useState(address.direction)
-	const [latitudeValue, setLatitude] = useState('')
-	const [longitudeValue, setLongitude] = useState('')
+	const [latitudeValue, setLatitude] = useState(address.latitude)
+	const [longitudeValue, setLongitude] = useState(address.longitude)
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState(entity.avatar)
@@ -63,7 +59,7 @@ const Modificar = ({
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
-				<div>
+					<div>
 						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
@@ -107,7 +103,7 @@ const Modificar = ({
 		} else if(pswVisible) {
 			return(
 				<>
-				<div className="space-y-4 items-center font-medium">
+					<div className="space-y-4 items-center font-medium">
 						<div>						
 							<label className="text-gray-800">Contraseña: </label>
 							<input 
@@ -160,6 +156,12 @@ const Modificar = ({
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return
 		}
+		
+		var tags = getSelected()
+		if(tags ==='') {
+			alert('Debe seleccionar al menos una etiqueta')
+			return false
+		}
 		var bodyFetch = {
 			id_entity: entity.id_entity.toString(),
 			id_role: selectedRole,
@@ -170,6 +172,7 @@ const Modificar = ({
 			description: descriptionValue,
 			mail: emailValue,
 			avatar: photoValue,
+			tags_ent: tags,
 			codPos: cpValue,
 			id_address: address.id_address.toString(),
 			latitude: latitudeValue,
@@ -177,10 +180,6 @@ const Modificar = ({
 			location: locationValue,
 			direction: directionValue,
 			deleted: 0
-		}
-		var tags = getSelected()
-		if(tags !=='') {
-			bodyFetch={...bodyFetch, tags_ent: tags}
 		}
 		if(passwordValue !== '') {
 			bodyFetch={...bodyFetch, pass: passwordValue}
@@ -344,8 +343,21 @@ const Modificar = ({
 			.then(response => response.json())
 		
 
-		const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
+		/*const tags = await fetch(`${url}/api/getAllTags`)
+		    .then(response => response.json())*/
+
+		const tags = await fetch(
+			`${url}/api/getTagsByIdAndType`,{
+				body: JSON.stringify({	
+					id: entity.id_entity.toString(),
+					type: 1
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						method: 'POST'
+					})
+					.then(response => response.json())
 
 		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
 			.then(response => response.json())
