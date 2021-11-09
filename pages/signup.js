@@ -207,14 +207,17 @@ const Signup = ({ tags }) => {
 					location: locationValue,
 					direction: directionValue
 				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
 				method: 'POST'
 			})
 			.then(response => {
 				if (response.ok)
-				return response.json()})
-			if(!isNaN(res)) {
-				router.push('/activities')
-			}
+					return response.json()})
+		if(!isNaN(res)) {
+			router.push('/activities')
+		}
 			
 	}
 
