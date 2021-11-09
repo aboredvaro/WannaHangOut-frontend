@@ -30,9 +30,9 @@ const Home = (props) => {
 				}
 
 				<div className="flex flex-col space-y-2 items-center">
-					<a href="login" className="text-xl text-orange-500">Log in</a>
-					<a href="signup" className="text-xl text-orange-500">Sign up</a>
-					<a href="profile" className="text-xl text-orange-500">Profile</a>
+					{/*<a href="login" className="text-xl text-orange-500">Log in</a>
+					<a href="signup" className="text-xl text-orange-500">Sign up</a>*/}
+					<a href="profile" className="text-xl text-orange-500">Modificar Mis Datos</a>
 					<a href="activities" className="text-xl text-orange-500">Activities list</a>
 					<a href="new-activity" className="text-xl text-orange-500">Create new activity</a>
 					<a href={"modificar?id=" + '15'} className="text-xl text-orange-500">Modificar (temporal)</a>
