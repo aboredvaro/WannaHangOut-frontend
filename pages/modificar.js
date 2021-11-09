@@ -3,11 +3,7 @@ import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
-const Modificar = ({ 
-	tags,
-	entity,
-	address
- }) => {
+const Modificar = ({tags, entity, address }) => {
 
 	function getSelected(){
 		var array = []
@@ -63,7 +59,7 @@ const Modificar = ({
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
-				<div>
+					<div>
 						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
@@ -179,7 +175,7 @@ const Modificar = ({
 			deleted: 0
 		}
 		var tags = getSelected()
-		if(tags !=='') {
+		if(tags ==='') {
 			alert('Debe seleccionar al menos una etiqueta')
 			return false
 		}
