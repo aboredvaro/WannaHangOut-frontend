@@ -27,8 +27,8 @@ const Modificar = ({tags, entity, address }) => {
 	const [cpValue, setCP] = useState(address.codPos.toString())
 	const [locationValue, setLocation] = useState(address.location)
 	const [directionValue, setDirection] = useState(address.direction)
-	const [latitudeValue, setLatitude] = useState('')
-	const [longitudeValue, setLongitude] = useState('')
+	const [latitudeValue, setLatitude] = useState(address.latitude)
+	const [longitudeValue, setLongitude] = useState(address.longitude)
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState(entity.avatar)
@@ -156,6 +156,12 @@ const Modificar = ({tags, entity, address }) => {
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return
 		}
+		
+		var tags = getSelected()
+		if(tags ==='') {
+			alert('Debe seleccionar al menos una etiqueta')
+			return false
+		}
 		var bodyFetch = {
 			id_entity: entity.id_entity.toString(),
 			id_role: selectedRole,
@@ -166,6 +172,7 @@ const Modificar = ({tags, entity, address }) => {
 			description: descriptionValue,
 			mail: emailValue,
 			avatar: photoValue,
+			tags_ent: tags,
 			codPos: cpValue,
 			id_address: address.id_address.toString(),
 			latitude: latitudeValue,
@@ -173,11 +180,6 @@ const Modificar = ({tags, entity, address }) => {
 			location: locationValue,
 			direction: directionValue,
 			deleted: 0
-		}
-		var tags = getSelected()
-		if(tags ==='') {
-			alert('Debe seleccionar al menos una etiqueta')
-			return false
 		}
 		if(passwordValue !== '') {
 			bodyFetch={...bodyFetch, pass: passwordValue}
@@ -341,8 +343,21 @@ const Modificar = ({tags, entity, address }) => {
 			.then(response => response.json())
 		
 
-		const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
+		/*const tags = await fetch(`${url}/api/getAllTags`)
+		    .then(response => response.json())*/
+
+		const tags = await fetch(
+			`${url}/api/getTagsByIdAndType`,{
+				body: JSON.stringify({	
+					id: entity.id_entity.toString(),
+					type: 1
+						}),
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						method: 'POST'
+					})
+					.then(response => response.json())
 
 		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
 			.then(response => response.json())
