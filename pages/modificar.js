@@ -18,7 +18,7 @@ const Modificar = ({
 		}
 		log(array)
 
-		return array.length>0?array:undefined
+		return array.length>0?array:''
 	}
 
 	const [selectedRole, setSelectedRole] = useState(entity.id_role.toString())
@@ -31,10 +31,10 @@ const Modificar = ({
 	const [cpValue, setCP] = useState(address.codPos.toString())
 	const [locationValue, setLocation] = useState(address.location)
 	const [directionValue, setDirection] = useState(address.direction)
-	const [latitudeValue, setLatitude] = useState(address.latitude.toString())
-	const [longitudeValue, setLongitude] = useState(address.longitude.toString())
-	const [passwordValue, setPassword] = useState(entity.pass)
-	const [passbiValue, setPassbi] = useState(entity.pass)
+	const [latitudeValue, setLatitude] = useState('')
+	const [longitudeValue, setLongitude] = useState('')
+	const [passwordValue, setPassword] = useState('')
+	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState(entity.avatar)
 	const [pswVisible, setPswVisible] = useState(false)
 
@@ -48,15 +48,13 @@ const Modificar = ({
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
 								value = {nameValue}
 								onChange = { (e) => setName(e.target.value)} 
-								required
-								key="user1"/>
+								required/>
 						</div>
 						<div>
 							<label className="text-gray-800">Apellidos: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
 								value = {surnameValue}
-								onChange = { (e) => setSurname(e.target.value)} 
-								key="user2"/>
+								onChange = { (e) => setSurname(e.target.value)}/>
 						</div>
 					</div>
 				</>
@@ -66,7 +64,7 @@ const Modificar = ({
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
 				<div>
-						<label className="text-gray-800">Razón social: </label>
+						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
 							onChange = { (e) => setName(e.target.value)} 
@@ -84,14 +82,13 @@ const Modificar = ({
 				<>
 					<div className="space-y-4 items-center font-medium">
 						<div>
-							<label className="text-gray-800">Contraseña: </label>
+							<label className="text-gray-800">Nueva contraseña: </label>
 							<input 
 								className="rounded-lg border border-gray-600 focus:border-gray-600"
 								type="password" 
 								placeholder=" Contraseña"
 								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}
-								required/>
+								onChange = { (e) => setPassword(e.target.value)}/>
 						</div>
 						<div>
 							<label className="text-gray-800">Repita Su Contraseña: </label>
@@ -102,8 +99,7 @@ const Modificar = ({
 								name="pass" 
 								placeholder=" Repita su contraseña"
 								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}
-								required/>
+								onChange = { (e) => setPassbi(e.target.value)}/>
 						</div>
 					</div>
 				</>
@@ -119,8 +115,7 @@ const Modificar = ({
 								type="text" 
 								placeholder=" Contraseña"
 								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}
-								required/>
+								onChange = { (e) => setPassword(e.target.value)}/>
 						</div>
 						<div>
 							<label className="text-gray-800">Repita Su Contraseña: </label>
@@ -129,8 +124,7 @@ const Modificar = ({
 								type="text" 
 								placeholder=" Repita su contraseña"
 								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}
-								required/>
+								onChange = { (e) => setPassbi(e.target.value)}/>
 						</div>
 					</div>
 				</>
@@ -166,33 +160,35 @@ const Modificar = ({
 			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
 			return
 		}
-		var tags = getSelected()
-		if(tags==='') {
-			alert('Debe seleccionar al menos una etiqueta')
-			return 
+		var bodyFetch = {
+			id_entity: entity.id_entity.toString(),
+			id_role: selectedRole,
+			phone: phoneValue,
+			nick: nickValue,
+			name: nameValue,
+			surname: selectedRole==='1'?'':surnameValue,
+			description: descriptionValue,
+			mail: emailValue,
+			avatar: photoValue,
+			codPos: cpValue,
+			id_address: address.id_address.toString(),
+			latitude: latitudeValue,
+			longitude: longitudeValue,
+			location: locationValue,
+			direction: directionValue,
+			deleted: 0
 		}
+		var tags = getSelected()
+		if(tags !=='') {
+			bodyFetch={...bodyFetch, tags_ent: tags}
+		}
+		if(passwordValue !== '') {
+			bodyFetch={...bodyFetch, pass: passwordValue}
+		}
+
 		const res = await fetch(
 			`${url}/api/updateEntity`,{
-				body: JSON.stringify({	
-					id_entity: entity.id_entity.toString(),
-					id_role: selectedRole,
-					deleted: entity.deleted,
-					phone: phoneValue,
-					nick: nickValue,
-					name: nameValue,
-					surname: selectedRole==='1'?'':surnameValue,
-					description: descriptionValue,
-					mail: emailValue,
-					pass: passwordValue,
-					avatar: photoValue,
-					tags_ent: tags,
-					id_address: address.id_address.toString(),
-					codPos: cpValue,
-					latitude: latitudeValue,
-					longitude: longitudeValue,
-					location: locationValue,
-					direction: directionValue
-				}),
+				body: JSON.stringify(bodyFetch),
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -229,7 +225,8 @@ const Modificar = ({
 						<label className="text-gray-800">Rol: </label>
 						<select
 							value = {selectedRole}
-							onChange = { (e) => setSelectedRole(e.target.value)}
+							readOnly
+							//onChange = { (e) => setSelectedRole(e.target.value)}
 						>
 							<option value='1'>Shop</option>
 							<option value='2'>User</option>
@@ -343,17 +340,15 @@ const Modificar = ({
 
 		const { id } = ctx.query
 
-		const res = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
+		const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
 			.then(response => response.json())
-		const entity = res
+		
 
-		const res1 = await fetch(`${url}/api/getAllTags`)
+		const tags = await fetch(`${url}/api/getAllTags`)
 		    .then(response => response.json())
-		const tags = res1
 
-		const res2 = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
 			.then(response => response.json())
-		const address = res2
 
 		return{
 			props:{

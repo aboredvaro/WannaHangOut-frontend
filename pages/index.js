@@ -12,7 +12,7 @@ const Home = (props) => {
 					<a href="signup" className="text-xl text-orange-500">Sign up</a>
 					<a href="activities" className="text-xl text-orange-500">Activities list</a>
 					<a href="new-activity" className="text-xl text-orange-500">Create new activity</a>
-					<a href={"modificar?id=" + '1'} className="text-xl text-orange-500">Modificar (temporal)</a>
+					<a href={"modificar?id=" + '15'} className="text-xl text-orange-500">Modificar (temporal)</a>
 				</div>
 
 			</div>
