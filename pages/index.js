@@ -31,16 +31,16 @@ const Home = (props) => {
 
 				<div className="flex flex-col space-y-2 items-center">
 					{/*<a href="login" className="text-xl text-orange-500">Log in</a>
-					<a href="signup" className="text-xl text-orange-500">Sign up</a>*/}
-					<a href="profile" className="text-xl text-orange-500">Modificar Mis Datos</a>
 					<a href="activities" className="text-xl text-orange-500">Activities list</a>
 					<a href="new-activity" className="text-xl text-orange-500">Create new activity</a>
-					<a href={"modificar?id=" + '15'} className="text-xl text-orange-500">Modificar (temporal)</a>
-					<Link href="/signup">
+					<a href="profile" className="text-xl text-orange-500">Modificar Mis Datos</a>
+					<a href="signup" className="text-xl text-orange-500">Sign up</a>*/}
+					<a href={"modificar?id=" + '15'} className="text-xl text-orange-500">Modificar Mis Datos</a>
+					{/*<Link href="/signup">
 						<a className="text-xl text-orange-500">Crear cuenta</a>
-					</Link>
+					</Link>*/}
 					<Link href="/activities">
-						<a className="text-xl text-orange-500">Actividades</a>
+						<a className="text-xl text-orange-500">Mostrar lista de actividades</a>
 					</Link>
 				</div>
 				<Link href="/new-activity">
