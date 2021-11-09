@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import url from '../utils/server.js'
+import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-item.js'
 
@@ -47,10 +48,13 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
-					
-					<form className="flex flex-col space-y-4">
-						<button type="submit" className="rounded-full border-2 ">Modificar</button>
-					</form>
+					<Link href = {{
+							pathname:"/modify-activity",
+							query: {id : `${activity.id_activity}`},
+						}}
+					>
+						<button className="rounded-full border-2 ">Modificar</button>
+					</Link>
 
 					<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>

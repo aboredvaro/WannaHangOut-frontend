@@ -13,7 +13,6 @@ const CreateActivity = ({
 		for(var i = 0; i < checkboxes.length; i++){
 			array.push(checkboxes[i].value)
 		}
-		log(array)
 
 		return array
 	}
@@ -128,9 +127,8 @@ const CreateActivity = ({
 
 export async function getServerSideProps(){
 
-	const res = await fetch(`${url}/api/getAllTags`)
+	const tags = await fetch(`${url}/api/getAllTags`)
 	 	.then(response => response.json())
-	const tags = res
 
 	return{
 		props:{
