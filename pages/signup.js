@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
+import { useRouter } from 'next/router'
 
 
-const Signup = ({ 
-	tags
- }) => {
+const Signup = ({ tags }) => {
+
+	const router = useRouter()
 
 	function getSelectedTags(){
 		var array = []
@@ -137,9 +138,7 @@ const Signup = ({
 	}
 
 	const handleSubmit = async event => {
-		event.preventDefault()	
-		
-		var seguir = false
+		event.preventDefault()
 
 		const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
@@ -185,13 +184,27 @@ const Signup = ({
 			return false
 		}
 		var tags = getSelectedTags()
+		var bodyFetch
 		if(tags==='') {
-			alert('Debe seleccionar al menos una etiqueta')
-			return false
-		}
-		const res = await fetch(
-			`${url}/api/createNewEntity`,{
-				body: JSON.stringify({	
+			bodyFetch = JSON.stringify({	
+				id_role: selectedRole,
+				phone: phoneValue,
+				nick: nickValue,
+				name: nameValue,
+				surname: selectedRole==='1'?'':surnameValue,
+				description: descriptionValue,
+				mail: emailValue,
+				pass: passwordValue,
+				avatar: photoValue,
+				codPos: cpValue,
+				latitude: latitudeValue,
+				longitude: longitudeValue,
+				location: locationValue,
+				direction: directionValue
+			})
+		}else{
+
+			bodyFetch = JSON.stringify({	
 					id_role: selectedRole,
 					phone: phoneValue,
 					nick: nickValue,
@@ -207,14 +220,27 @@ const Signup = ({
 					longitude: longitudeValue,
 					location: locationValue,
 					direction: directionValue
-				}),
+				})
+		}
+		const res = await fetch(
+			`${url}/api/createNewEntity`,{
+				body: bodyFetch,
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
 			})
-			.then(response => console.log(response))
+			.then(response => {
+				if (response.ok)
+				return response.json()})
+			if(!isNaN(res)) {
+				router.push('/activities')
+			}
 			
+	}
+
+	const handleCancel = async event =>{
+		router.push('/')
 	}
 
 	function showPSW() {
@@ -333,9 +359,9 @@ const Signup = ({
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
 					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>		
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>
 				</form>
-
+				<button className="w-1/5 rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={()=>handleCancel()}>Cancelar</button>
 			</div>
 		</>
 	    )

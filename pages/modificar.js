@@ -66,7 +66,7 @@ const Modificar = ({
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
 				<div>
-						<label className="text-gray-800">Nombre: </label>
+						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
 							onChange = { (e) => setName(e.target.value)} 
