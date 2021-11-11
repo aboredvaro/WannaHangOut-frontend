@@ -1,11 +1,31 @@
 import React, { useState } from 'react'
 import url from '../utils/server.js'
+import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-item.js'
 
 const ActivityPage = ({
 	activity
 }) => {
+
+	const deleteActivity = async event => {
+		event.preventDefault()
+
+		const res = await fetch(
+			`${url}/api/deleteActivityById`,{
+				body: JSON.stringify({	
+					id_activity: activity.id_activity
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(response => console.log(response))
+			.then(response => {
+				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
+			})
+	}
 
 	return (
 		<>
@@ -28,9 +48,19 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
+					<Link href = {{
+							pathname:"/modify-activity",
+							query: {id : `${activity.id_activity}`},
+						}}
+					>
+						<button className="rounded-full border-2 ">Modificar</button>
+					</Link>
 
+					<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
+						<button type="submit" className="rounded-full border-2 ">Borrar</button>
+					</form>
+					
 				</div>
-
 			</div>
 		</>
 	)
@@ -39,29 +69,10 @@ const ActivityPage = ({
 export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
-	//	log(id)
-	
-	/*
-	const getActivityByID = async() => {
-		return new Promise(resolve => {
-			fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-				.then(response => response.json())
-				.then(response => {
-					resolve(response)
-				})
-		})
-	}
-
-	const res = await getActivityByID()
-	const activity = res[0]
-	log(activity)
-
-*/
 
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
-	const activityAux = await res.json()
-	const activity = activityAux[0]
-	// log(activity)
+	 	.then(response => response.json())
+	const activity = res
 
 	return {
 		props: {
