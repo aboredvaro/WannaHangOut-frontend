@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
@@ -7,6 +8,7 @@ import ActivityItem from '../components/activity-item.js'
 const ActivityPage = ({
 	activity
 }) => {
+	const router = useRouter()
 
 	const deleteActivity = async event => {
 		event.preventDefault()
@@ -22,9 +24,7 @@ const ActivityPage = ({
 				method: 'POST'
 			})
 			.then(response => console.log(response))
-			.then(response => {
-				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
-			})
+			.then(router.push('/activities'))
 	}
 
 	return (
@@ -34,22 +34,21 @@ const ActivityPage = ({
 				<h1 className="text-4xl font-medium">Actividad</h1>
 
 				<div className="flex flex-col space-y-4">
-					{
-						<ActivityItem
-							key={activity.id_activity}
-							id_activity={activity.id_activity}
-							title={activity.title}
-							description={activity.description}
-							id_entity_host={activity.id_entity_creador}
-							seats={activity.seats}
-							price={activity.price}
-							location={activity.location}
-							dateAct={activity.dateAct}
-							min_duration={activity.min_duration}
-						/>
-					}
-					<Link href = {{
-							pathname:"/modify-activity",
+					<ActivityItem
+						key={activity.id_activity}
+						id_activity={activity.id_activity}
+						title={activity.title}
+						description={activity.description}
+						id_entity_host={activity.id_entity_creador}
+						seats={activity.seats}
+						price={activity.price}
+						location={activity.location}
+						dateAct={activity.dateAct}
+						min_duration={activity.min_duration}
+					/>
+					<Link
+						href = {{
+							pathname: '/modify-activity',
 							query: {id : `${activity.id_activity}`},
 						}}
 					>
@@ -68,7 +67,7 @@ const ActivityPage = ({
 
 export async function getServerSideProps(ctx) {
 
-	const { id } = ctx.query
+	const {id} = ctx.query
 
 	const res = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 	 	.then(response => response.json())
