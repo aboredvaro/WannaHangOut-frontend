@@ -182,7 +182,7 @@ const Modificar = ({tags, entity, address }) => {
 			deleted: 0
 		}
 		if(passwordValue !== '') {
-			bodyFetch={...bodyFetch, pass: passwordValue}
+			bodyFetch[pass] = passwordValue
 		}
 
 		const res = await fetch(
