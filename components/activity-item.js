@@ -1,6 +1,5 @@
 import React  from 'react'
-import url from '../utils/server.js'
-import log from '../utils/log.js'
+import Link from 'next/link'
 
 const ActivityItem = ({
 	id_activity,
@@ -16,14 +15,17 @@ const ActivityItem = ({
 }) => {
 
 	return (
-		<>
-			<a href={'/activity?id=' + id_activity} className="bg-gray-100 p-6 rounded-xl">
+		<Link href={`/activity?id=${id_activity}`} passHref>
+			<div className="bg-gray-100 p-6 rounded-xl">
 				<p className="mb-2 text-2xl font-medium">{title} </p>
 				<p className="mb-2 text-sm text-orange-500">{dateAct}</p>
 				<p className="text-sm text-gray-400">{location}</p>
 				<p className="mb-2 text-sm text-gray-400">{price}€</p>
-			</a>
-		</>
+				<p className="mb-2 text-sm text-gray-400">{description}</p>
+				<p className="mb-2 text-sm text-gray-400">{seats} asientos disponibles</p>
+				<p className="mb-2 text-sm text-gray-400">{min_duration} minutos de duración</p>
+			</div>
+		</Link>
 	)
 }
 

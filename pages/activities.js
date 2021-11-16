@@ -199,12 +199,12 @@ export async function getServerSideProps() {
 	 	.then(response => response.json())
 
 	return {
-  		props:{
-	   		activities,
+  	props:{
+	   	activities,
 			locations,
 			entities,
 			tags
-   		}
+   	}
 	}
 }
 
