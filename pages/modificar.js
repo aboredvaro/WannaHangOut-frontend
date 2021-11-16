@@ -182,7 +182,7 @@ const Modificar = ({tags, entity, address }) => {
 			deleted: 0
 		}
 		if(passwordValue !== '') {
-			bodyFetch={...bodyFetch, pass: passwordValue}
+			bodyFetch[pass] = passwordValue
 		}
 
 		const res = await fetch(
@@ -309,9 +309,12 @@ const Modificar = ({tags, entity, address }) => {
 						{ShowPassword ()}
 					</div>
 					<div>
-						<input type="checkbox" 
-						value={pswVisible}
-						onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
+						<input
+							type="checkbox" 
+							value={pswVisible}
+							onChange = {() => setPswVisible(!pswVisible) }
+						/>
+						Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
@@ -333,20 +336,19 @@ const Modificar = ({tags, entity, address }) => {
 			</div>
 		</>
 	    )
-	}
+}
 
-	export async function getServerSideProps(ctx) {
+export async function getServerSideProps(ctx) {
 
-		const { id } = ctx.query
+	const { id } = ctx.query
 
-		const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
-			.then(response => response.json())
+	const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
+		.then(response => response.json())
 		
-
-		const tags = await fetch(`${url}/api/getAllTags`)
+	const tags = await fetch(`${url}/api/getAllTags`)
 		    .then(response => response.json())
 
-		/*const tags = await fetch(
+	/*const tags = await fetch(
 			`${url}/api/getTagsByIdAndType`,{
 				body: JSON.stringify({	
 					id: entity.id_entity.toString(),
@@ -359,17 +361,17 @@ const Modificar = ({tags, entity, address }) => {
 					})
 					.then(response => response.json())*/
 
-		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
-			.then(response => response.json())
+	const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+		.then(response => response.json())
 
-		return{
-			props:{
-				tags,
-				entity,
-				address
-			}
+	return{
+		props:{
+			tags,
+			entity,
+			address
 		}
-		 
 	}
+		
+}
 
 export default Modificar
