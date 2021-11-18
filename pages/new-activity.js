@@ -53,7 +53,8 @@ const CreateActivity = ({
 		<>
 			<div className="font-sans w-full h-screen flex flex-col space-y-12 my-24 items-center">
 
-				<h1 className="text-4xl font-medium">Create New Activity</h1>
+				<h1 className="text-4xl font-medium">Crear Nueva Actividad</h1>
+				<h3 className="text-xlxl font-medium">*Una vez creada la actividad, no sera posible editar fecha, lugar ni intereses*</h3>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
@@ -61,31 +62,31 @@ const CreateActivity = ({
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="id" name="id" placeholder="Id_Creator"/>
 					</div>
 					<div>
-						<label className="text-gray-800"htmlFor="title">Title </label>
+						<label className="text-gray-800"htmlFor="title">Titulo </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="title" name="title" placeholder="Title"/>
 					</div>
 					<div>
-						<label htmlFor="description">Description </label>
+						<label htmlFor="description">Descripcion </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="description" name="description" placeholder="Description"/>
 					</div>
 					<div>
-						<label htmlFor="seats">Seats </label>
+						<label htmlFor="seats">Aforo </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="seats" name="seats" placeholder="Seats"/>
 					</div>
 					<div>
-						<label htmlFor="price">Price </label>
+						<label htmlFor="price">Precio </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="price" name="price" placeholder="Price"/>
 					</div>
 					<div>
-						<label htmlFor="date">Date </label>
+						<label htmlFor="date">Fecha </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="date" id="date" name="date" />
 					</div>
 					<div>
-						<label htmlFor="duration">Duration in min </label>
+						<label htmlFor="duration">Duracion(min) </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="duration" name="duration" placeholder="Duration"/>
 					</div>
 					<div>
-						<label >Choose tags: </label>
+						<label >Elige intereses: </label>
 						{
 							tags.map(({id_tags,name}, i) =>
 								<div className="w-full sm:w-auto" key={i}>
@@ -98,7 +99,7 @@ const CreateActivity = ({
 						}
 					</div>
 					<div>
-						<label htmlFor="postalcode">Postal code </label>
+						<label htmlFor="postalcode">Codigo Postal </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="postalcode" name="postalcode" placeholder="Postal Code"/>
 					</div>
 					<div>

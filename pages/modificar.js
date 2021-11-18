@@ -310,8 +310,8 @@ const Modificar = ({tags, entity, address }) => {
 					</div>
 					<div>
 						<input type="checkbox" 
-						value={pswVisible}
-						onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
+							value={pswVisible}
+							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
@@ -332,20 +332,17 @@ const Modificar = ({tags, entity, address }) => {
 
 			</div>
 		</>
-	    )
-	}
+	    )	}
+	
+export async function getServerSideProps(ctx) {
 
-	export async function getServerSideProps(ctx) {
+	const { id } = ctx.query
 
-		const { id } = ctx.query
-
-		const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
-			.then(response => response.json())
-		
-
-		const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
-
+	const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
+		.then(response => response.json())
+	
+	const tags = await fetch(`${url}/api/getAllTags`)
+		.then(response => response.json())
 		/*const tags = await fetch(
 			`${url}/api/getTagsByIdAndType`,{
 				body: JSON.stringify({	
@@ -359,17 +356,17 @@ const Modificar = ({tags, entity, address }) => {
 					})
 					.then(response => response.json())*/
 
-		const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
-			.then(response => response.json())
+	const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+		.then(response => response.json())
 
-		return{
-			props:{
-				tags,
-				entity,
-				address
-			}
+	return{
+		props:{
+			tags,
+			entity,
+			address
 		}
-		 
 	}
+		
+}
 
 export default Modificar
