@@ -19,7 +19,7 @@ const ProfileComponent = (
             <p className="mb-2 text-2xl font-medium">{nick} </p>
             <p className="mb-2 text-2xl font-medium">{name} </p>
             <p className="mb-2 text-2xl font-medium">{description} </p>
-            <p className="mb-2 text-2xl font-medium">Puntcuación media: {} </p>
+            <p className="mb-2 text-2xl font-medium">Puntuación media: {} </p>
         </>
     )
 
