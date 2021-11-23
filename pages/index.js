@@ -46,6 +46,7 @@ const Home = (props) => {
 				<Link href="/new-activity">
 					<a className="text-xl text-orange-500 bg-orange-100 py-2 px-6 rounded-xl">Crear actividad</a>
 				</Link>
+				<a href={"profile?id=" + '2'} className="text-xl text-orange-500">Perfil - Página temporal</a>
 
 			</div>
 		</>

@@ -3,10 +3,11 @@ import { useRouter } from 'next/router'
 import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
-import ActivityItem from '../components/activity-item.js'
+import ActivityItem from '../components/activity-score-item.js'
 
 const ActivityPage = ({
-	activity
+	activity,
+	actScore
 }) => {
 	const router = useRouter()
 
@@ -39,12 +40,13 @@ const ActivityPage = ({
 						id_activity={activity.id_activity}
 						title={activity.title}
 						description={activity.description}
-						id_entity_host={activity.id_entity_creador}
+						id_entity_host={activity.id_entity_creator}
 						seats={activity.seats}
 						price={activity.price}
 						location={activity.location}
 						dateAct={activity.dateAct}
 						min_duration={activity.min_duration}
+						score={actScore[0].media}
 					/>
 					<Link
 						href = {{
@@ -73,9 +75,13 @@ export async function getServerSideProps(ctx) {
 	 	.then(response => response.json())
 	const activity = res
 
+	const actScore = await fetch(`${url}/api/getAverageScoreByActivities?id_activity=${id}`)
+		.then(response => response.json())
+	console.log(actScore)
 	return {
 		props: {
-			activity
+			activity,
+			actScore
 		}
 	}
 
