@@ -5,12 +5,16 @@ import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-score-item.js'
 import CreateReviewItem from'../components/create-review-item.js'
+import ReviewItem from '../components/review-item.js'
 
 const ActivityPage = ({
 	activity,
-	actScore
+	actScore,
+	reviewsList
 }) => {
 	const router = useRouter()
+	
+	console.log(reviewsList)
 
 	const deleteActivity = async event => {
 		event.preventDefault()
@@ -63,6 +67,24 @@ const ActivityPage = ({
 					</form>
 
 					<CreateReviewItem id_activity_prop={activity.id_activity}/>
+
+					<div className="flex flex-col space-y-4">
+					{
+						reviewsList.map(review => {
+							return (	// añadir mensaje si no hay ninguna actividad
+								<ReviewItem
+									key={review.id_review}
+									id_activity={review.id_activity}
+    								id_entity={review.id_entity}
+    								title={review.title}
+    								description={review.description}
+    								points={review.points}
+    								deleted={review.deleted}
+								/>
+							)
+						})
+					}
+				</div>
 					
 				</div>
 			</div>
@@ -81,10 +103,15 @@ export async function getServerSideProps(ctx) {
 	const actScore = await fetch(`${url}/api/getAverageScoreByActivities?id_activity=${id}`)
 		.then(response => response.json())
 	console.log(actScore)
+
+	const reviewsList = await fetch(`${url}/api/getAllReviewByActivityID?id_activity=${id}`)
+		.then(response => response.json())
+
 	return {
 		props: {
 			activity,
-			actScore
+			actScore,
+			reviewsList
 		}
 	}
 
