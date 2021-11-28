@@ -3,9 +3,12 @@ import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-item.js'
+import MapContainer from '../components/map'
+import {  GoogleApiWrapper } from 'google-maps-react'
 
 const ActivityPage = ({
-	activity
+	activity,
+	address
 }) => {
 
 	const deleteActivity = async event => {
@@ -26,6 +29,9 @@ const ActivityPage = ({
 				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
 			})
 	}
+
+	const lat = address.longitude	// Estan al reves 
+	const long = address.latitude
 
 	return (
 		<>
@@ -48,6 +54,14 @@ const ActivityPage = ({
 							min_duration={activity.min_duration}
 						/>
 					}
+
+					<div className="flex flex-col items-center justify-center">
+					<MapContainer 
+						latitude = {lat}
+						longitude = {long}
+					/>
+					</div>
+
 					<Link href = {{
 							pathname:"/modify-activity",
 							query: {id : `${activity.id_activity}`},
@@ -74,9 +88,13 @@ export async function getServerSideProps(ctx) {
 	 	.then(response => response.json())
 	const activity = res
 
+	const address = await fetch(`${url}/api/getAddressByID?id_address=${activity.id_address}`)
+		.then(response => response.json())
+
 	return {
 		props: {
-			activity
+			activity,
+			address
 		}
 	}
 

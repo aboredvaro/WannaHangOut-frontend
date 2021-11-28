@@ -116,7 +116,6 @@ export async function getServerSideProps(ctx){
 	const address = await fetch(`${url}/api/getAddressByID?id_address=${activity.id_address}`)
 		.then(response => response.json())
 
-
 	return{
 		props:{
 			activity,
