@@ -68,7 +68,7 @@ const ActivityPage = ({
 
 					<CreateReviewItem id_activity_prop={activity.id_activity}/>
 
-					<div className="flex flex-col space-y-4">
+					
 					{
 						reviewsList.map(review => {
 							return (	// añadir mensaje si no hay ninguna actividad
@@ -84,7 +84,7 @@ const ActivityPage = ({
 							)
 						})
 					}
-				</div>
+				
 					
 				</div>
 			</div>
