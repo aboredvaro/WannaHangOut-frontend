@@ -68,10 +68,8 @@ const ActivityPage = ({
 
 					<CreateReviewItem id_activity_prop={activity.id_activity}/>
 
-					
-					{
-						reviewsList.map(review => {
-							return (	// añadir mensaje si no hay ninguna actividad
+					{reviewsList.map(review => {
+							return (
 								<ReviewItem
 									key={review.id_review}
 									id_activity={review.id_activity}

@@ -15,7 +15,7 @@ const CreateReviewItem = ({
 		const res = await fetch(
 			`${url}/api/createNewReview`,{
 				body: JSON.stringify({	
-					id_activity: 4,
+					id_activity: id_activity_prop,
 					id_entity: 8,
 					points: event.target.select.value,
 					title: event.target.title.value,
