@@ -4,7 +4,7 @@ import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-score-item.js'
-import ReviewItem from'../components/review-item.js'
+import CreateReviewItem from'../components/create-review-item.js'
 
 const ActivityPage = ({
 	activity,
@@ -62,7 +62,7 @@ const ActivityPage = ({
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
 
-					<ReviewItem id_activity_prop={activity.id_activity}/>
+					<CreateReviewItem id_activity_prop={activity.id_activity}/>
 					
 				</div>
 			</div>

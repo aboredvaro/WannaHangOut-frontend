@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import url from '../utils/server.js'
 import log from '../utils/log.js'
 
-const ReviewItem = ({
+const CreateReviewItem = ({
 	id_activity_prop,
 }) => {
 
@@ -81,4 +81,4 @@ const ReviewItem = ({
 	)
 }
 
-export default ReviewItem
+export default CreateReviewItem
