@@ -37,8 +37,8 @@ const ModifyReview = ({
     return (
 		<>
 			<div >
-				<div className="bg-gray-100 p-6 rounded-xl">
-					<h1 className="text-2xl">Deje aquí qué le ha parecido: </h1>
+				<div className="font-sans w-full h-screen flex flex-col space-y-12 my-24 items-center">
+					<h1 className="text-2xl">Modifique su review: </h1>
 
 					<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 						<div>
