@@ -7,7 +7,8 @@ const ReviewItem = ({
     title,
     description,
     points,
-    deleted
+    deleted,
+    userId
 }) => {
 
     var loggedUserHash = false
