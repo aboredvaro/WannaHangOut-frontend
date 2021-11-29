@@ -10,6 +10,11 @@ const ReviewItem = ({
     deleted
 }) => {
 
+    var loggedUserHash = false
+	useEffect(() => {
+		loggedUserHash = getSession()
+	})
+
     return (
         <>
            <a href={'/review?id=' + id_review} className="bg-gray-100 p-6 rounded-xl">

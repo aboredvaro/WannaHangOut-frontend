@@ -6,7 +6,7 @@ import log from '../utils/log.js'
 import ActivityItem from '../components/activity-score-item.js'
 import CreateReviewItem from'../components/create-review-item.js'
 import ReviewItem from '../components/review-item.js'
-import { getSession } from '../utils/session.js'
+import { session, getSession } from '../utils/session.js'
 
 const ActivityPage = ({
 	activity,
@@ -36,47 +36,13 @@ const ActivityPage = ({
 			.then(router.push('/activities'))
 	}
 
-	const showReviews = async event => {
-		event.preventDefault()
-		
-		console.log(loggedUserHash)
-		if(buttonValue==='Mostrar Reviews') {
-			setButton('Ocultar Reviews')
-		} else if(buttonValue==='Ocultar Reviews') {
-			setButton('Mostrar Reviews')
-		}
-	}
-
 	var loggedUserHash = false
-	useEffect(() => {loggedUserHash = getSession()})
+	var isLogged = false
+	useEffect(() => {
+		isLogged = session()
+		loggedUserHash = getSession()
+	})
 
-	function mostrarReview() {
-		if(buttonValue==='Ocultar Reviews') {
-			return (
-				<>
-					<CreateReviewItem 
-						id_activity_prop={activity.id_activity}
-					/>
-
-					{reviewsList.map(review => {
-							return (
-								<ReviewItem
-									key={review.id_review}
-									id_review={review.id_review}
-									id_activity={review.id_activity}
-    								id_entity={review.id_entity}
-    								title={review.title}
-    								description={review.description}
-    								points={review.points}
-    								deleted={review.deleted}
-								/>
-							)
-						})
-					}
-				</>
-			)
-		} else return null
-	}
 
 	return (
 		<>
@@ -110,13 +76,27 @@ const ActivityPage = ({
 					<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
-
-					<form className="flex flex-col space-y-4" onSubmit={showReviews}>
-						<button type="submit" className="rounded-full border-2 ">{buttonValue}</button>
-					</form>
-
 					
-					{mostrarReview()}
+					{/*{(!isLogged && haparticipado) && <CreateReviewItem */}
+					{!isLogged  && <CreateReviewItem 
+						id_activity_prop={activity.id_activity}
+					/>}
+
+					{reviewsList.map(review => {
+							return (
+								<ReviewItem
+									key={review.id_review}
+									id_review={review.id_review}
+									id_activity={review.id_activity}
+    								id_entity={review.id_entity}
+    								title={review.title}
+    								description={review.description}
+    								points={review.points}
+    								deleted={review.deleted}
+								/>
+							)
+						})
+					}
 					
 				</div>
 			</div>

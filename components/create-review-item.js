@@ -47,7 +47,7 @@ const CreateReviewItem = ({
 		<>
 			<div >
 				<div className="bg-gray-100 p-6 rounded-xl">
-					<h1 className="text-2xl">Deje aquí qué le ha parecido: </h1>
+					<h1 className="text-2xl mb-4">Deje aquí qué le ha parecido: </h1>
 
 					<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 						<div>
