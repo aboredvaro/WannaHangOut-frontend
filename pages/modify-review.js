@@ -14,8 +14,6 @@ const ModifyReview = ({
     const handleSubmit = async event => {
 		event.preventDefault()	
 
-        console.log('Modificando...')
-
 		const res = await fetch(
 			`${url}/api/updateReview`,{
 				body: JSON.stringify({	
