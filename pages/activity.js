@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useRouter, useEffect } from 'next/router'
+import React, { useState, useEffect } from 'react'
+import { useRouter} from 'next/router'
 import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
@@ -17,6 +17,8 @@ const ActivityPage = ({
 	
 	console.log(reviewsList)
 
+	const [buttonValue, setButton] = useState('Mostrar Reviews')
+
 	const deleteActivity = async event => {
 		event.preventDefault()
 
@@ -32,6 +34,48 @@ const ActivityPage = ({
 			})
 			.then(response => console.log(response))
 			.then(router.push('/activities'))
+	}
+
+	const showReviews = async event => {
+		event.preventDefault()
+		
+		console.log(loggedUserHash)
+		if(buttonValue==='Mostrar Reviews') {
+			setButton('Ocultar Reviews')
+		} else if(buttonValue==='Ocultar Reviews') {
+			setButton('Mostrar Reviews')
+		}
+	}
+
+	var loggedUserHash = false
+	useEffect(() => {loggedUserHash = getSession()})
+
+	function mostrarReview() {
+		if(buttonValue==='Ocultar Reviews') {
+			return (
+				<>
+					<CreateReviewItem 
+						id_activity_prop={activity.id_activity}
+					/>
+
+					{reviewsList.map(review => {
+							return (
+								<ReviewItem
+									key={review.id_review}
+									id_review={review.id_review}
+									id_activity={review.id_activity}
+    								id_entity={review.id_entity}
+    								title={review.title}
+    								description={review.description}
+    								points={review.points}
+    								deleted={review.deleted}
+								/>
+							)
+						})
+					}
+				</>
+			)
+		} else return null
 	}
 
 	return (
@@ -67,25 +111,12 @@ const ActivityPage = ({
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
 
-					<CreateReviewItem 
-						id_activity_prop={activity.id_activity}
-					/>
+					<form className="flex flex-col space-y-4" onSubmit={showReviews}>
+						<button type="submit" className="rounded-full border-2 ">{buttonValue}</button>
+					</form>
 
-					{reviewsList.map(review => {
-							return (
-								<ReviewItem
-									key={review.id_review}
-									id_activity={review.id_activity}
-    								id_entity={review.id_entity}
-    								title={review.title}
-    								description={review.description}
-    								points={review.points}
-    								deleted={review.deleted}
-								/>
-							)
-						})
-					}
-				
+					
+					{mostrarReview()}
 					
 				</div>
 			</div>

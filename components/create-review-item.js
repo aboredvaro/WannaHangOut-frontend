@@ -9,11 +9,10 @@ const CreateReviewItem = ({
 	var userHash
 	const [photoValue, setPhoto] = useState('')
 
-	useEffect(() => {userHash = getSession()
-		console.log("userhash: " + userHash)})
+	useEffect(() => {userHash = getSession()})
 
 	const handleSubmit = async event => {
-		event.preventDefault()
+		event.preventDefault() 
 		console.log(userHash)
 
 		var loggedUser = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
@@ -46,7 +45,7 @@ const CreateReviewItem = ({
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<div >
 				<div className="bg-gray-100 p-6 rounded-xl">
 					<h1 className="text-2xl">Deje aquí qué le ha parecido: </h1>
 
