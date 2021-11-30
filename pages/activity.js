@@ -65,25 +65,27 @@ const ActivityPage = ({
 					}
 				</>
 			)
-		} else return (
-			<>
-				{reviewsList.map(review => {
-					return (
-						<ReviewItem
-							key={review.id_review}
-							id_review={review.id_review}
-							id_activity={review.id_activity}
-							id_entity={review.id_entity}
-							title={review.title}
-							description={review.description}
-							points={review.points}
-							deleted={review.deleted}
-							userId={loggedUserId}
-						/>)
-					})
-				}	
-			</>
-		)
+		} else if(pastAct){
+			return (
+				<>
+					{reviewsList.map(review => {
+						return (
+							<ReviewItem
+								key={review.id_review}
+								id_review={review.id_review}
+								id_activity={review.id_activity}
+								id_entity={review.id_entity}
+								title={review.title}
+								description={review.description}
+								points={review.points}
+								deleted={review.deleted}
+								userId={loggedUserId}
+							/>)
+						})
+					}	
+				</>
+			)
+		}
 	}
 	
 	useEffect(() => {
