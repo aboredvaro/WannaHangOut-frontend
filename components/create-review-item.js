@@ -37,7 +37,7 @@ const CreateReviewItem = ({
 				if (response.ok) return response.json()})
 					
 		if(!isNaN(res)) {
-			alert("We did it!")
+			Alert("We did it!")
 		}
 	}
 

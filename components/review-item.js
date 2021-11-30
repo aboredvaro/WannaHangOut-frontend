@@ -53,10 +53,10 @@ const ReviewItem = ({
         <>
            <div className="bg-gray-100 p-6 rounded-xl">
 				<div className="bg-gray-100 p-6 rounded-xl">
-                    <h1 className="text-2xl">{title}</h1>
-                    <h2 className="text-1xl">{id_entity}</h2>
-                    <p>{description}</p>
-                    <p>{points}⭐</p>
+                    <h1 className="mb-2 text-3xl font-medium">{title}</h1>
+                    <p className="b-2 text-xl font-medium">{description}</p>
+                    <a href={'/profile?id=' + id_entity}className="text-1xl ">Host: {id_entity}</a>
+                    <p className="mb-2 text-sm ">Puntuación: {points}⭐</p>
                 </div>
                 {showModifyDelete()}
             </div>

@@ -1,15 +1,18 @@
 import React, {useState} from 'react'
 import url from '../utils/server'
 import log from '../utils/log'
+import { useRouter } from 'next/router'
 
 const ModifyReview = ({
 	review
 }) => {
+	const router = useRouter()
 
     const [titleValue, setTitle] = useState(review.title)
     const [descriptionValue, setDescription] = useState(review.description)
     const [pointsValue, setPoints] = useState(review.points)
     const [photoValue, setPhoto] = useState('')
+	const [photoBox, setPhotoBox] = useState('')
 
     const handleSubmit = async event => {
 		event.preventDefault()	
@@ -28,8 +31,9 @@ const ModifyReview = ({
 				},
 				method: 'POST'
 			})
-			
-
+		if(res) {
+			router.push('/activity?id=' + review.id_activity)
+		}
 	}
     
     return (
@@ -76,11 +80,23 @@ const ModifyReview = ({
 						<div>
 							<label className="text-gray-800"htmlFor="img">Imagen: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="photo" placeholder=" URL Foto"
-								value = {photoValue}
-								onChange = { (e) => setPhoto(e.target.value)}
+								value={photoBox}
+								onChange={(e) => setPhotoBox(e.target.value)}
 							/>		
+							<button type="button" onClick={
+								(e) => {
+									if(photoValue === '')setPhoto(photoBox)
+									else setPhoto(photoValue + ',' + photoBox)
+									setPhotoBox('')
+								}
+							}>Añadir foto</button>
 						</div>
-						<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Imagen review"/>
+
+						{photoValue.split(",").map((image) => {
+							return (
+								<img className="object-cover w-16 h-16 mr-2 rounded-full" src={image} alt="Imagen review"/>
+							)})
+						}
 						<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar Review</button>
 					</form>
 				</div>

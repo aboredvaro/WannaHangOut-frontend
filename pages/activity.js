@@ -14,7 +14,6 @@ const ActivityPage = ({
 	reviewsList
 }) => {
 	const router = useRouter()
-	console.log('AAAAAAAAAAAAAAA')
 
 	const [isLogged, setLogged] = useState(false)
 	const [loggedUserHash, setLoggedUserHash] = useState(false)
