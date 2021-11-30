@@ -7,12 +7,22 @@ const ModifyActivity = ({
 	address
 }) => {
 
-	// Refactorizar siguiente sprint
 	const [titleValue, setTitle] = useState(activity.title)
 	const [descriptionValue, setDescription] = useState(activity.description)
 	const [seatsValue, setSeats] = useState(activity.seats)
 	const [priceValue, setPrice] = useState(activity.price)
 	const [durationValue, setDuration] = useState(activity.min_duration)
+	const [dateValue, setDate] = useState(activity.dateAct)
+	const [directionValue, setDirection] = useState(address.direction)
+	const [codPosValue, setCodPos] = useState(address.codPos)
+	const [locationValue, setLocation] = useState(address.location)
+
+	/*
+	const date = new Date(activity.dateAct)
+	const yy = date.getFullYear()
+	const mm = date.getMonth()
+	const dd = date.getDay()
+	*/
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
@@ -31,11 +41,9 @@ const ModifyActivity = ({
 					tags_act: [],
 					deleted: 0,
 					id_address: activity.id_address,
-					codPos: address.codPos,
-					location: address.location,
-					direction: address.direction,
-					latitude: address.latitude,
-					longitude: address.longitude
+					codPos: event.target.codPos.value,
+					location: event.target.location.value,
+					direction: event.target.direction.value,
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -95,6 +103,40 @@ const ModifyActivity = ({
 							name="duration" 
 							value={durationValue}
 							onChange={ (event) => setDuration(event.target.value)}
+						/>
+					</div>
+					{/*
+					<div>
+						<label htmlFor="codPos">Fecha</label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="date" id="date" 
+							name="date" 
+							value={yy + '-' + mm + '-' + dd}
+							onChange={(event) => setDate(event.target.value)}
+						/>
+					</div>
+					*/ }
+					<div>
+						<label htmlFor="direction">Direccion </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="direction" 
+							name="direction" 
+							value={directionValue}
+							onChange={(event) => setDirection(event.target.value)}
+						/>
+					</div>
+					<div>
+						<label htmlFor="location">Localidad </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="location" 
+							name="location" 
+							value={locationValue}
+							onChange={(event) => setLocation(event.target.value)}
+						/>
+					</div>
+					<div>
+						<label htmlFor="codPos">Codigo Postal </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="codPos" 
+							name="codPos" 
+							value={codPosValue}
+							onChange={(event) => setCodPos(event.target.value)}
 						/>
 					</div>
 					

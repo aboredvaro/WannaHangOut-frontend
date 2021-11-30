@@ -30,9 +30,6 @@ const ActivityPage = ({
 			})
 	}
 
-	const lat = address.longitude	// Estan al reves 
-	const long = address.latitude
-
 	return (
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
@@ -57,8 +54,8 @@ const ActivityPage = ({
 
 					<div className="flex flex-col items-center justify-center">
 					<MapContainer 
-						latitude = {lat}
-						longitude = {long}
+						latitude = {address.latitude}
+						longitude = {address.longitude}
 					/>
 					</div>
 

@@ -52,7 +52,7 @@ const CreateActivity = ({
 			<div className="font-sans w-full h-screen flex flex-col space-y-12 my-24 items-center">
 
 				<h1 className="text-4xl font-medium">Crear Nueva Actividad</h1>
-				<h3 className="text-xlxl font-medium">*Una vez creada la actividad, no sera posible editar fecha, lugar ni intereses*</h3>
+				<h3 className="text-xlxl font-medium">*Una vez creada la actividad, no sera posible editar fecha ni intereses*</h3>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
