@@ -40,6 +40,7 @@ const ReviewPage = ({
 				<div className="flex flex-col space-y-4">
                     <ReviewItem
                         key={review.id_review}
+						id_review={review.id_review}
                         id_activity={review.id_activity}
                         id_entity={review.id_entity}
                         title={review.title}

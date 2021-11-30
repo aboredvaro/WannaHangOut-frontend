@@ -128,15 +128,13 @@ const ActivityPage = ({
 
 				<div className="flex flex-col space-y-4">
 
-
-
 					{
 						<ActivityItem
 							key={activity.id_activity}
 							id_activity={activity.id_activity}
 							title={activity.title}
 							description={activity.description}
-							id_entity_host={activity.id_entity_creador}
+							id_entity_host={activity.id_entity_creator}
 							seats={activity.seats}
 							price={activity.price}
 							location={activity.location}
