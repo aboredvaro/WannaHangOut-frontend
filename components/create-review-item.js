@@ -8,17 +8,15 @@ const CreateReviewItem = ({
 }) => {
 	var userHash
 	const [photoValue, setPhoto] = useState('')
+	const [photoBox, setPhotoBox] = useState('')
 
 	useEffect(() => {userHash = getSession()})
 
 	const handleSubmit = async event => {
 		event.preventDefault() 
-		console.log(userHash)
 
 		var loggedUser = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
 			.then(response => response.json())
-			
-		console.log(loggedUser.id_entity)
 
 		const res = await fetch(
 			`${url}/api/createNewReview`,{
@@ -76,9 +74,17 @@ const CreateReviewItem = ({
 						<div>
 							<label className="text-gray-800"htmlFor="img">Imagen: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="photo" placeholder=" URL Foto"
-								value = {photoValue}
-								onChange = { (e) => setPhoto(e.target.value)}
+								value={photoBox}
+								onChange={(e) => setPhotoBox(e.target.value)}
 							/>		
+							<button type="button" onClick={
+								(e) => {
+									if(photoValue === '')setPhoto(photoBox)
+									else setPhoto(photoValue + ',' + photoBox)
+									setPhotoBox('')
+								}
+							}>Añadir foto</button>
+							<p>{photoValue}</p>
 						</div>
 						<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Imagen review"/>
 						<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear Review</button>
