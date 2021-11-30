@@ -19,11 +19,11 @@ $ [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 $ [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 ```
 
-### Use node 14.16.0
+### Use node 14.17.3
 
 ``` bash
-$ nvm install 14.16.0
-$ nvm use 14.16.0
+$ nvm install 14.17.3
+$ nvm use 14.17.3
 ```
 
 ### Use yarn
