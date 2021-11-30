@@ -17,7 +17,10 @@ const ActivityPage = ({
 	
 	console.log(reviewsList)
 
-	const [buttonValue, setButton] = useState('Mostrar Reviews')
+	const [isLogged, setLogged] = useState(false)
+	const [loggedUserHash, setLoggedUserHash] = useState(false)
+	const [loggedUserId, setLoggedUserId] = useState(0)
+	const [participated, setParticipated] = useState(false)
 
 	const deleteActivity = async event => {
 		event.preventDefault()
@@ -35,38 +38,32 @@ const ActivityPage = ({
 			.then(response => console.log(response))
 			.then(router.push('/activities'))
 	}
-
-	var loggedUserHash = false
-	var isLogged = false
-	var loggedUserId = 0
-	var participatedB = false
-	var prueba = false
-	useEffect(() => {
-		isLogged = session()
-		loggedUserHash = getSession()		
-		const check = async () => {
-			if(loggedUserHash != false) {
-				const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${loggedUserHash}`)
-					.then(response => response.json())
-				loggedUserId = auxUser.id_entity
-				
-				const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
-					body: JSON.stringify({	
-						id_entity: loggedUserId,
-						id_activity: activity.id_activity
-					}),
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					method: 'POST'
-				})
-					.then(response => response.json())
-				participatedB = (auxBool.cond == 1)
-			}
-			console.log('loggedUserId: ' + loggedUserId + ', participatedB: ' + participatedB)
-			prueba = true
+	
+	
+	useEffect(async () => {
+		setLogged(session())
+		setLoggedUserHash(getSession())
+		if(isLogged != false) {
+			const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${loggedUserHash}`)
+				.then(response => response.json())
+			setLoggedUserId(auxUser.id_entity)
+			
+			const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
+				body: JSON.stringify({	
+					id_entity: loggedUserId,
+					id_activity: activity.id_activity
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+				.then(response => response.json())
+			setParticipated(auxBool.cond == 1)
 		}
-		check()
+		console.log('loggedUserId: ' + loggedUserId + ', participatedB: ' + participated)
+		
+		
 	})
 
 	return (
@@ -103,7 +100,9 @@ const ActivityPage = ({
 					</form>
 					
 					{/*{(!isLogged && haparticipado) && <CreateReviewItem */}
-					{(!isLogged  && participatedB) && <CreateReviewItem 
+					{loggedUserId}
+					{console.log(participated)}
+					{(isLogged && participated ) && <CreateReviewItem 
 						id_activity_prop={activity.id_activity}
 					/>}
 
@@ -140,7 +139,6 @@ export async function getServerSideProps(ctx) {
 
 	const actScore = await fetch(`${url}/api/getAverageScoreByActivities?id_activity=${id}`)
 		.then(response => response.json())
-	console.log(actScore)
 
 	const reviewsList = await fetch(`${url}/api/getAllReviewByActivityID?id_activity=${id}`)
 		.then(response => response.json())

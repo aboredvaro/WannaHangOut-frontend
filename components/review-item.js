@@ -35,14 +35,12 @@ const ReviewItem = ({
         if(reviewIsMine) {
             return(
                 <>
-                    <Link
-						href = {{
-							pathname: '/modify-review',
-							query: {id : `${review.id_review}`},
-						}}
+                    <a
+						href = {'/modify-review?id='+ id_review}
+						className="flex flex-col space-y-4"
 					>
 						<button className="rounded-full border-2 ">Modificar</button>
-					</Link>
+					</a>
 
 					<form className="flex flex-col space-y-4" onSubmit={deleteReview}>
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
