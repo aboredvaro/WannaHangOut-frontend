@@ -203,7 +203,7 @@ const Modificar = ({tags, entity, address }) => {
 			deleted: 0
 		}
 		if(passwordValue !== '') {
-			bodyFetch[pass] = passwordValue
+			bodyFetch={...bodyFetch, pass: passwordValue}
 		}
 
 		const res = await fetch(
@@ -240,7 +240,7 @@ const Modificar = ({tags, entity, address }) => {
         
 				<h1 className="text-4xl">Modifique su cuenta</h1>
 
-				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>					
+				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
 					<div>
 						{RoleSelection() }	
 					</div>
@@ -310,12 +310,9 @@ const Modificar = ({tags, entity, address }) => {
 						{ShowPassword ()}
 					</div>
 					<div>
-						<input
-							type="checkbox" 
+						<input type="checkbox" 
 							value={pswVisible}
-							onChange = {() => setPswVisible(!pswVisible) }
-						/>
-						Mostrar contraseña
+							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
@@ -336,20 +333,18 @@ const Modificar = ({tags, entity, address }) => {
 
 			</div>
 		</>
-	    )
-}
-
+	    )	}
+	
 export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
 
 	const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
 		.then(response => response.json())
-		
+	
 	const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
-
-	/*const tags = await fetch(
+		.then(response => response.json())
+		/*const tags = await fetch(
 			`${url}/api/getTagsByIdAndType`,{
 				body: JSON.stringify({	
 					id: entity.id_entity.toString(),
