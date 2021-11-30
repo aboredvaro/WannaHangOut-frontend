@@ -11,21 +11,58 @@ const ReviewItem = ({
     userId
 }) => {
 
-    var loggedUserHash = false
-	useEffect(() => {
-		loggedUserHash = getSession()
-	})
+    const deleteReview = async event => {
+		event.preventDefault()
+
+		const res = await fetch(
+			`${url}/api/deleteReviewById`,{
+				body: JSON.stringify({	
+					id_review: review.id_review
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(response => console.log(response))
+			.then(router.push('/'))
+	}
+
+    var reviewIsMine = parseInt(userId) == id_entity
+    console.log(reviewIsMine)
+
+    function showModifyDelete() {
+        if(reviewIsMine) {
+            return(
+                <>
+                    <Link
+						href = {{
+							pathname: '/modify-review',
+							query: {id : `${review.id_review}`},
+						}}
+					>
+						<button className="rounded-full border-2 ">Modificar</button>
+					</Link>
+
+					<form className="flex flex-col space-y-4" onSubmit={deleteReview}>
+						<button type="submit" className="rounded-full border-2 ">Borrar</button>
+					</form>
+                </>
+            )
+        }
+    }
 
     return (
         <>
-           <a href={'/review?id=' + id_review} className="bg-gray-100 p-6 rounded-xl">
+           <div className="bg-gray-100 p-6 rounded-xl">
 				<div className="bg-gray-100 p-6 rounded-xl">
                     <h1 className="text-2xl">{title}</h1>
                     <h2 className="text-1xl">{id_entity}</h2>
                     <p>{description}</p>
                     <p>{points}⭐</p>
                 </div>
-            </a>
+                {showModifyDelete()}
+            </div>
         </>
     )
 

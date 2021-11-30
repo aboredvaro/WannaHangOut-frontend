@@ -38,11 +38,36 @@ const ActivityPage = ({
 
 	var loggedUserHash = false
 	var isLogged = false
+	var loggedUserId = 0
+	var participatedB = false
+	var prueba = false
 	useEffect(() => {
 		isLogged = session()
-		loggedUserHash = getSession()
+		loggedUserHash = getSession()		
+		const check = async () => {
+			if(loggedUserHash != false) {
+				const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${loggedUserHash}`)
+					.then(response => response.json())
+				loggedUserId = auxUser.id_entity
+				
+				const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
+					body: JSON.stringify({	
+						id_entity: loggedUserId,
+						id_activity: activity.id_activity
+					}),
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					method: 'POST'
+				})
+					.then(response => response.json())
+				participatedB = (auxBool.cond == 1)
+			}
+			console.log('loggedUserId: ' + loggedUserId + ', participatedB: ' + participatedB)
+			prueba = true
+		}
+		check()
 	})
-
 
 	return (
 		<>
@@ -78,7 +103,7 @@ const ActivityPage = ({
 					</form>
 					
 					{/*{(!isLogged && haparticipado) && <CreateReviewItem */}
-					{!isLogged  && <CreateReviewItem 
+					{(!isLogged  && participatedB) && <CreateReviewItem 
 						id_activity_prop={activity.id_activity}
 					/>}
 
@@ -93,6 +118,7 @@ const ActivityPage = ({
     								description={review.description}
     								points={review.points}
     								deleted={review.deleted}
+									userId={loggedUserId}
 								/>
 							)
 						})
