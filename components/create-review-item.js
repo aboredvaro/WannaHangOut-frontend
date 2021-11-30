@@ -84,7 +84,6 @@ const CreateReviewItem = ({
 									setPhotoBox('')
 								}
 							}>Añadir foto</button>
-							<p>{photoValue}</p>
 						</div>
 						<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Imagen review"/>
 						<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear Review</button>
