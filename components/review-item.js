@@ -51,7 +51,7 @@ const ReviewItem = ({
 
     return (
         <>
-           <div className="bg-gray-100 p-6 rounded-xl">
+           <a href={'/review?id=' + id_review} className="bg-gray-100 p-6 rounded-xl">
 				<div className="bg-gray-100 p-6 rounded-xl">
                     <h1 className="mb-2 text-3xl font-medium">{title}</h1>
                     <p className="b-2 text-xl font-medium">{description}</p>
@@ -59,7 +59,7 @@ const ReviewItem = ({
                     <p className="mb-2 text-sm ">Puntuación: {points}⭐</p>
                 </div>
                 {showModifyDelete()}
-            </div>
+            </a>
         </>
     )
 

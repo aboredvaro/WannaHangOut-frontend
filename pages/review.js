@@ -7,9 +7,12 @@ import ReviewItem from '../components/review-item.js'
 import { getSession } from '../utils/session.js'
 
 const ReviewPage = ({
-	review
+	review,
+	fotos
 }) => {
 	const router = useRouter()
+
+	console.log(fotos)
 
 	const deleteReview = async event => {
 		event.preventDefault()
@@ -44,19 +47,11 @@ const ReviewPage = ({
                         points={review.points}
                         deleted={review.deleted}
                     />
-					<Link
-						href = {{
-							pathname: '/modify-review',
-							query: {id : `${review.id_review}`},
-						}}
-					>
-						<button className="rounded-full border-2 ">Modificar</button>
-					</Link>
-
-					<form className="flex flex-col space-y-4" onSubmit={deleteReview}>
-						<button type="submit" className="rounded-full border-2 ">Borrar</button>
-					</form>
-					
+					{fotos.map((image) => {
+						return (
+							<img className="object-cover w-24 h-24 mr-2 " src={image.urlPath} alt="Imagen review"/>
+						)})
+					}
 				</div>
 			</div>
 		</>
@@ -70,9 +65,13 @@ export async function getServerSideProps(ctx) {
 	const review = await fetch(`${url}/api/getReviewByID?id_review=${id}`)
 	 	.then(response => response.json())
 	
+	const fotos = await fetch(`${url}/api/getImageByIdReview?id_review=${id}`)
+		.then(response => response.json())
+
 	return {
 		props: {
-			review
+			review,
+			fotos
 		}
 	}
 
