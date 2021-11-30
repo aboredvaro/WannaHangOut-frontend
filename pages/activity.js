@@ -38,7 +38,10 @@ const ActivityPage = ({
 	}
 	
 	function showReview() {
-		if(isLogged && participated ){
+		const today = new Date();
+		var pastAct = ((new Date(activity.dateAct)) < today)
+		console.log(today + ' ' +pastAct)
+		if(isLogged && participated && pastAct){
 			return(
 				<>
 					<CreateReviewItem 
