@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react'
 import {getSession} from '../utils/session.js'
 import url from '../utils/server.js'
 import log from '../utils/log.js'
+import { useRouter } from 'next/router'
+
 
 const CreateReviewItem = ({
 	id_activity_prop
 }) => {
 	var userHash
+	const router = useRouter()
+
 	const [photoValue, setPhoto] = useState('')
 	const [photoBox, setPhotoBox] = useState('')
 
@@ -33,12 +37,11 @@ const CreateReviewItem = ({
 				},
 				method: 'POST'
 			})
-			.then(response => {
-				if (response.ok) return response.json()})
-					
-		if(!isNaN(res)) {
-			Alert("We did it!")
+		if(res.ok){
+			alert("Se ha añadido tu review")
+			router.reload(window.location.pathname)
 		}
+		
 	}
 
 	return (
