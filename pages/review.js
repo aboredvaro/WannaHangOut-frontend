@@ -35,7 +35,7 @@ const ReviewPage = ({
 		<>
 			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
         
-				<h1 className="text-4xl font-medium">Actividad</h1>
+				<h1 className="text-4xl font-medium">Review</h1>
 
 				<div className="flex flex-col space-y-4">
                     <ReviewItem

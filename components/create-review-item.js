@@ -86,7 +86,7 @@ const CreateReviewItem = ({
 									else setPhoto(photoValue + ',' + photoBox)
 									setPhotoBox('')
 								}
-							}>Añadir foto</button>
+							} className="rounded-full border-2 border-orange-500 hover:border-orange-500">Añadir foto</button>
 						</div>
 
 						{photoValue.split(",").map((image) => {
