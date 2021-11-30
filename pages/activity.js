@@ -14,8 +14,7 @@ const ActivityPage = ({
 	reviewsList
 }) => {
 	const router = useRouter()
-	
-	console.log(reviewsList)
+	console.log('AAAAAAAAAAAAAAA')
 
 	const [isLogged, setLogged] = useState(false)
 	const [loggedUserHash, setLoggedUserHash] = useState(false)
@@ -39,32 +38,80 @@ const ActivityPage = ({
 			.then(router.push('/activities'))
 	}
 	
+	function showReview() {
+		if(isLogged && participated ){
+			return(
+				<>
+					<CreateReviewItem 
+						id_activity_prop={activity.id_activity}
+					/>
+
+					{reviewsList.map(review => {
+						return (
+							<ReviewItem
+								key={review.id_review}
+								id_review={review.id_review}
+								id_activity={review.id_activity}
+								id_entity={review.id_entity}
+								title={review.title}
+								description={review.description}
+								points={review.points}
+								deleted={review.deleted}
+								userId={loggedUserId}
+							/>)
+						})
+					}
+				</>
+			)
+		} else return (
+			<>
+				{reviewsList.map(review => {
+					return (
+						<ReviewItem
+							key={review.id_review}
+							id_review={review.id_review}
+							id_activity={review.id_activity}
+							id_entity={review.id_entity}
+							title={review.title}
+							description={review.description}
+							points={review.points}
+							deleted={review.deleted}
+							userId={loggedUserId}
+						/>)
+					})
+				}	
+			</>
+		)
+	}
 	
-	useEffect(async () => {
+	useEffect(() => {
 		setLogged(session())
 		setLoggedUserHash(getSession())
-		if(isLogged != false) {
+	}, [])
+
+	useEffect(async () => {
+		
+		if(loggedUserHash != false) {
 			const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${loggedUserHash}`)
 				.then(response => response.json())
 			setLoggedUserId(auxUser.id_entity)
-			
-			const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
-				body: JSON.stringify({	
-					id_entity: loggedUserId,
-					id_activity: activity.id_activity
-				}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-				.then(response => response.json())
-			setParticipated(auxBool.cond == 1)
 		}
-		console.log('loggedUserId: ' + loggedUserId + ', participatedB: ' + participated)
-		
-		
-	})
+	}, [loggedUserHash])
+
+	useEffect(async () => {
+		const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
+			body: JSON.stringify({	
+				id_entity: loggedUserId,
+				id_activity: activity.id_activity
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+			.then(response => response.json())
+		setParticipated(auxBool.cond == 1)
+	}, [loggedUserId])
 
 	return (
 		<>
@@ -99,29 +146,7 @@ const ActivityPage = ({
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
 					
-					{/*{(!isLogged && haparticipado) && <CreateReviewItem */}
-					{loggedUserId}
-					{console.log(participated)}
-					{(isLogged && participated ) && <CreateReviewItem 
-						id_activity_prop={activity.id_activity}
-					/>}
-
-					{reviewsList.map(review => {
-							return (
-								<ReviewItem
-									key={review.id_review}
-									id_review={review.id_review}
-									id_activity={review.id_activity}
-    								id_entity={review.id_entity}
-    								title={review.title}
-    								description={review.description}
-    								points={review.points}
-    								deleted={review.deleted}
-									userId={loggedUserId}
-								/>
-							)
-						})
-					}
+					{showReview()}
 					
 				</div>
 			</div>

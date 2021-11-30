@@ -29,7 +29,6 @@ const ReviewItem = ({
 	}
 
     var reviewIsMine = parseInt(userId) == id_entity
-    console.log(reviewIsMine)
 
     function showModifyDelete() {
         if(reviewIsMine) {
