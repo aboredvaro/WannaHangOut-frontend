@@ -175,7 +175,7 @@ const Activities = ({
 					<MapContainer 
 						containerStyle={containerStyle}
 						center={center}
-						zoom={14}
+						zoom={13}
 						addressList={addressList}
 					/>
 				</div>
