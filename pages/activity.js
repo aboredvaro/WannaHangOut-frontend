@@ -19,7 +19,6 @@ const ActivityPage = ({
 	const router = useRouter()
 
 	const [isLogged, setLogged] = useState(false)
-	const [loggedUserHash, setLoggedUserHash] = useState(false)
 	const [loggedUserId, setLoggedUserId] = useState(0)
 	const [participated, setParticipated] = useState(false)
 
@@ -39,73 +38,21 @@ const ActivityPage = ({
 			.then(response => console.log(response))
 			.then(router.push('/activities'))
 	}
-	
-	function showReview() {
-		const today = new Date();
-		var pastAct = ((new Date(activity.dateAct)) < today)
-		console.log(today + ' ' +pastAct)
-		if(isLogged && participated && pastAct){
-			return(
-				<>
-					<CreateReviewItem 
-						id_activity_prop={activity.id_activity}
-					/>
 
-					{reviewsList.map(review => {
-						return (
-							<ReviewItem
-								key={review.id_review}
-								id_review={review.id_review}
-								id_activity={review.id_activity}
-								id_entity={review.id_entity}
-								title={review.title}
-								description={review.description}
-								points={review.points}
-								deleted={review.deleted}
-								userId={loggedUserId}
-							/>)
-						})
-					}
-				</>
-			)
-		} else if(pastAct){
-			return (
-				<>
-					{reviewsList.map(review => {
-						return (
-							<ReviewItem
-								key={review.id_review}
-								id_review={review.id_review}
-								id_activity={review.id_activity}
-								id_entity={review.id_entity}
-								title={review.title}
-								description={review.description}
-								points={review.points}
-								deleted={review.deleted}
-								userId={loggedUserId}
-							/>)
-						})
-					}	
-				</>
-			)
-		}
+	function pastDate() {
+		const today = new Date();
+		return ((new Date(activity.dateAct)) < today)
 	}
 	
-	useEffect(() => {
-		setLogged(session())
-		setLoggedUserHash(getSession())
-	}, [])
-
 	useEffect(async () => {
-		
-		if(loggedUserHash != false) {
-			const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${loggedUserHash}`)
+		setLogged(session())
+
+		if(getSession()) {
+			const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${getSession()}`)
 				.then(response => response.json())
 			setLoggedUserId(auxUser.id_entity)
 		}
-	}, [loggedUserHash])
 
-	useEffect(async () => {
 		const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
 			body: JSON.stringify({	
 				id_entity: loggedUserId,
@@ -118,7 +65,8 @@ const ActivityPage = ({
 		})
 			.then(response => response.json())
 		setParticipated(auxBool.cond == 1)
-	}, [loggedUserId])
+
+	}, [])
 
 	return (
 		<>
@@ -163,7 +111,29 @@ const ActivityPage = ({
 						<button type="submit" className="rounded-full border-2 ">Borrar</button>
 					</form>
 					
-					{showReview()}
+					{
+						(isLogged && participated && pastDate()) && (
+							<CreateReviewItem 
+								id_activity_prop={activity.id_activity}
+							/>
+						)
+					}
+
+					{reviewsList.map(review => {
+						return (
+							<ReviewItem
+								key={review.id_review}
+								id_review={review.id_review}
+								id_activity={review.id_activity}
+								id_entity={review.id_entity}
+								title={review.title}
+								description={review.description}
+								points={review.points}
+								deleted={review.deleted}
+								userId={loggedUserId}
+							/>)
+						})
+					}
 					
 				</div>
 			</div>
