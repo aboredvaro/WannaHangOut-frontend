@@ -3,44 +3,42 @@ import { Map, GoogleApiWrapper, InfoWindow,Marker } from 'google-maps-react'
 
 const MapContainer = ({
 	google,
-	latitude,
-	longitude
+	containerStyle,
+	center,
+	zoom,
+	addressList
 }) => {
+
+	//const [selectedActivity, setSelectedActivity] = useState(null)
 
 	const mapStyles = {
 		width: '100%',
 		height: '100%'
 	}
 
-	const containerStyle = {
-		position: 'relative',
-		width: '600px',
-		height: '400px'
-	}
-
-	const center = {
-		lat: latitude,
-		lng: longitude
-	  }
-
 	return (
 		<div>
 			<Map
 				google = {google}
-				zoom = {16}
+				zoom = {zoom}
 				style = {mapStyles}
-				initialCenter = {{
-					lat: latitude, 
-					lng: longitude	
-				}}
+				initialCenter = {center}
 				containerStyle = {containerStyle}
 			>
-				<Marker
-					position = {{
-						lat: latitude, 
-						lng: longitude	
-					}}
-				/>
+			
+				{
+					addressList.map(activity => (
+						<Marker
+							key={activity.id_address}
+							position={{
+								lat: activity.latitude,
+								lng: activity.longitude
+							}}
+						>
+							<div>{console.log(activity.latitude)}</div>
+						</Marker>
+					))
+				}
 
 			</Map>
 		</div>

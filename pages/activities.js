@@ -2,15 +2,28 @@ import React, {useState} from 'react'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
+import MapContainer from '../components/map'
 
 const Activities = ({
 	activities,
 	locations,
 	entities,
-	tags
+	tags,
+	addressList
 }) => {
 	
 	const [listActivities, setListActivities] = useState(activities)
+	
+	const containerStyle = {
+		position: 'relative',
+		width: '800px',
+		height: '500px'
+	}
+
+	const center = {
+		lat: 39.4702,
+		lng: -0.376805
+	}
 
 	function getSelectedTags(){
 		var array = []
@@ -158,6 +171,15 @@ const Activities = ({
         
 				<h1 className="text-4xl font-medium">Lista de actividades</h1>
 
+				<div className="flex flex-col items-center justify-center">
+					<MapContainer 
+						containerStyle={containerStyle}
+						center={center}
+						zoom={14}
+						addressList={addressList}
+					/>
+				</div>
+
 				<div className="flex flex-col space-y-4">
 					{
 						listActivities.map(activity => {
@@ -198,12 +220,16 @@ export async function getServerSideProps() {
 	const tags = await fetch(`${url}/api/getAllTags`)
 	 	.then(response => response.json())
 
+	const addressList = await fetch(`${url}/api/getAllAddressOfActivities`)
+	 	.then(response => response.json())
+
 	return {
   		props:{
 	   		activities,
 			locations,
 			entities,
-			tags
+			tags,
+			addressList
    		}
 	}
 }
