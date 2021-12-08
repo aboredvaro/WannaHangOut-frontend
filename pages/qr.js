@@ -124,7 +124,7 @@ const QR = (props) => {
 					<div className="w-full h-px bg-gray-100" />
 
 					<a
-						href="https://www.linkedin.com/in/jie-xu-chen-556843170/"
+						href="https://www.linkedin.com/in/jie-xu-chen/"
 						target="_blank"
 						rel="noreferrer"
 						className="flex flex-row w-full space-x-2 justify-center items-center"
@@ -147,7 +147,12 @@ const QR = (props) => {
 
 					<div className="w-full h-px bg-gray-100" />
 
-					<div className="flex flex-row w-full space-x-2 justify-center items-center">
+					<a
+						href="https://www.linkedin.com/in/francisco-arjona-jiménez/"
+						target="_blank"
+						rel="noreferrer"
+						className="flex flex-row w-full space-x-2 justify-center items-center"
+					>
 						<div className="flex flex-col flex-grow">
 							<p className="text-xl font-medium text-gray-700">Paco Arjona</p>
 							<p className="text-sm text-gray-400">Desarrollador</p>
@@ -162,7 +167,7 @@ const QR = (props) => {
 								className="pointer-events-none rounded-full"
 							/>
 						</div>
-					</div>
+					</a>
 
 				</div>
 
