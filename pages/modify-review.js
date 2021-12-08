@@ -8,23 +8,23 @@ const ModifyReview = ({
 }) => {
 	const router = useRouter()
 
-    const [titleValue, setTitle] = useState(review.title)
-    const [descriptionValue, setDescription] = useState(review.description)
-    const [pointsValue, setPoints] = useState(review.points)
-    const [photoValue, setPhoto] = useState('')
+	const [titleValue, setTitle] = useState(review.title)
+	const [descriptionValue, setDescription] = useState(review.description)
+	const [pointsValue, setPoints] = useState(review.points)
+	const [photoValue, setPhoto] = useState('')
 	const [photoBox, setPhotoBox] = useState('')
 
-    const handleSubmit = async event => {
+	const handleSubmit = async event => {
 		event.preventDefault()	
 
 		const res = await fetch(
 			`${url}/api/updateReview`,{
 				body: JSON.stringify({	
 					id_review: review.id_review,
-                    id_activity: review.id_activity,
-                    points: pointsValue,
-                    title: titleValue,
-                    description: descriptionValue
+					id_activity: review.id_activity,
+					points: pointsValue,
+					title: titleValue,
+					description: descriptionValue
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ const ModifyReview = ({
 		}
 	}
     
-    return (
+	return (
 		<>
 			<div >
 				<div className="font-sans w-full h-screen flex flex-col space-y-12 my-24 items-center">
@@ -46,25 +46,25 @@ const ModifyReview = ({
 						<div>
 							<label className="text-gray-800"htmlFor="title">Titulo: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text"
-                                name="title"
-                                value={titleValue}
-                                onChange={ (event) => setTitle(event.target.value)}
-                            />
+								name="title"
+								value={titleValue}
+								onChange={ (event) => setTitle(event.target.value)}
+							/>
 						</div>
 						<div>
 							<div><label className="text-gray-800">Descripción: </label></div>
 							<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description"
-                                name="title"
+								name="title"
 							    value={descriptionValue}
 							    onChange={ (event) => setDescription(event.target.value)}
-                            />
+							/>
 						</div>
 						<div>
 							<label className="text-gray-800">Puntuación: </label>
 							<select name="select" 
-                                value = {pointsValue}
+								value = {pointsValue}
 							    onChange = { (e) => setPoints(e.target.value)}
-                            >
+							>
 								<option value="0">0</option>
 								<option value="1">1</option>
 								<option value="2">2</option>

@@ -38,19 +38,19 @@ const ReviewPage = ({
 				<h1 className="text-4xl font-medium">Review</h1>
 
 				<div className="flex flex-col space-y-4">
-                    <ReviewItem
-                        key={review.id_review}
+					<ReviewItem
+						key={review.id_review}
 						id_review={review.id_review}
-                        id_activity={review.id_activity}
-                        id_entity={review.id_entity}
-                        title={review.title}
-                        description={review.description}
-                        points={review.points}
-                        deleted={review.deleted}
-                    />
+						id_activity={review.id_activity}
+						id_entity={review.id_entity}
+						title={review.title}
+						description={review.description}
+						points={review.points}
+						deleted={review.deleted}
+					/>
 					{fotos.map((image) => {
 						return (
-							<img className="object-cover w-24 h-24 mr-2 " src={image.urlPath} alt="Imagen review"/>
+							<img key={image.urlPath} className="object-cover w-24 h-24 mr-2 " src={image.urlPath} alt="Imagen review"/>
 						)})
 					}
 				</div>
