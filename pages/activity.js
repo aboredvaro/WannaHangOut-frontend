@@ -5,7 +5,6 @@ import Link from 'next/link'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-score-item.js'
 import MapContainer from '../components/map'
-import {  GoogleApiWrapper } from 'google-maps-react'
 import CreateReviewItem from'../components/create-review-item.js'
 import ReviewItem from '../components/review-item.js'
 import { session, getSession } from '../utils/session.js'
@@ -17,6 +16,20 @@ const ActivityPage = ({
 	address
 }) => {
 	const router = useRouter()
+
+	var addressList = []	// array para que pueda usarse el mapa
+	addressList.push(address)
+
+	const containerStyle = {
+		position: 'relative',
+		width: '600px',
+		height: '400px'
+	}
+
+	const center = {
+		lat: address.latitude,
+		lng: address.longitude
+	}
 
 	const [isLogged, setLogged] = useState(false)
 	const [loggedUserId, setLoggedUserId] = useState(0)
@@ -94,8 +107,10 @@ const ActivityPage = ({
 
 					<div className="flex flex-col items-center justify-center">
 					<MapContainer 
-						latitude = {address.latitude}
-						longitude = {address.longitude}
+						containerStyle={containerStyle}
+						center={center}
+						zoom={15}
+						addressList={addressList}
 					/>
 					</div>
 
