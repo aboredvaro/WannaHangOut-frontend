@@ -4,7 +4,6 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 
-
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -65,7 +64,7 @@ const Signup = ({ tags }) => {
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
-				<div>
+					<div>
 						<label className="text-gray-800">Nombre: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
 							value = {nameValue}
@@ -111,7 +110,7 @@ const Signup = ({ tags }) => {
 		} else if(pswVisible) {
 			return(
 				<>
-				<div className="space-y-4 items-center font-medium">
+					<div className="space-y-4 items-center font-medium">
 						<div>						
 							<label className="text-gray-800">Contraseña: </label>
 							<input 
@@ -149,13 +148,13 @@ const Signup = ({ tags }) => {
 			},
 			method: 'POST'
 		})
-		.then(response => {
-			if (response.ok)
-			return response.json()})
+			.then(response => {
+				if (response.ok)
+					return response.json()})
 		
 		console.log(ses)
 		if(ses) {
-			alert("Nick en uso")
+			alert('Nick en uso')
 			return false
 		}
 		
@@ -347,20 +346,18 @@ const Signup = ({ tags }) => {
 			</div>
 		</>
 	    )
-	}
+}
 
-	export async function getServerSideProps(){
+export async function getServerSideProps() {
 
-		const res = await fetch(`${url}/api/getAllTags`)
+	const tags = await fetch(`${url}/api/getAllTags`)
 			 .then(response => response.json())
-		const tags = res
 	
-		return{
-			props:{
-				tags
-			}
+	return{
+		props:{
+			tags
 		}
 	}
-
+}
 
 export default Signup
