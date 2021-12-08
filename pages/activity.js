@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import url from '../utils/server.js'
 import Link from 'next/link'
 import log from '../utils/log.js'
@@ -31,8 +31,23 @@ const ActivityPage = ({
 		lng: address.longitude
 	}
 
-	const [isLogged, setLogged] = useState(false)
-	const [loggedUserId, setLoggedUserId] = useState(0)
+	const [isLogged, setIsLogged] = useState(false)
+	const [sessionID, setSessionID] = useState()
+
+	useEffect(() => {
+		const getUserSession = async() => {
+			setIsLogged(session())
+
+			const userHash = getSession()
+			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+				.then(response => response.json())
+				.then(response => response.id_entity)
+			
+			setSessionID(userID)
+		}
+		getUserSession()
+	}, [])
+
 	const [participated, setParticipated] = useState(false)
 
 	const deleteActivity = async event => {
@@ -53,35 +68,9 @@ const ActivityPage = ({
 	}
 
 	function pastDate() {
-		const today = new Date();
+		const today = new Date()
 		return ((new Date(activity.dateAct)) < today)
 	}
-	
-	useEffect(() => {
-		const getUserSession = async() => {
-			setLogged(session())
-
-			if(getSession()) {
-				const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${getSession()}`)
-					.then(response => response.json())
-				setLoggedUserId(auxUser.id_entity)
-			}
-
-			const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
-				body: JSON.stringify({	
-					id_entity: loggedUserId,
-					id_activity: activity.id_activity
-				}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-				.then(response => response.json())
-			setParticipated(auxBool.cond == 1)
-		}
-		getUserSession()
-	}, [])
 
 	return (
 		<>
@@ -108,25 +97,24 @@ const ActivityPage = ({
 					}
 
 					<div className="flex flex-col items-center justify-center">
-					<MapContainer 
-						containerStyle={containerStyle}
-						center={center}
-						zoom={15}
-						addressList={addressList}
-					/>
+						<MapContainer 
+							containerStyle={containerStyle}
+							center={center}
+							zoom={15}
+							addressList={addressList}
+						/>
 					</div>
 
-					<Link href = {{
-							pathname:"/modify-activity",			
-							query: {id : `${activity.id_activity}`},
-						}}
-					>
-						<button className="rounded-full border-2 ">Modificar</button>
-					</Link>
-
-					<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
-						<button type="submit" className="rounded-full border-2 ">Borrar</button>
-					</form>
+					{(sessionID === activity.id_entity_creator) &&
+						<>
+							<Link href={`/modify-activity?id=${activity.id_activity}`}>
+								<a className="rounded-full border-2 text-center cursor-pointer">Modificar</a>
+							</Link>
+							<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
+								<button type="submit" className="rounded-full border-2 ">Borrar</button>
+							</form>
+						</>
+					}
 					
 					{
 						(isLogged && participated && pastDate()) && (
@@ -147,9 +135,9 @@ const ActivityPage = ({
 								description={review.description}
 								points={review.points}
 								deleted={review.deleted}
-								userId={loggedUserId}
+								userId={sessionID}
 							/>)
-						})
+					})
 					}
 					
 				</div>

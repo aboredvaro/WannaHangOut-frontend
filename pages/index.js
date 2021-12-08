@@ -13,17 +13,13 @@ const Home = (props) => {
 			setIsLogged(session())
 
 			const userHash = getSession()
-			
-			setSessionID(await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
 				.then(response => response.json())
-				.then(response => response.id_entity))
+				.then(response => response.id_entity)
+			
+			setSessionID(userID)
 		}
 		getUserSession()
-	}, [])
-
-	useEffect(() => {
-		setIsLogged(session())
-
 	}, [])
 
 	return (
@@ -51,12 +47,18 @@ const Home = (props) => {
 					<a href="new-activity" className="text-xl text-orange-500">Create new activity</a>
 					<a href="profile" className="text-xl text-orange-500">Modificar Mis Datos</a>
 					<a href="signup" className="text-xl text-orange-500">Sign up</a>*/}
-					<Link href={`/modificar?id=${sessionID}`} passHref>
-						<div className="text-xl text-orange-500 cursor-pointer">Modificar Mis Datos</div>
-					</Link>
-					<Link href={`/profile?id=${sessionID}`} passHref>
-						<div className="text-xl text-orange-500 cursor-pointer">Mi perfil</div>
-					</Link>
+
+					{isLogged &&
+						<>
+							<Link href={`/profile?id=${sessionID}`} passHref>
+								<div className="text-xl text-orange-500 cursor-pointer">Mi perfil</div>
+							</Link>
+							<Link href={`/modificar?id=${sessionID}`} passHref>
+								<div className="text-xl text-orange-500 cursor-pointer">Modificar Mis Datos</div>
+							</Link>
+						</>
+					}
+
 					{/*<Link href="/signup">
 						<a className="text-xl text-orange-500">Crear cuenta</a>
 					</Link>*/}
@@ -64,9 +66,12 @@ const Home = (props) => {
 						<a className="text-xl text-orange-500">Mostrar lista de actividades</a>
 					</Link>
 				</div>
-				<Link href="/new-activity">
-					<a className="text-xl text-orange-500 bg-orange-100 py-2 px-6 rounded-xl">Crear actividad</a>
-				</Link>
+
+				{isLogged &&
+					<Link href="/new-activity">
+						<a className="text-xl text-orange-500 bg-orange-100 py-2 px-6 rounded-xl">Crear actividad</a>
+					</Link>
+				}
 
 			</div>
 		</>
