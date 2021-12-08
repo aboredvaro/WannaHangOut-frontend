@@ -17,7 +17,7 @@ const ActivityItem = ({
 	return (
 		<>
 			<Link href={`/activity?id=${id_activity}`} passHref>
-				<div className="bg-gray-100 p-6 rounded-xl">
+				<div className="bg-gray-100 p-6 rounded-xl cursor-pointer">
 					<p className="mb-2 text-3xl font-medium">{title}</p>
 					<p className="mb-2 text-xl font-medium">{description}</p>
 					<p className="mb-2 text-sm text-orange-500">{new Date(dateAct).toLocaleDateString()}</p>

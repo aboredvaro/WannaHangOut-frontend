@@ -1,10 +1,13 @@
 import React from 'react'
 import url from '../utils/server'
 import log from '../utils/log'
+import { useRouter } from 'next/router'
 
 const CreateActivity = ({
 	tags
 }) => {
+
+	const router = useRouter()
 
 	function getSelected(){
 		var array = []
@@ -42,7 +45,7 @@ const CreateActivity = ({
 			})
 			.then(response => console.log(response))
 			.then(response => {
-				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
+				router.push(`/activity?id=${response}`)
 			})
 
 	}

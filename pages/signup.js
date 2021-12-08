@@ -215,7 +215,7 @@ const Signup = ({ tags }) => {
 				if (response.ok)
 					return response.json()})
 		if(!isNaN(res)) {
-			router.push('/activities')
+			router.push('/')
 		}
 			
 	}
