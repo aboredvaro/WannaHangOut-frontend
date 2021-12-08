@@ -40,6 +40,16 @@ const Modificar = ({tags, entity, address }) => {
 				<>
 					<div className="space-y-4 items-center font-medium">
 						<div>
+							<label className="text-gray-800">Rol: User</label>
+						</div>
+						<div>
+							<label className="text-gray-800">Nick: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+								value = {nickValue}
+								onChange = { (e) => setNick(e.target.value)} 
+								required/>
+						</div>					
+						<div>
 							<label className="text-gray-800">Nombre: </label>
 							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
 								value = {nameValue}
@@ -59,6 +69,17 @@ const Modificar = ({tags, entity, address }) => {
 		return(
 			<>
 				<div className="space-y-4 items-center font-medium"key='shop1'>
+					<div>
+						<label className="text-gray-800">Rol: Shop</label>
+					</div>
+					<div>
+						<label className="text-gray-800">Nick: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+							value = {nickValue}
+							onChange = { (e) => setNick(e.target.value)} 
+							required/>
+					</div>
+				
 					<div>
 						<label className="text-gray-800">Razón social: </label>
 						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
@@ -182,7 +203,7 @@ const Modificar = ({tags, entity, address }) => {
 			deleted: 0
 		}
 		if(passwordValue !== '') {
-			bodyFetch[pass] = passwordValue
+			bodyFetch={...bodyFetch, pass: passwordValue}
 		}
 
 		const res = await fetch(
@@ -220,26 +241,6 @@ const Modificar = ({tags, entity, address }) => {
 				<h1 className="text-4xl">Modifique su cuenta</h1>
 
 				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-					<div>
-						<label className="text-gray-800">Rol: </label>
-						<select
-							value = {selectedRole}
-							readOnly
-							//onChange = { (e) => setSelectedRole(e.target.value)}
-						>
-							<option value='1'>Shop</option>
-							<option value='2'>User</option>
-						</select>
-						{/*}<p>{selectedRole}</p>{*/}
-					</div>
-					<div>
-						<label className="text-gray-800">Nick: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
-							value = {nickValue}
-							onChange = { (e) => setNick(e.target.value)} 
-							required/>
-					</div>
-					
 					<div>
 						{RoleSelection() }	
 					</div>
@@ -309,12 +310,9 @@ const Modificar = ({tags, entity, address }) => {
 						{ShowPassword ()}
 					</div>
 					<div>
-						<input
-							type="checkbox" 
+						<input type="checkbox" 
 							value={pswVisible}
-							onChange = {() => setPswVisible(!pswVisible) }
-						/>
-						Mostrar contraseña
+							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
 					</div>
 					<div>
 						<label className="text-gray-800">Foto: </label>
@@ -335,20 +333,18 @@ const Modificar = ({tags, entity, address }) => {
 
 			</div>
 		</>
-	    )
-}
-
+	    )	}
+	
 export async function getServerSideProps(ctx) {
 
 	const { id } = ctx.query
 
 	const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
 		.then(response => response.json())
-		
+	
 	const tags = await fetch(`${url}/api/getAllTags`)
-		    .then(response => response.json())
-
-	/*const tags = await fetch(
+		.then(response => response.json())
+		/*const tags = await fetch(
 			`${url}/api/getTagsByIdAndType`,{
 				body: JSON.stringify({	
 					id: entity.id_entity.toString(),
