@@ -47,6 +47,6 @@ const MapContainer = ({
 }
 
 export default GoogleApiWrapper({
-	apiKey: 'AIzaSyBQZ23z4oVQQOIPu7xZ6J8QWbgi7hspy2M',
+	apiKey: process.env.NEXT_PUBLIC_APIKEY_GOOGLE,
 	language: 'ES'
 })(MapContainer)
