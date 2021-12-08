@@ -98,8 +98,8 @@ const Signup = ({ tags }) => {
 							<input 
 								className="rounded-lg border border-gray-600 focus:border-gray-600"
 								type="password" 
-								id="pass" 
-								name="pass" 
+								id="passRepe" 
+								name="passRepe" 
 								placeholder=" Repita su contraseña"
 								value = {passbiValue}
 								onChange = { (e) => setPassbi(e.target.value)}/>
@@ -288,7 +288,7 @@ const Signup = ({ tags }) => {
 							tags.map(({id_tags,name}, i) =>
 								<div className="w-full sm:w-auto" key={i}>
 									<label className="inline-flex items-center">
-							  		<input className="form-radio" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+							  		<input className="form-radio" type="checkbox" id="tags_act" name={name} value={id_tags}/>
 							  		<span className="ml-2">{name}</span>
 									</label>
 						 		 </div>
