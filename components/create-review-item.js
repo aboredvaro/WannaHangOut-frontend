@@ -4,7 +4,6 @@ import url from '../utils/server.js'
 import log from '../utils/log.js'
 import { useRouter } from 'next/router'
 
-
 const CreateReviewItem = ({
 	id_activity_prop
 }) => {
@@ -14,6 +13,7 @@ const CreateReviewItem = ({
 	const [photoValue, setPhoto] = useState('')
 	const [photoBox, setPhotoBox] = useState('')
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => {userHash = getSession()})
 
 	const handleSubmit = async event => {
@@ -38,7 +38,7 @@ const CreateReviewItem = ({
 				method: 'POST'
 			})
 		if(res.ok){
-			alert("Se ha añadido tu review")
+			alert('Se ha añadido tu review')
 			router.reload(window.location.pathname)
 		}
 		
@@ -89,9 +89,9 @@ const CreateReviewItem = ({
 							} className="rounded-full border-2 border-orange-500 hover:border-orange-500">Añadir foto</button>
 						</div>
 
-						{photoValue.split(",").map((image) => {
+						{photoValue.split(',').map((image) => {
 							return (
-								<img className="object-cover w-16 h-16 mr-2 rounded-full" src={image} alt="Imagen review"/>
+								<img key={image} className="object-cover w-16 h-16 mr-2 rounded-full" src={image} alt="Imagen review"/>
 							)})
 						}
 						<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear Review</button>

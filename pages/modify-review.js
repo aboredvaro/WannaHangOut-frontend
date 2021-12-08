@@ -92,9 +92,9 @@ const ModifyReview = ({
 							}>Añadir foto</button>
 						</div>
 
-						{photoValue.split(",").map((image) => {
+						{photoValue.split(',').map((image) => {
 							return (
-								<img className="object-cover w-16 h-16 mr-2 rounded-full" src={image} alt="Imagen review"/>
+								<img key={image} className="object-cover w-16 h-16 mr-2 rounded-full" src={image} alt="Imagen review"/>
 							)})
 						}
 						<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar Review</button>

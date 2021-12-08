@@ -14,8 +14,9 @@
           "never"
       ],
       "no-multiple-empty-lines": [
-          "error",
+          "warn",
           { "max": 1, "maxEOF": 1 }
-      ]
+      ],
+      "@next/next/no-img-element": "off"
   }
 }
