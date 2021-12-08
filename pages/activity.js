@@ -57,28 +57,30 @@ const ActivityPage = ({
 		return ((new Date(activity.dateAct)) < today)
 	}
 	
-	useEffect(async () => {
-		setLogged(session())
+	useEffect(() => {
+		const getUserSession = async() => {
+			setLogged(session())
 
-		if(getSession()) {
-			const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${getSession()}`)
+			if(getSession()) {
+				const auxUser = await fetch(`${url}/api/getEntityByHash?entityHash=${getSession()}`)
+					.then(response => response.json())
+				setLoggedUserId(auxUser.id_entity)
+			}
+
+			const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
+				body: JSON.stringify({	
+					id_entity: loggedUserId,
+					id_activity: activity.id_activity
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
 				.then(response => response.json())
-			setLoggedUserId(auxUser.id_entity)
+			setParticipated(auxBool.cond == 1)
 		}
-
-		const auxBool = await fetch(`${url}/api/checkIfUserInActivity`,{
-			body: JSON.stringify({	
-				id_entity: loggedUserId,
-				id_activity: activity.id_activity
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-			.then(response => response.json())
-		setParticipated(auxBool.cond == 1)
-
+		getUserSession()
 	}, [])
 
 	return (
