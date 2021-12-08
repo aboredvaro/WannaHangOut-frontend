@@ -15,7 +15,7 @@ const Signup = ({ tags }) => {
 		for(var i = 0; i < checkboxes.length; i++){
 			array.push(checkboxes[i].value)
 		}
-		log(array)
+		//log(array)
 
 		return array.length>0?array:''
 	}
@@ -152,7 +152,7 @@ const Signup = ({ tags }) => {
 				if (response.ok)
 					return response.json()})
 		
-		console.log(ses)
+		//console.log(ses)
 		if(ses) {
 			alert('Nick en uso')
 			return false
@@ -288,7 +288,7 @@ const Signup = ({ tags }) => {
 							tags.map(({id_tags,name}, i) =>
 								<div className="w-full sm:w-auto" key={i}>
 									<label className="inline-flex items-center">
-							  		<input className="form-radio" type="checkbox" id="tags_act" name={name} value={id_tags}/>
+							  		<input className="form-radio" type="checkbox" id={name} name={name} value={id_tags}/>
 							  		<span className="ml-2">{name}</span>
 									</label>
 						 		 </div>
