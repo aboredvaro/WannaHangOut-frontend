@@ -53,7 +53,7 @@ const Home = (props) => {
 							<Link href={`/profile?id=${sessionID}`} passHref>
 								<div className="text-xl text-orange-500 cursor-pointer">Mi perfil</div>
 							</Link>
-							<Link href={`/modificar?id=${sessionID}`} passHref>
+							<Link href={`/modify-account?id=${sessionID}`} passHref>
 								<div className="text-xl text-orange-500 cursor-pointer">Modificar Mis Datos</div>
 							</Link>
 						</>

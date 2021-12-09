@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Listbox } from '@headlessui/react'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
@@ -344,18 +343,6 @@ export async function getServerSideProps(ctx) {
 	
 	const tags = await fetch(`${url}/api/getAllTags`)
 		.then(response => response.json())
-		/*const tags = await fetch(
-			`${url}/api/getTagsByIdAndType`,{
-				body: JSON.stringify({	
-					id: entity.id_entity.toString(),
-					type: 1
-						}),
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						method: 'POST'
-					})
-					.then(response => response.json())*/
 
 	const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
 		.then(response => response.json())
