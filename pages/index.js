@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import url from '../utils/server.js'
 import { session, getSession } from '../utils/session'
+import Navbar from '../components/navbar'
 
 const Home = (props) => {
 
@@ -24,6 +25,8 @@ const Home = (props) => {
 
 	return (
 		<>
+			<Navbar />
+
 			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
         
 				<div className="flex flex-col space-y-2 justify-center items-center">
