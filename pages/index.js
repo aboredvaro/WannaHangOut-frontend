@@ -27,7 +27,7 @@ const Home = (props) => {
 		<>
 			<Navbar />
 
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
         
 				<div className="flex flex-col space-y-2 justify-center items-center">
 					<h1 className="text-4xl">Wanna Hang Out</h1>
