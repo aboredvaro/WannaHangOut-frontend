@@ -88,7 +88,7 @@ const QR = (props) => {
 
 						<div>
 							<Image
-								src="/images/team/varo.jpg"
+								src="/images/team/varo.webp"
 								alt="Álvaro Hernández Perales"
 								width={64}
 								height={64}
@@ -112,7 +112,7 @@ const QR = (props) => {
 
 						<div>
 							<Image
-								src="/images/team/carmelo.jpg"
+								src="/images/team/carmelo.webp"
 								alt="Carmelo Molero Castillo"
 								width={64}
 								height={64}
@@ -136,7 +136,7 @@ const QR = (props) => {
 
 						<div>
 							<Image
-								src="/images/team/jie.jpg"
+								src="/images/team/jie.webp"
 								alt="Jie Xu Chen"
 								width={64}
 								height={64}
@@ -160,7 +160,7 @@ const QR = (props) => {
 
 						<div>
 							<Image
-								src="/images/team/paco.jpg"
+								src="/images/team/paco.webp"
 								alt="Francisco de Paula Arjona Juménez"
 								width={64}
 								height={64}

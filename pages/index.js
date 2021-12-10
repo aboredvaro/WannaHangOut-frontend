@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { session } from '../utils/session'
+import url from '../utils/server.js'
+import { session, getSession } from '../utils/session'
+import Navbar from '../components/navbar'
 
 const Home = (props) => {
 
 	const [isLogged, setIsLogged] = useState()
+	const [sessionID, setSessionID] = useState()
 
 	useEffect(() => {
-		setIsLogged(session())
+		const getUserSession = async() => {
+			setIsLogged(session())
+
+			const userHash = getSession()
+			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+				.then(response => response.json())
+				.then(response => response.id_entity)
+			
+			setSessionID(userID)
+		}
+		getUserSession()
 	}, [])
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<Navbar />
+
+			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
         
 				<div className="flex flex-col space-y-2 justify-center items-center">
 					<h1 className="text-4xl">Wanna Hang Out</h1>
@@ -35,7 +50,18 @@ const Home = (props) => {
 					<a href="new-activity" className="text-xl text-orange-500">Create new activity</a>
 					<a href="profile" className="text-xl text-orange-500">Modificar Mis Datos</a>
 					<a href="signup" className="text-xl text-orange-500">Sign up</a>*/}
-					<a href={"modificar?id=" + '15'} className="text-xl text-orange-500">Modificar Mis Datos</a>
+
+					{isLogged &&
+						<>
+							<Link href={`/profile?id=${sessionID}`} passHref>
+								<div className="text-xl text-orange-500 cursor-pointer">Mi perfil</div>
+							</Link>
+							<Link href={`/modify-account?id=${sessionID}`} passHref>
+								<div className="text-xl text-orange-500 cursor-pointer">Modificar Mis Datos</div>
+							</Link>
+						</>
+					}
+
 					{/*<Link href="/signup">
 						<a className="text-xl text-orange-500">Crear cuenta</a>
 					</Link>*/}
@@ -43,9 +69,12 @@ const Home = (props) => {
 						<a className="text-xl text-orange-500">Mostrar lista de actividades</a>
 					</Link>
 				</div>
-				<Link href="/new-activity">
-					<a className="text-xl text-orange-500 bg-orange-100 py-2 px-6 rounded-xl">Crear actividad</a>
-				</Link>
+
+				{isLogged &&
+					<Link href="/new-activity">
+						<a className="text-xl text-orange-500 bg-orange-100 py-2 px-6 rounded-xl">Crear actividad</a>
+					</Link>
+				}
 
 			</div>
 		</>
