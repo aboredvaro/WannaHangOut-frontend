@@ -40,6 +40,13 @@ const Navbar = ({}) => {
 		return `${dayName} ${dayNumber}, ${month}`
 	}
 
+	const clearSearchInput = () => {
+		searchInput.current.value = ''
+		setSearchResultsIsHovered(false)
+		setSearchEmpty(true)
+		setSearchResults([])
+	}
+
 	const getKeywords = () => {
 		const keywords = searchInput.current.value.split(' ').filter(keyword => keyword.length > 0)
 		setSearchEmpty(keywords.length === 0)
@@ -103,6 +110,7 @@ const Navbar = ({}) => {
 						className={`absolute top-12 left-0 w-96 mt-0.5 ${((searchFocused || searchResultsIsHovered) && !searchEmpty) ? 'flex' : 'hidden'} flex-col py-1.5 bg-white divide-y divide-gray-100 rounded-lg shadow-card ring-1 ring-gray-700 ring-opacity-20`}
 						onMouseMove={() => setSearchResultsIsHovered(true)}
 						onMouseLeave={() => setSearchResultsIsHovered(false)}
+						onClick={() => { clearSearchInput() }}
 					>
 						{!searchEmpty && searchResults.length === 0 ?
 							<div className='flex flex-col h-20 items-center justify-center space-y-1 text-sm'>
