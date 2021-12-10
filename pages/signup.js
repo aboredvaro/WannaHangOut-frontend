@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Listbox } from '@headlessui/react'
+import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
@@ -152,7 +152,6 @@ const Signup = ({ tags }) => {
 				if (response.ok)
 					return response.json()})
 		
-		//console.log(ses)
 		if(ses) {
 			alert('Nick en uso')
 			return false
@@ -236,7 +235,9 @@ const Signup = ({ tags }) => {
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<Navbar />
+
+			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
         
 				<h1 className="text-4xl">Página de registro</h1>
 

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import url from '../utils/server.js'
 import Link from 'next/link'
+import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import ActivityItem from '../components/activity-score-item.js'
 import MapContainer from '../components/map'
 import CreateReviewItem from'../components/create-review-item.js'
 import ReviewItem from '../components/review-item.js'
 import { session, getSession } from '../utils/session.js'
+import url from '../utils/server.js'
 
 const ActivityPage = ({
 	activity,
@@ -63,7 +64,6 @@ const ActivityPage = ({
 				},
 				method: 'POST'
 			})
-			.then(response => console.log(response))
 			.then(router.push('/activities'))
 	}
 
@@ -74,7 +74,9 @@ const ActivityPage = ({
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
+			<Navbar />
+
+			<div className="w-full flex flex-col space-y-12 my-24 items-center">
         
 				<h1 className="text-4xl font-medium">Actividad</h1>
 
