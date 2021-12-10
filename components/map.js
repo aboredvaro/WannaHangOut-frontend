@@ -34,9 +34,7 @@ const MapContainer = ({
 								lat: activity.latitude,
 								lng: activity.longitude
 							}}
-						>
-							<div>{console.log(activity.latitude)}</div>
-						</Marker>
+						/>
 					))
 				}
 

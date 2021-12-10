@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 
@@ -235,7 +236,9 @@ const Modificar = ({tags, entity, address }) => {
 
 	return (
 		<>
-			<div className="w-full h-screen flex flex-col space-y-12 py-24 items-center font-medium">
+			<Navbar />
+			
+			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
         
 				<h1 className="text-4xl">Modifique su cuenta</h1>
 
@@ -320,7 +323,7 @@ const Modificar = ({tags, entity, address }) => {
 							onChange = { (e) => setPhoto(e.target.value)}/>
 					</div>
 					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar</button>		
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Guardar cambios</button>		
 				</form>
 
 				<h1 className="text-4xl">Darse de baja</h1>

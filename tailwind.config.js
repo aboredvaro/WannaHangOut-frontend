@@ -33,10 +33,18 @@ module.exports = {
 			purple: colors.purple,
 			white: colors.white
 		},
-		extend: {},
+		extend: {
+			transitionDuration: {
+				50: '50ms'
+			},
+			boxShadow: {
+      	'card': '0 24px 32px rgba(0, 0, 0, 0.04)',
+			}
+		},
 	},
 	variants: {
-		extend: {},
+		backgroundColor: ['responsive', 'hover', 'active', 'focus'],
+		backgroundOpacity: ['responsive', 'hover', 'active', 'focus'],
 	},
 	plugins: [],
 }

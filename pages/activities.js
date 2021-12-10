@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import Navbar from '../components/navbar'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
@@ -94,8 +95,9 @@ const Activities = ({
 
 	return (
 		<>
+			<Navbar />
 
-			<div className="w-full h-screen flex flex-col space-y-12 my-24 items-center">
+			<div className="w-full flex flex-col space-y-12 my-24 items-center">
 
 				<div>
 					<h2 className="text-xl font-normal">FILTROS</h2>
