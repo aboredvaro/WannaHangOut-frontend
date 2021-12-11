@@ -37,6 +37,7 @@ const Signup = ({ tags }) => {
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
 	const [pswVisible, setPswVisible] = useState(false)
+	const [signUpPage, setSignUpPage] = useState(1)
 
 	function RoleSelection(props) {
 		if (selectedRole === '2') {
@@ -234,6 +235,68 @@ const Signup = ({ tags }) => {
 		
 	}
 
+	const previusPage = () => {
+		setSignUpPage(signUpPage - 1)
+	}
+
+	const nextPage = () => {
+		setSignUpPage(signUpPage + 1)
+	}
+
+	function pageOne() {
+		return(
+			<>
+				{/*Nombre y apellido */}
+				<div className="flex flex-row justify-between space-x-4 items-center">
+					<div className="flex flex-col space-y-1">
+						<p className="text-sm">Nombre</p>
+						<input
+							className="input w-full"
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required
+							autoFocus
+						/>
+					</div>
+					<div className="flex flex-col space-y-1">
+						<p className="text-sm">Apellido</p>
+						<input
+							className="input w-full"
+							value = {surnameValue}
+							onChange = { (e) => setSurname(e.target.value)}
+							required
+							autoFocus
+						/>
+					</div>
+				</div>
+
+				{/*Correo */}
+				<div className="flex flex-col space-y-1">
+						<p className="text-sm">Correo</p>
+						<input
+							className="input w-full"
+							value = {emailValue}
+							onChange = { (e) => setEmail(e.target.value)}
+							required
+							autoFocus
+						/>
+				</div>
+
+				{/*Telf */}
+				<div className="flex flex-col space-y-1">
+						<p className="text-sm">Teléfono</p>
+						<input
+							className="input w-full"
+							value = {phoneValue}
+							onChange = { (e) => setPhone(e.target.value)}
+							required
+							autoFocus
+						/>
+				</div>
+			</>
+		)
+	}
+
 	return (
 		<>
 			<div className='flex-col w-full min-h-screen  bg-gray-50'>
@@ -249,70 +312,39 @@ const Signup = ({ tags }) => {
 						<div className="flex flex-col justify-between space-y-10">
 							{/*N. pagina*/}
 							<div className="flex flex-col space-y-1">
-								<p className="text-xs text-gray-400">1 de 3</p>
-								<p className="text-2xl text-gray-600">Datos personales</p>
+								<p className="text-xs text-gray-400">{signUpPage} de 3</p>
+								<p className="text-2xl text-gray-600">
+									{(signUpPage === 1)
+										? 'Datos personales'
+										: (signUpPage === 2)
+											? 'Perfil'
+											: (signUpPage === 3)
+												? 'Seguridad'
+												: ''}
+								</p>
 							</div>
 
 							<div className="flex flex-col justify-between space-y-4">
-								{/*Nombre y apellido */}
-								<div className="flex flex-row justify-between space-x-4 items-center">
-									<div className="flex flex-col space-y-1">
-										<p className="text-sm">Nombre</p>
-										<input
-											className="input w-full"
-											value = {nameValue}
-											onChange = { (e) => setName(e.target.value)} 
-											required
-											autoFocus
-										/>
-									</div>
-									<div className="flex flex-col space-y-1">
-										<p className="text-sm">Apellido</p>
-										<input
-											className="input w-full"
-											value = {surnameValue}
-											onChange = { (e) => setSurname(e.target.value)}
-											required
-											autoFocus
-										/>
-									</div>
-								</div>
-
-								{/*Correo */}
-								<div className="flex flex-col space-y-1">
-										<p className="text-sm">Correo</p>
-										<input
-											className="input w-full"
-											value = {emailValue}
-											onChange = { (e) => setEmail(e.target.value)}
-											required
-											autoFocus
-										/>
-								</div>
-
-								{/*Telf */}
-								<div className="flex flex-col space-y-1">
-										<p className="text-sm">Teléfono</p>
-										<input
-											className="input w-full"
-											value = {phoneValue}
-											onChange = { (e) => setPhone(e.target.value)}
-											required
-											autoFocus
-										/>
-								</div>
+								
+								{(signUpPage === 1) && pageOne()}
+								{(signUpPage === 2) && pageOne()}
+								{(signUpPage === 3) && pageOne()}
 
 								{/*Botones atrás y siguiente */}
 								<div className="flex flex-row justify-between space-x-4 items-center">
 									<button
+										type="button"
 										className="btn-terciary w-full"
+										onClick={()=> (signUpPage === 1) ? handleCancel() : previusPage()}
 									>
-										Atrás
+										{(signUpPage === 1) ? 'Cancelar' : 'Atrás'}
 									</button>
-									<button
+									<button 
+										type="button"
 										className="btn-primary w-full"
+										onClick={()=> (signUpPage === 3) ? handleSubmit() : nextPage()}
 									>
-										Siguiente
+										{(signUpPage === 3) ? 'Crear cuenta' : 'Siguiente'}
 									</button>
 								</div>
 								<div className="relative flex flex-row justify-center space-x-2">
