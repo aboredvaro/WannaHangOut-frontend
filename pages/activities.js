@@ -104,15 +104,15 @@ const Activities = ({
 			<div className="flex flex-row">
 
 				{/* Filtros*/} 
-				<div className="flex flex-col items-start justify-start w-72 h-180 bg-gray-50">
+				<div className="flex flex-col h-180 p-3 bg-gray-50">
 
-					<div className="flex flex-col p-6 pt-10">
+					<div className="flex flex-col px-6 py-10 w-72">
 						<label className="text-3xl font-medium text-gray-700">Filtros</label>
 						<label className="text-base font-regular text-gray-400">{listActivities.length} Resultados</label>
 					</div>
 					
 					<form onSubmit={handleSubmit}>
-						<div className="flex flex-col">
+						<div className="flex flex-col ">
 							{/* Seleccion de Ubicacion 
 
 							<div>
@@ -129,52 +129,63 @@ const Activities = ({
 							</div> 
 							*/}
 
+							<div className="flex flex-row items-center px-3 py-2 m-3 w-68 h-14 ">
+							</div>
+
 							{/* Fecha */}
-							<div>
-								<label>Fecha </label>
-								<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
+							<div className="flex flex-row items-center px-3 py-2 mx-3 mb-3">
+								<div className="flex flex-col">
+									<label className="text-sm font-medium text-gray-700">Fecha </label>
+									<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
+								</div>
 							</div>
 
 							{/* Precios */}
-							<div className="flex flex-col p-3 pt-2">
-								<div className="flex flex-row">
-									<div className="flex flex-col">
-										<label className="text-sm font-medium text-gray-700">Precio</label>
-										<label className="text-base font-regular text-gray-400">Todos los precios</label>
-									</div>
+							<div className="flex flex-col justify-center px-3 py-2 w-68 h-32 mx-3 mb-3">
+								<div className="flex flex-col justify-start mb-4">
+									<label className="text-sm font-medium text-gray-700">Precio</label>
+									<label className="text-base font-regular text-gray-400">Todos los precios</label>
 								</div>
 
-								<div className="flex flex-col pb-1">
-									<div className="flex flex-row">
-										{/** Input checkbox varo */}
+								<div className="flex flex-col pb-1 mx-3 mb-2">
+									<div className="flex flex-row items-center mb-3">
+										<input className="items-center justify-center mr-2" type="checkbox" id="precioGratis" name="precioGratis"/>
+										<label className="text-base font-regular">Gratis</label>
 									</div>
-
-									<div className="flex flex-row">
-										{/** Input checkbox varo */}
+									<div className="flex flex-row items-center">
+										<input className="items-center justify-center mr-2" type="checkbox" id="precioPago" name="precioPago"/>
+										<label className="text-base font-regular">Pago</label>
 									</div>
-								</div>
-
-								<div className="flex flex-row">
-									
 								</div>
 	
 							</div>  	
 							    
-							<div>
-								<label >Intereses: </label>
-								{
-									tags.map(({id_tags,name}, i) =>
-										<div className="w-full sm:w-auto" key={i}>
-											<label className="inline-flex items-center">
-												<input className="form-radio" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
-												<span className="ml-2">{name}</span>
-											</label>
-										</div>
-									)
-								}
+							{/* Tags */}
+							<div className="flex flex-col px-3 py-2 w-68 mx-3">
+
+								<div className="flex flex-row mb-4">
+									<div className="flex flex-col">
+										<label className="text-sm font-medium text-gray-700">Categoría</label>
+										<label className="text-base font-regular text-gray-400">Todas las cateogorías</label>
+									</div>
+								</div>
+								
+								<div className="flex flex-col justify-center pb-1">	
+									{
+										tags.map(({id_tags,name}, i) =>		
+											<div className="flex flex-row items-center w-60" key={i}>
+												<input className="items-center justify-center mr-2" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+												<label className="text-base font-regular text-gray-700">{name}</label>
+											</div>
+											
+										)
+									}
+								</div>
+
 							</div>   
 						</div>		
-
+						
+						{/* Botón */}
 						<div className="flex flex-col px-3 py-3">
 							<button type="submit" className="btn-primary">Aplicar Filtros</button>
 						</div>
@@ -185,7 +196,7 @@ const Activities = ({
 
 				{/* Actividades */}
 
-				<div cassName="flex flex-row item-center justify-center bg-gray-200">
+				<div cassName="flex flex-row item-center justify-center p-3 w-152 h-180 bg-gray-200">
 					
 					<div className="flex flex-col space-y-4">
 						{
