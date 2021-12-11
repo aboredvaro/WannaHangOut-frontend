@@ -316,9 +316,9 @@ const Signup = ({ tags }) => {
 									</button>
 								</div>
 								<div className="relative flex flex-row justify-center space-x-2">
-									<p className="text-sm text-gray-400 font-medium">¿Aún no eres miembro?</p>
-									<Link href="/signup">
-										<a className="text-sm text-orange-500 font-medium">Crear cuenta</a>
+									<p className="text-sm text-gray-400 font-medium">¿Ya eres miembro?</p>
+									<Link href="/login">
+										<a className="text-sm text-orange-500 font-medium">Iniciar sesión</a>
 									</Link>
 								</div>
 
