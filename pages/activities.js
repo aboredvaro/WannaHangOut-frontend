@@ -13,8 +13,6 @@ const Activities = ({
 	tags,
 	addressList
 }) => {
-
-	console.log(locations)
 	
 	const [listActivities, setListActivities] = useState(activities)
 	const [selectedLocation, setSelectedLocation] = useState(locations[0])
@@ -104,7 +102,7 @@ const Activities = ({
 			<div className="flex flex-row">
 
 				{/* Filtros*/} 
-				<div className="flex flex-col h-180 p-3 bg-gray-50">
+				<div className="flex flex-col w-72 h-180 p-3 bg-gray-50">
 
 					<div className="flex flex-col px-6 py-10 w-72">
 						<label className="text-3xl font-medium text-gray-700">Filtros</label>
@@ -196,32 +194,30 @@ const Activities = ({
 
 				{/* Actividades */}
 
-				<div cassName="flex flex-row item-center justify-center p-3 w-152 h-180 bg-gray-200">
-					
-					<div className="flex flex-col space-y-4">
-						{
-							listActivities.map(activity => {
-								return (	// añadir mensaje si no hay ninguna actividad
-									<ActivityItem
-										key={activity.id_activity}
-										id_activity={activity.id_activity}
-										title={activity.title}
-										description={activity.description}
-										id_entity_host={activity.id_entity_creador}
-										seats={activity.seats}
-										price={activity.price}
-										location={activity.location}
-										dateAct={activity.dateAct}
-										min_duration={activity.min_duration}
-									/>
-								)
-							})
-						}
-					</div>
+				<div cassName="flex flex-col w-full p-3 space-y-2">					
+					{
+						listActivities.map(activity => {
+							return (	
+								<ActivityItem
+									key={activity.id_activity}
+									id_activity={activity.id_activity}
+									title={activity.title}
+									description={activity.description}
+									id_entity_host={activity.id_entity_creador}
+									seats={activity.seats}
+									price={activity.price}
+									location={activity.location}
+									dateAct={activity.dateAct}
+									min_duration={activity.min_duration}
+								/>
+							)
+						})
+					}
+				
 				</div>
 
 				{/** Mapa */}
-				<div className="flex flex-row items-start justify-end">
+				<div className="flex flex-row">
 					<MapContainer 
 						containerStyle={containerStyle}
 						center={center}

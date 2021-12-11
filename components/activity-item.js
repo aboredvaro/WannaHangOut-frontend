@@ -16,17 +16,47 @@ const ActivityItem = ({
 
 	return (
 		<>
-			<div className="">
-				<Link href={`/activity?id=${id_activity}`} passHref>
-					<div className="bg-gray-100 p-6 rounded-xl cursor-pointer">
-						<p className="mb-2 text-3xl font-medium">{title}</p>
-						<p className="mb-2 text-xl font-medium">{description}</p>
-						<p className="mb-2 text-sm text-orange-500">{new Date(dateAct).toLocaleDateString()}</p>
-						<p className="mb-2 text-base text-gray-400">Aforo de {seats} personas</p>
-						<p className="mb-2 text-sm text-gray-400">{price}€</p>
+
+			<Link href={`/activity?id=${id_activity}`} passHref>
+				<div className="flex flex-row w-full p-3">
+
+					<div className="flex flex-col">
+						
+						<div className="flex flex-col">
+							<label className="text-xl font-semibold text-gray-700">{title}</label>
+							<label className="text-xs font-regular text-orange-600">{new Date(dateAct).toLocaleDateString()}</label>
+
+							<div className="flex flex-row">
+								<label className="text-xs font-regular text-gray-400">Calle Ejemplo, 10</label>
+								<label className="text-xs font-bold text-gray-400"> * </label>
+								<label className="text-xs font-regular text-gray-700">Valencia</label>
+							</div>
+						</div>
+
+						<div className="flex flex-row">
+
+							<div className="flex flex-row">
+								{/** FOTO PERFIL */}
+
+								<div className="flex flex-col">
+									<label className="text-xs font-medium text-gray-700">Nombre Creador</label>
+									<label className="text-supporting-1 font-regular text-gray-400">Puntuacion Actividad</label>
+								</div>
+							</div>
+
+							<div className="flex flex-row">
+								<div></div>
+								<div></div>
+							</div>
+
+						</div>
+
 					</div>
-				</Link>
-			</div>
+
+					<div>{/** FOTO ACTIVIDAD*/} </div>
+				</div>
+			</Link>
+
 		</>
 	)
 }
