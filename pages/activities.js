@@ -4,6 +4,7 @@ import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import MapContainer from '../components/map'
+import { Listbox } from '@headlessui/react'
 
 const Activities = ({
 	activities,
@@ -12,13 +13,16 @@ const Activities = ({
 	tags,
 	addressList
 }) => {
+
+	console.log(locations)
 	
 	const [listActivities, setListActivities] = useState(activities)
+	const [selectedLocation, setSelectedLocation] = useState(locations[0])
 	
 	const containerStyle = {
 		position: 'relative',
-		width: '800px',
-		height: '500px'
+		width: '384px',
+		height: '720px'
 	}
 
 	const center = {
@@ -96,24 +100,50 @@ const Activities = ({
 	return (
 		<>
 			<Navbar />
+				
+			<div className="flex flex-row">
 
-			<div className="w-full flex flex-col space-y-12 my-24 items-center">
+				{/* Filtros*/} 
+				<div className="flex flex-col items-start justify-start w-72 h-180 bg-gray-50">
 
-				<div>
-					<h2 className="text-xl font-normal">FILTROS</h2>
-					<div>
-						<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-							<div>
-								<label>Localidad </label>
+					<div className="flex flex-col p-6 pt-10">
+						<h1 className="text-3xl font-medium text-gray-700">Filtros</h1>
+						<h2 className="text-base font-regular text-gray-400">{listActivities.length} resultados</h2>
+					</div>
+
+					<div className="flex flex-col">
+						<form onSubmit={handleSubmit}>
+
+							{/* Seleccion de Ubicacion */}
+							<div className="flex flex-col">
+								<div className="flex flex-col">
+									<label className="text-sm font-medium text-gray-700">Ubicación </label>
+									<label className="text-base font-regular text-gray-400">Valencia </label>
+								</div>
+								
 								<select id='location'>
-      								<option></option>
+									<option></option>
 									{
-										  locations.map(({location}, i) => 
-										  	<option key={i} value={location}>{location}</option>
-										  )
+										locations.map(({location}, i) => 
+											<option key={i} value={location}>{location}</option>
+										)
 									}
-   								 </select>
-							</div>    
+								</select>
+							</div>  
+
+							<div>
+								<Listbox value={selectedLocation} onChange={setSelectedLocation}>
+									<Listbox.Button>{selectedLocation}</Listbox.Button>
+									<Listbox.Options>
+										{
+											locations.map(({location}, i) => 
+												<Listbox.Option key={i} value={location}>{location}</Listbox.Option>
+											)
+										}
+									</Listbox.Options>
+								</Listbox>
+							</div> 
+
 							<div>
 								<label>PRECIOS (€) </label>
 								<label className="text-gray-800"htmlFor="precioMin">Desde  </label>
@@ -140,17 +170,7 @@ const Activities = ({
 								<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
 								<input type="date" id="dateMax" name="dateMax" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
 							</div>
-							<div>
-								<label>Creado por </label>
-								<select id='id_entity'>
-      								<option></option>
-									{
-										  entities.map(({id_entity, nick}, i) => 
-										  	<option key={i} value={id_entity}>{nick}</option>
-										  )
-									}
-   								 </select>
-							</div>    
+							    
 							<div>
 								<label >Intereses: </label>
 								{
@@ -165,45 +185,51 @@ const Activities = ({
 								}
 							</div>   
 
-							<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Aplicar</button>
+							<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Aplicar Filtros</button>
 
 						</form>
+					</div>	
+					
+				</div>
+
+				{/* Actividades */}
+
+				<div cassName="flex flex-row item-center justify-center bg-gray-200">
+					
+					<div className="flex flex-col space-y-4">
+						{
+							listActivities.map(activity => {
+								return (	// añadir mensaje si no hay ninguna actividad
+									<ActivityItem
+										key={activity.id_activity}
+										id_activity={activity.id_activity}
+										title={activity.title}
+										description={activity.description}
+										id_entity_host={activity.id_entity_creador}
+										seats={activity.seats}
+										price={activity.price}
+										location={activity.location}
+										dateAct={activity.dateAct}
+										min_duration={activity.min_duration}
+									/>
+								)
+							})
+						}
 					</div>
 				</div>
-        
-				<h1 className="text-4xl font-medium">Lista de actividades</h1>
 
-				<div className="flex flex-col items-center justify-center">
+				{/** Mapa */}
+				<div className="flex flex-row items-start justify-end">
 					<MapContainer 
 						containerStyle={containerStyle}
 						center={center}
-						zoom={13}
+						zoom={12}
 						addressList={addressList}
 					/>
 				</div>
 
-				<div className="flex flex-col space-y-4">
-					{
-						listActivities.map(activity => {
-							return (	// añadir mensaje si no hay ninguna actividad
-								<ActivityItem
-									key={activity.id_activity}
-									id_activity={activity.id_activity}
-									title={activity.title}
-									description={activity.description}
-									id_entity_host={activity.id_entity_creador}
-									seats={activity.seats}
-									price={activity.price}
-									location={activity.location}
-									dateAct={activity.dateAct}
-									min_duration={activity.min_duration}
-								/>
-							)
-						})
-					}
-				</div>
-
 			</div>
+
 		</>
 	)
 }
