@@ -16,7 +16,8 @@ const Navbar = ({}) => {
 
 	const searchInput = useRef()
 	const [searchResults, setSearchResults] = useState([])
-	const doneTypingInterval = 250
+	const [noSearchResults, setNoSearchResults] = useState(false)
+	const doneTypingInterval = 200
 	var typingTimer
 
 	useEffect(() => {
@@ -55,6 +56,7 @@ const Navbar = ({}) => {
 
 	const searchKeywords = async () => {
 		const keywords = getKeywords()
+		setNoSearchResults(false)
 
 		const results = keywords.length <= 0 ? [] : await fetch(`${url}/api/searchActivitiesByKeywords`, {
 			body: JSON.stringify(keywords),
@@ -65,6 +67,7 @@ const Navbar = ({}) => {
 		})
 			.then(response => response.ok && response.json())
 
+		setNoSearchResults(results.length === 0)
 		setSearchResults(results)
 	}
 
@@ -74,26 +77,38 @@ const Navbar = ({}) => {
 	}
 
 	return (
-		<div className='flex flex-row justify-between items-center px-6 w-full h-20 border'>
+		<div className='flex flex-row justify-start md:justify-between items-center px-3 sm:px-6 w-full h-16 sm:h-20 border-b border-gray-100 bg-white'>
 
 			{/* Logo y búsqueda */}
-			<div className='flex flex-row items-center space-x-8'>
+			<div className={`flex flex-row items-center ${searchFocused ? 'space-x-0 md:space-x-6' : 'space-x-6'} w-full md:w-auto`}>
 				<Link href="/" passHref>
-					<div className="transform -translate-y-px cursor-pointer">
-						<Image
-							src="/logos/who.svg"
-							alt="Wanna Hang Out logo"
-							width={65}
-							height={32}
-							className="pointer-events-none"
-						/>
+					<div className={`${searchFocused ? 'hidden md:flex' : 'flex'} flex-col flex-shrink-0 transform -translate-y-px cursor-pointer`}>
+						<div className='hidden md:flex'>
+							<Image
+								src="/logos/who.svg"
+								alt="Wanna Hang Out logo"
+								width={65}
+								height={32}
+								className="pointer-events-none"
+							/>
+						</div>
+						<div className='md:hidden flex'>
+							<Image
+								src="/logos/favicon.svg"
+								alt="Wanna Hang Out logo"
+								width={32}
+								height={32}
+								className="pointer-events-none"
+							/>
+						</div>
 					</div>
 				</Link>
-
-				<div className='relative'>
+				
+				<div className='relative flex flex-row items-center w-full max-h-screen'>
 					<input
-						className='relative peer flex flex-row w-96 h-11 pl-10 px-5 placeholder-gray-400 bg-gray-50 focus:bg-white border border-gray-200 focus:border-orange-500 focus:ring focus:ring-orange-100 rounded-lg outline-none transition-colors duration-150 ease-in-out'
+						className='relative flex flex-row justify-self-auto w-full md:w-96 h-11 pl-10 px-5 placeholder-gray-400 bg-gray-50 focus:bg-white border border-gray-200 focus:border-orange-500 focus:ring focus:ring-orange-100 rounded-lg outline-none transition-colors duration-150 ease-in-out'
 						placeholder='Buscar eventos'
+						type='text'
 						ref={searchInput}
 						onChange={() => { handleSearch() }}
 						onFocus={() => { setSearchFocused(true) }}
@@ -105,14 +120,19 @@ const Navbar = ({}) => {
 						height='18px'
 						width='18px'
 					/>
+					<div
+						className={`btn-terciary ${searchFocused ? 'ml-2 md:ml-0 md:hidden' : 'hidden'}`}
+						onMouseDown={() => { clearSearchInput() }}
+					>
+						Cancelar
+					</div>
 
 					<div
-						className={`absolute top-12 left-0 w-96 mt-0.5 ${((searchFocused || searchResultsIsHovered) && !searchEmpty) ? 'flex' : 'hidden'} flex-col py-1.5 bg-white divide-y divide-gray-100 rounded-lg shadow-card ring-1 ring-gray-700 ring-opacity-20`}
+						className={`absolute top-12 left-0 w-full mt-1 md:mt-0.5 ${((searchFocused || searchResultsIsHovered) && !searchEmpty) ? 'flex' : 'hidden'} flex-col py-1.5 bg-white divide-y divide-gray-100 rounded-lg shadow-card ring-1 ring-gray-700 ring-opacity-20`}
 						onMouseMove={() => setSearchResultsIsHovered(true)}
 						onMouseLeave={() => setSearchResultsIsHovered(false)}
-						onClick={() => { clearSearchInput() }}
 					>
-						{!searchEmpty && searchResults.length === 0 ?
+						{!searchEmpty && noSearchResults ?
 							<div className='flex flex-col h-20 items-center justify-center space-y-1 text-sm'>
 								<p>No hay resultados para esta búsqueda</p>
 								<Link href="/activities">
@@ -125,7 +145,10 @@ const Navbar = ({}) => {
 							searchResults.map(result => {
 								return (
 									<Link href={`/activity?id=${result.id_activity}`} key={result.id_activity}>
-										<a className='flex flex-row h-16 px-5 space-x-4 justify-between hover:bg-gray-50 active:bg-gray-100'>
+										<a
+											className='flex flex-row h-16 px-5 space-x-4 justify-between hover:bg-gray-50 active:bg-gray-100'
+											onClick={() => { clearSearchInput() }}
+										>
 											
 											<div className='flex flex-col space-y-0.5 w-full justify-center'>
 												<span className='font-medium'>{result.title}</span>
@@ -148,25 +171,27 @@ const Navbar = ({}) => {
 			</div>
 
 			{/* Acciones login y usuario */}
-			<div className={`${isLogged ?? 'opacity-0 pointer-events-none'} flex flex-row items-center space-x-4`}>
+			<div className={`${isLogged ?? 'opacity-0 pointer-events-none'} flex flex-row items-center justify-start space-x-4 ${searchFocused && 'w-0 md:w-auto opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto'}`}>
 				{isLogged ?
 					<>
-						<Link href="/new-activity">
-							<a className='flex flex-row justify-center items-center text-base font-medium text-orange-600 px-6 h-10 bg-orange-100 active:bg-orange-200 active:bg-opacity-75 transition-colors duration-150 ease-in-out rounded-lg'>
-								Crear
-							</a>
-						</Link>
+						<div className="hidden md:flex">
+							<Link href="/new-activity">
+								<a className='btn-secondary'>
+									Crear
+								</a>
+							</Link>
+						</div>
 
 						<div className='relative'>
 							<Menu as="div" className="relative">
 								
 								<div>
 									<Menu.Button className='relative flex flex-row items-center h-10 px-1.5 space-x-2'>
-										<div className={`relative flex flex-row w-8 h-8 bg-gray-200 ${(sessionID === false) ? 'animate-pulse' : ''} ring-1 ring-gray-200 rounded-full overflow-hidden`}>
+										<div className={`relative flex flex-row w-8 h-8 bg-gray-100 ${(sessionID === false) ? 'animate-pulse' : ''} ring-1 ring-gray-200 rounded-full overflow-hidden`}>
 											{sessionID && <img src={sessionID.avatar} className='absolute w-full h-full rounded-full' alt='user avatar' />}
 										</div>
 
-										<div className='flex flex-row items-center'>
+										<div className='hidden md:flex flex-row items-center'>
 											<div>{sessionID.name}</div>
 											<ChevronDownOutline
 												className='flex flex-row justify-center items-center p-1.5'
@@ -188,6 +213,21 @@ const Navbar = ({}) => {
 									leaveTo="transform opacity-0 scale-95"
 								>
 									<Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-lg shadow-card ring-1 ring-gray-700 ring-opacity-10 focus:outline-none">
+
+										<div className="md:hidden px-1 py-1">
+											<Menu.Item>
+												{({ active }) => (
+													<button className={`${active ? 'bg-orange-50' : ''} flex rounded-lg items-center w-full text-orange-600`}>
+														<Link href='/new-activity'>
+															<a className='flex flex-row items-center w-full h-full px-3 py-2'>
+																Crear actividad
+															</a>
+														</Link>
+													</button>
+												)}
+											</Menu.Item>
+										</div>
+										
 										<div className="px-1 py-1">
 
 											<Menu.Item>
@@ -251,13 +291,13 @@ const Navbar = ({}) => {
 					:
 					<>
 						<Link href="/signup">
-							<a className='flex flex-row justify-center items-center text-base font-medium text-gray-700 px-6 h-10 bg-gray-100 active:bg-gray-200 active:bg-opacity-75 rounded-lg'>
+							<a className='btn-terciary hidden lg:flex whitespace-nowrap'>
 								Crear cuenta
 							</a>
 						</Link>
 
 						<Link href="/login">
-							<a className='flex flex-row justify-center items-center text-base font-medium text-white px-6 h-10 bg-orange-500 active:bg-orange-600 active:bg-opacity-90 rounded-lg'>
+							<a className='btn-primary whitespace-nowrap'>
 								Iniciar sesión
 							</a>
 						</Link>
