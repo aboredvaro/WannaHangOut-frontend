@@ -74,14 +74,14 @@ const Activities = ({
 			`${url}/api/filterActivitiesBy`,{
 				body: JSON.stringify({
 					location: getSelectedLocation(),
-					price_min: event.target.precioMin.value,
-					price_max: event.target.precioMax.value,
-					min_duration_min: event.target.duracionMin.value,
-					min_duration_max:event.target.duracionMax.value,
-					seats_min: event.target.plazasMin.value, 
-					seats_max: event.target.plazasMax.value,
-					dateAct_min: event.target.dateMin.value,
-					dateAct_max: event.target.dateMax.value,
+					price_min: event.target.precioMin.value, // No se pasa
+					price_max: event.target.precioMax.value, 
+					min_duration_min: event.target.duracionMin.value, // No se le pasa
+					min_duration_max:event.target.duracionMax.value, // No se le pasa
+					seats_min: event.target.plazasMin.value, // No se le pasa
+					seats_max: event.target.plazasMax.value, // No se le pasa
+					dateAct_min: event.target.dateMin.value, // Fecha de hoy
+					dateAct_max: event.target.dateMax.value, // Fecha del input
 					id_tags: getSelectedTags(),
 					id_entity_creator: getSelectedEntity()
 				}),
@@ -107,29 +107,13 @@ const Activities = ({
 				<div className="flex flex-col items-start justify-start w-72 h-180 bg-gray-50">
 
 					<div className="flex flex-col p-6 pt-10">
-						<h1 className="text-3xl font-medium text-gray-700">Filtros</h1>
-						<h2 className="text-base font-regular text-gray-400">{listActivities.length} resultados</h2>
+						<label className="text-3xl font-medium text-gray-700">Filtros</label>
+						<label className="text-base font-regular text-gray-400">{listActivities.length} Resultados</label>
 					</div>
-
-					<div className="flex flex-col">
-						<form onSubmit={handleSubmit}>
-
-							{/* Seleccion de Ubicacion */}
-							<div className="flex flex-col">
-								<div className="flex flex-col">
-									<label className="text-sm font-medium text-gray-700">Ubicación </label>
-									<label className="text-base font-regular text-gray-400">Valencia </label>
-								</div>
-								
-								<select id='location'>
-									<option></option>
-									{
-										locations.map(({location}, i) => 
-											<option key={i} value={location}>{location}</option>
-										)
-									}
-								</select>
-							</div>  
+					
+					<form onSubmit={handleSubmit}>
+						<div className="flex flex-col">
+							{/* Seleccion de Ubicacion 
 
 							<div>
 								<Listbox value={selectedLocation} onChange={setSelectedLocation}>
@@ -143,33 +127,38 @@ const Activities = ({
 									</Listbox.Options>
 								</Listbox>
 							</div> 
+							*/}
 
-							<div>
-								<label>PRECIOS (€) </label>
-								<label className="text-gray-800"htmlFor="precioMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="precioMin" name="precioMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="precioMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="precioMax" name="precioMax" placeholder=""/>
-							</div>    
-							<div>
-								<label>DURACION (min) </label>
-								<label className="text-gray-800"htmlFor="duracionMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="duracionMin" name="duracionMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="duracionMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="duracionMax" name="duracionMax" placeholder=""/>
-							</div>
-							<div>
-								<label>Plazas </label>
-								<label className="text-gray-800"htmlFor="plazasMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="plazasMin" name="plazasMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="plazasMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="plazasMax" name="plazasMax" placeholder=""/>
-							</div>        
+							{/* Fecha */}
 							<div>
 								<label>Fecha </label>
 								<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
-								<input type="date" id="dateMax" name="dateMax" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
 							</div>
+
+							{/* Precios */}
+							<div className="flex flex-col p-3 pt-2">
+								<div className="flex flex-row">
+									<div className="flex flex-col">
+										<label className="text-sm font-medium text-gray-700">Precio</label>
+										<label className="text-base font-regular text-gray-400">Todos los precios</label>
+									</div>
+								</div>
+
+								<div className="flex flex-col pb-1">
+									<div className="flex flex-row">
+										{/** Input checkbox varo */}
+									</div>
+
+									<div className="flex flex-row">
+										{/** Input checkbox varo */}
+									</div>
+								</div>
+
+								<div className="flex flex-row">
+									
+								</div>
+	
+							</div>  	
 							    
 							<div>
 								<label >Intereses: </label>
@@ -184,11 +173,13 @@ const Activities = ({
 									)
 								}
 							</div>   
+						</div>		
 
-							<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Aplicar Filtros</button>
+						<div className="flex flex-col px-3 py-3">
+							<button type="submit" className="btn-primary">Aplicar Filtros</button>
+						</div>
 
-						</form>
-					</div>	
+					</form>	
 					
 				</div>
 
