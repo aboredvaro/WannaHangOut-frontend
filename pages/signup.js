@@ -3,6 +3,7 @@ import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const Signup = ({ tags }) => {
 
@@ -235,115 +236,96 @@ const Signup = ({ tags }) => {
 
 	return (
 		<>
-			<Navbar />
+			<div className='flex-col w-full min-h-screen  bg-gray-50'>
+				<Navbar />
 
-			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
-        
-				<h1 className="text-4xl">Página de registro</h1>
+				<div className='flex flex-col w-full h-full items-center justify-center py-20'>
 
-				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-					<div>
-						<label className="text-gray-800">Rol: </label>
-						<select
-							value = {selectedRole}
-							onChange = { (e) => setSelectedRole(e.target.value)}
-						>
-							<option value='1'>Shop</option>
-							<option value='2'>User</option>
-						</select>
-						{/*}<p>{selectedRole}</p>{*/}
-					</div>
-					<div>
-						<label className="text-gray-800">Nick: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
-							value = {nickValue}
-							onChange = { (e) => setNick(e.target.value)} 
-							required/>
-					</div>
-					
-					<div>
-						{RoleSelection() }
-					</div>
+					{/*Caja blanca */}
+					<form
+						onSubmit={handleSubmit}
+						className="flex flex-col w-110 p-8 rounded-xl shadow-card bg-white border border-gray-100 space-y-4"
+					>
+						<div className="flex flex-col justify-between space-y-10">
+							{/*N. pagina*/}
+							<div className="flex flex-col space-y-1">
+								<p className="text-xs text-gray-400">1 de 3</p>
+								<p className="text-2xl text-gray-600">Datos personales</p>
+							</div>
 
-					<div>
-						<div><label className="text-gray-800">Descripción: </label></div>
-						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"
-							value = {descriptionValue}
-							onChange = { (e) => setDescription(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Email: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"
-							value = {emailValue}
-							onChange = { (e) => setEmail(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Teléfono: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"
-							value = {phoneValue}
-							onChange = { (e) => setPhone(e.target.value)}/>
-					</div>
-					<div>
-						<label >Choose tags: </label>
-						{
-							tags.map(({id_tags,name}, i) =>
-								<div className="w-full sm:w-auto" key={i}>
-									<label className="inline-flex items-center">
-							  		<input className="form-radio" type="checkbox" id={name} name={name} value={id_tags}/>
-							  		<span className="ml-2">{name}</span>
-									</label>
-						 		 </div>
-							)
-						}
-					</div>
-					<div>
-						<label className="text-gray-800">Código Postal: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"
-							value = {cpValue}
-							onChange = { (e) => setCP(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Localidad: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"
-							value = {locationValue}
-							onChange = { (e) => setLocation(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"
-							value = {directionValue}
-							onChange = { (e) => setDirection(e.target.value)}/>
-					</div>
-					<div>
-						<label classirection="text-gray-800">Latitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"
-							value = {latitudeValue}
-							onChange = { (e) => setLatitude(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Longitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"
-							value = {longitudeValue}
-							onChange = { (e) => setLongitude(e.target.value)}/>
-					</div>
-					<div>
-						{ShowPassword ()}
-					</div>
-					<div>
-						<input type="checkbox" 
-							value={pswVisible}
-							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
-					</div>
-					<div>
-						<label className="text-gray-800">Foto: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"
-							value = {photoValue}
-							onChange = { (e) => setPhoto(e.target.value)}/>
-					</div>
-					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>
-				</form>
-				<button className="w-1/5 rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={()=>handleCancel()}>Cancelar</button>
+							<div className="flex flex-col justify-between space-y-4">
+								{/*Nombre y apellido */}
+								<div className="flex flex-row justify-between space-x-4 items-center">
+									<div className="flex flex-col space-y-1">
+										<p className="text-sm">Nombre</p>
+										<input
+											className="input w-full"
+											value = {nameValue}
+											onChange = { (e) => setName(e.target.value)} 
+											required
+											autoFocus
+										/>
+									</div>
+									<div className="flex flex-col space-y-1">
+										<p className="text-sm">Apellido</p>
+										<input
+											className="input w-full"
+											value = {surnameValue}
+											onChange = { (e) => setSurname(e.target.value)}
+											required
+											autoFocus
+										/>
+									</div>
+								</div>
+
+								{/*Correo */}
+								<div className="flex flex-col space-y-1">
+										<p className="text-sm">Correo</p>
+										<input
+											className="input w-full"
+											value = {emailValue}
+											onChange = { (e) => setEmail(e.target.value)}
+											required
+											autoFocus
+										/>
+								</div>
+
+								{/*Telf */}
+								<div className="flex flex-col space-y-1">
+										<p className="text-sm">Teléfono</p>
+										<input
+											className="input w-full"
+											value = {phoneValue}
+											onChange = { (e) => setPhone(e.target.value)}
+											required
+											autoFocus
+										/>
+								</div>
+
+								{/*Botones atrás y siguiente */}
+								<div className="flex flex-row justify-between space-x-4 items-center">
+									<button
+										className="btn-terciary w-full"
+									>
+										Atrás
+									</button>
+									<button
+										className="btn-primary w-full"
+									>
+										Siguiente
+									</button>
+								</div>
+								<div className="relative flex flex-row justify-center space-x-2">
+									<p className="text-sm text-gray-400 font-medium">¿Aún no eres miembro?</p>
+									<Link href="/signup">
+										<a className="text-sm text-orange-500 font-medium">Crear cuenta</a>
+									</Link>
+								</div>
+
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</>
 	    )
