@@ -136,10 +136,7 @@ const Navbar = ({}) => {
 							<div className='flex flex-col h-20 items-center justify-center space-y-1 text-sm'>
 								<p>No hay resultados para esta búsqueda</p>
 								<Link href="/activities">
-									<a
-										className='font-medium text-orange-600'
-										onMouseDown={() => { clearSearchInput() }}
-									>
+									<a className='font-medium text-orange-600'>
 										Buscar por filtros
 									</a>
 								</Link>
