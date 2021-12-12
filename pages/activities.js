@@ -209,6 +209,7 @@ const Activities = ({
 
 				{/* Actividades */}
 				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto">
+				
 					{
 						listActivities.map(activity => {
 							return (	

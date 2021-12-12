@@ -18,7 +18,7 @@ const ActivityItem = ({
 		<>
 
 			<Link href={`/activity?id=${id_activity}`} passHref>
-				<div className="flex flex-row w-full p-3">
+				<div className="flex flex-row w-full p-3 space-x-4 bg-red-600">
 
 					<div className="flex flex-col">
 						
