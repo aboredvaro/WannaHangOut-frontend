@@ -4,9 +4,7 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { PersonOutline } from 'react-ionicons'
-import Image from 'next/image'
-
+import { PersonOutline, CheckmarkCircle, HelpCircleOutline } from 'react-ionicons'
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -30,17 +28,11 @@ const Signup = ({ tags }) => {
 	const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
 	const [phoneValue, setPhone] = useState('')
-	const [cpValue, setCP] = useState('')
-	const [locationValue, setLocation] = useState('')
-	const [directionValue, setDirection] = useState('')
-	const [latitudeValue, setLatitude] = useState('')
-	const [longitudeValue, setLongitude] = useState('')
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
 	const [pswVisible, setPswVisible] = useState(false)
 	const [signUpPage, setSignUpPage] = useState(1)
-	const [showImg, setShowImg] = useState(false)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -54,44 +46,13 @@ const Signup = ({ tags }) => {
 			},
 			method: 'POST'
 		})
-			.then(response => {
-				if (response.ok)
-					return response.json()})
+			.then(response => { if (response.ok) return response.json() })
 		
 		if(ses) {
 			alert('Nick en uso')
 			return false
 		}
 		
-		if(!/^\d+$/.test(phoneValue)) {
-			alert('No puede haber letras en su número de teléfono')
-			return false
-		}
-		if(phoneValue.trim().length!==9) {
-			alert('Su número de teléfono debe tener 9 cifras')
-			return false
-		} 
-		if(!/^\d+$/.test(cpValue)) {
-			alert('No puede haber letras en su Código Postal')
-			return false
-		}
-		if(cpValue.trim().length!==5) {
-			alert('Su código postal debe tener 5 cifras')
-			return false
-		}
-		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
-			alert('No puede haber letras en los campos de latitud y longitud')
-			return false
-		}
-		if(passwordValue.localeCompare(passbiValue)!==0) {
-			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
-			return false
-		}
-		var tags = getSelectedTags()
-		if(tags==='') {
-			alert('Debe seleccionar al menos una etiqueta')
-			return false
-		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({	
@@ -206,7 +167,7 @@ const Signup = ({ tags }) => {
 							width="40px"
 						/>*/}
 						<img 
-							className="h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full" 
+							className="object-cover h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full" 
 							src={photoValue} alt={''} 
 						/>
 					</div>
@@ -248,6 +209,7 @@ const Signup = ({ tags }) => {
 	function pageThree() {
 		return(
 			<>
+				{/*Contraseña */}
 				<div className="flex flex-col space-y-1">
 					<p className="text-sm">Contraseña</p>
 					<input
@@ -258,6 +220,30 @@ const Signup = ({ tags }) => {
 						autoFocus
 					/>
 				</div>
+
+				{/*Indicadores y alertas */}
+				<div className="flex flex-col space-y-1">
+					{/*Barritas */}
+					<div className='flex flex-row justify-center space-x-0.5'>
+						<div className='w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'/>
+						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
+						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
+						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
+						<div className='w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'/>
+					</div>
+					{/*Alerta + (?) */}
+					<div className='flex flex-row justify-between'>
+						<p className="text-xs text-gray-700">Usa mínimo una minúscula</p>
+						<HelpCircleOutline
+						color={'#616161'}
+							title={'ha?'}
+							height="16px"
+							width="16px"
+						/>
+					</div>
+				</div>
+
+				{/*Repetir contraseña */}
 				<div className="flex flex-col space-y-1">
 					<p className="text-sm">Repetir contraseña</p>
 					<input
@@ -267,6 +253,17 @@ const Signup = ({ tags }) => {
 						required
 						autoFocus
 					/>
+
+					{/*Contraseñas coinciden! Viva! */}
+					<div className='flex fle-row justify-start space-x-1'>
+						<CheckmarkCircle
+							color={'#4CAF50'} 
+							title={'Tick'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">Las contraseñas coinciden</p>
+					</div>
 				</div>
 			</>
 		)
