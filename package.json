@@ -16,6 +16,8 @@
     "@headlessui/react": "^1.4.1",
     "ansi-regex": "^6.0.1",
     "autoprefixer": "^10.3.4",
+    "blueimp-file-upload": "^10.32.0",
+    "cloudinary": "^1.27.1",
     "google-maps-react": "^2.0.6",
     "ionicons": "^5.5.3",
     "next": "^11.1.3",
