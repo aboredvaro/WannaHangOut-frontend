@@ -4,6 +4,8 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { PersonOutline } from 'react-ionicons'
+import Image from 'next/image'
 
 const Signup = ({ tags }) => {
 
@@ -38,6 +40,7 @@ const Signup = ({ tags }) => {
 	const [photoValue, setPhoto] = useState('')
 	const [pswVisible, setPswVisible] = useState(false)
 	const [signUpPage, setSignUpPage] = useState(1)
+	const [showImg, setShowImg] = useState(false)
 
 	function RoleSelection(props) {
 		if (selectedRole === '2') {
@@ -297,6 +300,47 @@ const Signup = ({ tags }) => {
 		)
 	}
 
+	function pageTwo() {
+		return(
+			<>
+				{/*Foto de perfil */}
+				<div className="flex flex-row justify-center">
+					<div className="h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full">
+						{/*<PersonOutline 
+							color={'#BDBDBD'} 
+							title={'defaultUserImg'}
+							height="40px"
+							width="40px"
+						/>*/}
+						<img 
+							className="h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full" 
+							src={photoValue} alt={''} 
+						/>
+					</div>
+				</div>
+				<div className="flex flex-col space-y-1">
+					<p className="text-sm">URL de imagen</p>
+					<div className="flex flex-row space-x-2">
+						<input
+							className="input w-full"
+							value = {photoValue}
+							onChange = { (e) => setPhoto(e.target.value)}
+							required
+							autoFocus
+						/>
+						<button 
+							type="button"
+							className="btn-terciary w-24"
+							onClick={()=> setPhoto('')}
+						>
+							Borrar
+						</button>
+					</div>
+				</div>
+			</>
+		)
+	}
+
 	return (
 		<>
 			<div className='flex-col w-full min-h-screen  bg-gray-50'>
@@ -327,7 +371,7 @@ const Signup = ({ tags }) => {
 							<div className="flex flex-col justify-between space-y-4">
 								
 								{(signUpPage === 1) && pageOne()}
-								{(signUpPage === 2) && pageOne()}
+								{(signUpPage === 2) && pageTwo()}
 								{(signUpPage === 3) && pageOne()}
 
 								{/*Botones atrás y siguiente */}
