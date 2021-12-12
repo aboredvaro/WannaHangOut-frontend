@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
@@ -14,13 +14,23 @@ const Activities = ({
 	addressList
 }) => {
 	
+	const [mapHeight, setMapHeight] = useState(0)
 	const [listActivities, setListActivities] = useState(activities)
 	const [selectedLocation, setSelectedLocation] = useState(locations[0])
+
+	function getMapHeight() {
+		setMapHeight(document.querySelector('#map').offsetHeight)
+	}
 	
+	useEffect(() => {
+		getMapHeight()
+		window.addEventListener('resize', () => {(typeof ifgetMapHeight !== undefined) && getMapHeight()} )
+	})
+
 	const containerStyle = {
 		position: 'relative',
 		width: '384px',
-		height: '720px'
+		height: mapHeight
 	}
 
 	const center = {
@@ -96,13 +106,18 @@ const Activities = ({
 	}
 
 	return (
-		<>
+		<div className="flex flex-col w-full md:h-screen md:max-h-screen md:flex-grow-0 md:flex-shrink">
 			<Navbar />
-				
-			<div className="flex flex-row">
 
-				{/* Filtros*/} 
-				<div className="flex flex-col w-72 h-180 p-3 bg-gray-50">
+			{/* TEST (BORRAR) */}
+			<div className="hidden flex-row w-full h-full max-h-full overflow-hidden bg-green-100">
+				<div className="h-screen"></div>
+			</div>
+				
+			<div className="relative flex flex-row w-full h-full flex-grow-0 overflow-hidden">
+
+				{/* Filtros */}
+				<div className="relative flex flex-col flex-shrink-0 w-72 h-full bg-gray-50 overflow-auto pb-16 border-r border-gray-100">
 
 					<div className="flex flex-col px-6 py-10 w-72">
 						<label className="text-3xl font-medium text-gray-700">Filtros</label>
@@ -184,7 +199,7 @@ const Activities = ({
 						</div>		
 						
 						{/* Botón */}
-						<div className="flex flex-col px-3 py-3">
+						<div className="fixed bottom-0 left-0 flex flex-col px-3 py-3 w-72 bg-gray-50">
 							<button type="submit" className="btn-primary">Aplicar Filtros</button>
 						</div>
 
@@ -193,8 +208,7 @@ const Activities = ({
 				</div>
 
 				{/* Actividades */}
-
-				<div cassName="flex flex-col w-full p-3 space-y-2">					
+				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto">
 					{
 						listActivities.map(activity => {
 							return (	
@@ -216,9 +230,9 @@ const Activities = ({
 				
 				</div>
 
-				{/** Mapa */}
-				<div className="flex flex-row">
-					<MapContainer 
+				{/* Mapa */}
+				<div id="map" className="hidden xl:flex flex-col w-96 h-full max-h-full">
+					<MapContainer
 						containerStyle={containerStyle}
 						center={center}
 						zoom={12}
@@ -228,7 +242,7 @@ const Activities = ({
 
 			</div>
 
-		</>
+		</div>
 	)
 }
 
