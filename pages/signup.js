@@ -42,105 +42,6 @@ const Signup = ({ tags }) => {
 	const [signUpPage, setSignUpPage] = useState(1)
 	const [showImg, setShowImg] = useState(false)
 
-	function RoleSelection(props) {
-		if (selectedRole === '2') {
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>
-							<label className="text-gray-800">Nombre: </label>
-							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
-								value = {nameValue}
-								onChange = { (e) => setName(e.target.value)} 
-								required
-								key="user1"/>
-						</div>
-						<div>
-							<label className="text-gray-800">Apellidos: </label>
-							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
-								value = {surnameValue}
-								onChange = { (e) => setSurname(e.target.value)} 
-								key="user2"/>
-						</div>
-					</div>
-				</>
-			)
-		} 
-		return(
-			<>
-				<div className="space-y-4 items-center font-medium"key='shop1'>
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
-							value = {nameValue}
-							onChange = { (e) => setName(e.target.value)} 
-							required
-							key="shop1"/>
-					</div>
-				</div>
-			</>
-		)
-	}
-
-	function ShowPassword(props) {
-		if(!pswVisible){
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>
-							<label className="text-gray-800">Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="password" 
-								id="pass" 
-								name="pass" 
-								placeholder=" Contraseña"
-								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}/>
-						</div>
-						<div>
-							<label className="text-gray-800">Repita Su Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="password" 
-								id="passRepe" 
-								name="passRepe" 
-								placeholder=" Repita su contraseña"
-								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}/>
-						</div>
-					</div>
-				</>
-			)
-		} else if(pswVisible) {
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>						
-							<label className="text-gray-800">Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="text" 
-								placeholder=" Contraseña"
-								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}/>
-						</div>
-						<div>
-							<label className="text-gray-800">Repita Su Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="text" 
-								placeholder=" Repita su contraseña"
-								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}/>
-						</div>
-					</div>
-				</>
-			)
-		}
-		
-	}
-
 	const handleSubmit = async event => {
 		event.preventDefault()
 
@@ -214,28 +115,20 @@ const Signup = ({ tags }) => {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
-			})
-			.then(response => {
-				if (response.ok)
-					return response.json()})
+			}
+		).then(response => {
+			if (response.ok)
+				return response.json()
+			}
+		)
+
 		if(!isNaN(res)) {
 			router.push('/')
 		}
-			
 	}
 
 	const handleCancel = async event =>{
 		router.push('/')
-	}
-
-	function showPSW() {
-		var x = document.getElementById('pass')
-		if(x.type === 'password') {
-			x.type = 'text'
-		} else {
-			x.type = 'password'
-		}
-		
 	}
 
 	const previusPage = () => {
@@ -337,6 +230,44 @@ const Signup = ({ tags }) => {
 						</button>
 					</div>
 				</div>
+				{/*Nick */}
+				<div className="flex flex-col space-y-1">
+						<p className="text-sm">Nick</p>
+						<input
+							className="input w-full"
+							value = {nickValue}
+							onChange = { (e) => setNick(e.target.value)}
+							required
+							autoFocus
+						/>
+				</div>
+			</>
+		)
+	}
+
+	function pageThree() {
+		return(
+			<>
+				<div className="flex flex-col space-y-1">
+					<p className="text-sm">Contraseña</p>
+					<input
+						className="input w-full"
+						value = {passwordValue}
+						onChange = { (e) => setPassword(e.target.value)}
+						required
+						autoFocus
+					/>
+				</div>
+				<div className="flex flex-col space-y-1">
+					<p className="text-sm">Repetir contraseña</p>
+					<input
+						className="input w-full"
+						value = {passbiValue}
+						onChange = { (e) => setPassbi(e.target.value)}
+						required
+						autoFocus
+					/>
+				</div>
 			</>
 		)
 	}
@@ -359,12 +290,10 @@ const Signup = ({ tags }) => {
 								<p className="text-xs text-gray-400">{signUpPage} de 3</p>
 								<p className="text-2xl text-gray-600">
 									{(signUpPage === 1)
-										? 'Datos personales'
-										: (signUpPage === 2)
-											? 'Perfil'
-											: (signUpPage === 3)
-												? 'Seguridad'
-												: ''}
+										? 'Datos personales' : (signUpPage === 2)
+											? 'Perfil' : (signUpPage === 3)
+												? 'Seguridad' : ''
+									}
 								</p>
 							</div>
 
@@ -372,7 +301,7 @@ const Signup = ({ tags }) => {
 								
 								{(signUpPage === 1) && pageOne()}
 								{(signUpPage === 2) && pageTwo()}
-								{(signUpPage === 3) && pageOne()}
+								{(signUpPage === 3) && pageThree()}
 
 								{/*Botones atrás y siguiente */}
 								<div className="flex flex-row justify-between space-x-4 items-center">
@@ -383,13 +312,19 @@ const Signup = ({ tags }) => {
 									>
 										{(signUpPage === 1) ? 'Cancelar' : 'Atrás'}
 									</button>
-									<button 
+									{(signUpPage !== 3) && <button 
 										type="button"
 										className="btn-primary w-full"
-										onClick={()=> (signUpPage === 3) ? handleSubmit() : nextPage()}
+										onClick={()=> nextPage()}
 									>
-										{(signUpPage === 3) ? 'Crear cuenta' : 'Siguiente'}
-									</button>
+										Siguiente
+									</button>}
+									{(signUpPage === 3) && <button 
+										type="submit"
+										className="btn-primary w-full"
+									>
+										Crear cuenta
+									</button>}
 								</div>
 								<div className="relative flex flex-row justify-center space-x-2">
 									<p className="text-sm text-gray-400 font-medium">¿Ya eres miembro?</p>
@@ -410,7 +345,7 @@ const Signup = ({ tags }) => {
 export async function getServerSideProps() {
 
 	const tags = await fetch(`${url}/api/getAllTags`)
-			 .then(response => response.json())
+		.then(response => response.json())
 	
 	return{
 		props:{
