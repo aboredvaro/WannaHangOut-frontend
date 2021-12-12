@@ -77,7 +77,7 @@ const Navbar = ({}) => {
 	}
 
 	return (
-		<div className='flex flex-row justify-start md:justify-between items-center px-3 sm:px-6 w-full h-16 sm:h-20 border-b border-gray-100 bg-white'>
+		<div className='flex flex-row flex-shrink-0 justify-start md:justify-between items-center px-3 sm:px-6 w-full h-16 sm:h-20 border-b border-gray-100 bg-white z-50'>
 
 			{/* Logo y búsqueda */}
 			<div className={`flex flex-row items-center ${searchFocused ? 'space-x-0 md:space-x-6' : 'space-x-6'} w-full md:w-auto`}>
