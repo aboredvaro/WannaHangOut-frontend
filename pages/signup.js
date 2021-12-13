@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
@@ -31,8 +31,11 @@ const Signup = ({ tags }) => {
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
-	const [pswMatch, setPswMatch] = useState(false)
 	const [signUpPage, setSignUpPage] = useState(1)
+
+	useEffect(() => {
+		alert('A')
+	},[passwordValue])
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -230,12 +233,11 @@ const Signup = ({ tags }) => {
 						<div className="flex flex-col justify-between space-y-10">
 							{/*N. pagina*/}
 							<div className="flex flex-col space-y-1">
-								<p className="text-xs text-gray-400">{signUpPage} de 3</p>
+								<p className="text-xs text-gray-400">{signUpPage} de 2</p>
 								<p className="text-2xl text-gray-600">
 									{(signUpPage === 1)
 										? 'Datos personales' : (signUpPage === 2)
-											? 'Perfil' : (signUpPage === 3)
-												? 'Seguridad' : ''
+											? 'Seguridad' : ''
 									}
 								</p>
 							</div>
