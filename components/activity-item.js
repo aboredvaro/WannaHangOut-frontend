@@ -10,12 +10,18 @@ const ActivityItem = ({
 	const [entity,setEntity] = useState(null)
 	const [address,setAddress] = useState(null)
 	//const [score,setScore] = useState(null)
-	//const [urlImage, setUrlImage] = useState(null)
+	const [urlImage, setUrlImage] = useState(null)
 
 	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 	
 	useEffect(() => {
 		const getProps = async() => {
+			
+			const imageAux = await fetch(`${url}/api/getImageByIdActivity?id_activity=${3}&?cant=${1}`)
+				.then(response => response.json())
+
+			console.log(imageAux)
+
 			const entityAux = await fetch(`${url}/api/getEntityByID?id_entity=${activity.id_entity_creator}`)
 				.then(response => response.json())
 
@@ -25,12 +31,10 @@ const ActivityItem = ({
 			//const scoreAux = await fetch(`${url}/api/getAverageScoreByEntityCreator?id_entity_creator=${activity.id_entity_creator}`)
 			//.then(response => response.json())
 
-			//const imageAux = await fetch(`${url}/api/getImagesOfActivity?id_activity=${3}`)
-			//	.then(response => response.json)
-
 			setEntity(entityAux)
 			setAddress(addressAux)
-			//setUrlImage(image)
+			//setScore(scoreAux[1])
+			//setUrlImage(imageAux)
 		}
 
 		getProps()
@@ -80,7 +84,9 @@ const ActivityItem = ({
 					</div>
 
 					<div>
-						{/** FOTO ACT */}
+						{/** 
+							<img className="object-cover w-8 h-8 rounded-full" src={urlImage && urlImage.urlPath} alt="Foto Actividad"/>
+						*/}
 					</div>
 				</div>
 			</Link>

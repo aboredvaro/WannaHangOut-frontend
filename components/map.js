@@ -16,7 +16,7 @@ const MapContainer = ({
 			<Map
 				google = {google}
 				zoom = {zoom}
-				mapId = '5790ab52515cbbb9'	// NO FURULA
+				mapId = {process.env. APIKEY_GOOGLE_MAP_ID}	// NO FURULA 5790ab52515cbbb9
 				initialCenter = {center}
 				containerStyle = {containerStyle}
 			>

@@ -72,11 +72,11 @@ const Activities = ({
 					location: getSelectedLocation(),
 					price_min: event.target.precioMin.value, // ?
 					price_max: event.target.precioMax.value, // ?
-					min_duration_min: unde, // No se le pasa
+					min_duration_min: undefined, // No se le pasa
 					min_duration_max: undefined, // No se le pasa
 					seats_min: undefined, // No se le pasa
 					seats_max: undefined, // No se le pasa
-					dateAct_min: event.target.dateMin.value, // Fecha de hoy
+					dateAct_min: , // Fecha de hoy
 					dateAct_max: event.target.dateMax.value, // Fecha del input
 					id_tags: getSelectedTags(),
 					id_entity_creator: undefined
