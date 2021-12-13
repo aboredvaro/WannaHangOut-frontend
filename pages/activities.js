@@ -63,17 +63,6 @@ const Activities = ({
 		return selected
 	}
 
-	function getSelectedEntity(){
-		var selectElement = document.querySelector('#id_entity')
-		var selected = selectElement.value
-
-		if(selected == ''){
-			return undefined
-		}
-
-		return selected
-	}
-
 	const handleSubmit = async event => {
 		event.preventDefault()
 
@@ -81,16 +70,16 @@ const Activities = ({
 			`${url}/api/filterActivitiesBy`,{
 				body: JSON.stringify({
 					location: getSelectedLocation(),
-					price_min: event.target.precioMin.value, // No se pasa
-					price_max: event.target.precioMax.value, 
-					min_duration_min: event.target.duracionMin.value, // No se le pasa
-					min_duration_max:event.target.duracionMax.value, // No se le pasa
-					seats_min: event.target.plazasMin.value, // No se le pasa
-					seats_max: event.target.plazasMax.value, // No se le pasa
+					price_min: event.target.precioMin.value, // ?
+					price_max: event.target.precioMax.value, // ?
+					min_duration_min: unde, // No se le pasa
+					min_duration_max: undefined, // No se le pasa
+					seats_min: undefined, // No se le pasa
+					seats_max: undefined, // No se le pasa
 					dateAct_min: event.target.dateMin.value, // Fecha de hoy
 					dateAct_max: event.target.dateMax.value, // Fecha del input
 					id_tags: getSelectedTags(),
-					id_entity_creator: getSelectedEntity()
+					id_entity_creator: undefined
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -148,7 +137,7 @@ const Activities = ({
 							<div className="flex flex-row items-center px-3 py-2 mx-3 mb-3">
 								<div className="flex flex-col">
 									<label className="text-sm font-medium text-gray-700">Fecha </label>
-									<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
+									<input type="date" id="dateMax" name="dateMax" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
 								</div>
 							</div>
 
@@ -207,9 +196,9 @@ const Activities = ({
 				</div>
 
 				{/* Actividades */}
-				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto">
+				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto divide-y-2 divide-gray-100">
 				
-					{
+					{ listActivities && (
 						listActivities.map(act=> {
 							return (	
 								<ActivityItem
@@ -218,6 +207,8 @@ const Activities = ({
 								/>
 							)
 						})
+					)
+						
 					}
 				
 				</div>

@@ -11,18 +11,12 @@ const MapContainer = ({
 
 	//const [selectedActivity, setSelectedActivity] = useState(null)
 
-	const mapStyles = {
-		width: '100%',
-		height: '100%'
-	}
-
 	return (
 		<div className="relative flex flex-col w-full h-full">
 			<Map
 				google = {google}
 				zoom = {zoom}
-				style = {mapStyles}
-				mapId = {process.env.APIKEY_GOOGLE_MAP_ID}
+				mapId = '5790ab52515cbbb9'	// NO FURULA
 				initialCenter = {center}
 				containerStyle = {containerStyle}
 			>
