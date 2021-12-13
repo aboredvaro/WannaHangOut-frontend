@@ -211,19 +211,11 @@ const Activities = ({
 				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto">
 				
 					{
-						listActivities.map(activity => {
+						listActivities.map(act=> {
 							return (	
 								<ActivityItem
-									key={activity.id_activity}
-									id_activity={activity.id_activity}
-									title={activity.title}
-									description={activity.description}
-									id_entity_host={activity.id_entity_creador}
-									seats={activity.seats}
-									price={activity.price}
-									location={activity.location}
-									dateAct={activity.dateAct}
-									min_duration={activity.min_duration}
+									key={act.id_activity}
+									activity={act}
 								/>
 							)
 						})
