@@ -80,7 +80,7 @@ const Signup = ({ tags }) => {
 		).then(response => {
 			if (response.ok)
 				return response.json()
-			}
+		}
 		)
 
 		if(!isNaN(res)) {
@@ -103,52 +103,34 @@ const Signup = ({ tags }) => {
 	function pageOne() {
 		return(
 			<>
-				{/*Nombre y apellido */}
-				<div className="flex flex-row justify-between space-x-4 items-center">
-					<div className="flex flex-col space-y-1">
+				{/*Nombre */}
+				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500'>*</p>
 						<p className="text-sm">Nombre</p>
-						<input
-							className="input w-full"
-							value = {nameValue}
-							onChange = { (e) => setName(e.target.value)} 
-							required
-							autoFocus
-						/>
 					</div>
-					<div className="flex flex-col space-y-1">
-						<p className="text-sm">Apellido</p>
-						<input
-							className="input w-full"
-							value = {surnameValue}
-							onChange = { (e) => setSurname(e.target.value)}
-							required
-							autoFocus
-						/>
-					</div>
+					<input
+						className="input w-full"
+						value = {nameValue}
+						onChange = { (e) => setName(e.target.value)} 
+						required
+						autoFocus
+					/>
 				</div>
-
+					
 				{/*Correo */}
 				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500'>*</p>
 						<p className="text-sm">Correo</p>
-						<input
-							className="input w-full"
-							value = {emailValue}
-							onChange = { (e) => setEmail(e.target.value)}
-							required
-							autoFocus
-						/>
-				</div>
-
-				{/*Telf */}
-				<div className="flex flex-col space-y-1">
-						<p className="text-sm">Teléfono</p>
-						<input
-							className="input w-full"
-							value = {phoneValue}
-							onChange = { (e) => setPhone(e.target.value)}
-							required
-							autoFocus
-						/>
+					</div>
+					<input
+						className="input w-full"
+						value = {emailValue}
+						onChange = { (e) => setEmail(e.target.value)}
+						required
+						autoFocus
+					/>
 				</div>
 			</>
 		)
@@ -157,63 +139,15 @@ const Signup = ({ tags }) => {
 	function pageTwo() {
 		return(
 			<>
-				{/*Foto de perfil */}
-				<div className="flex flex-row justify-center">
-					<div className="h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full">
-						{/*<PersonOutline 
-							color={'#BDBDBD'} 
-							title={'defaultUserImg'}
-							height="40px"
-							width="40px"
-						/>*/}
-						<img 
-							className="object-cover h-28 w-28 flex flex-row justify-center items-center bg-gray-100 rounded-full" 
-							src={photoValue} alt={''} 
-						/>
-					</div>
-				</div>
-				<div className="flex flex-col space-y-1">
-					<p className="text-sm">URL de imagen</p>
-					<div className="flex flex-row space-x-2">
-						<input
-							className="input w-full"
-							value = {photoValue}
-							onChange = { (e) => setPhoto(e.target.value)}
-							required
-							autoFocus
-						/>
-						<button 
-							type="button"
-							className="btn-terciary w-24"
-							onClick={()=> setPhoto('')}
-						>
-							Borrar
-						</button>
-					</div>
-				</div>
-				{/*Nick */}
-				<div className="flex flex-col space-y-1">
-						<p className="text-sm">Nick</p>
-						<input
-							className="input w-full"
-							value = {nickValue}
-							onChange = { (e) => setNick(e.target.value)}
-							required
-							autoFocus
-						/>
-				</div>
-			</>
-		)
-	}
-
-	function pageThree() {
-		return(
-			<>
 				{/*Contraseña */}
 				<div className="flex flex-col space-y-1">
-					<p className="text-sm">Contraseña</p>
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500'>*</p>
+						<p className="text-sm">Contraseña</p>
+					</div>
 					<input
 						className="input w-full"
+						type='password'
 						value = {passwordValue}
 						onChange = { (e) => setPassword(e.target.value)}
 						required
@@ -222,7 +156,7 @@ const Signup = ({ tags }) => {
 				</div>
 
 				{/*Indicadores y alertas */}
-				<div className="flex flex-col space-y-1">
+				{false && <div className="flex flex-col space-y-1">
 					{/*Barritas */}
 					<div className='flex flex-row justify-center space-x-0.5'>
 						<div className='w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'/>
@@ -235,19 +169,23 @@ const Signup = ({ tags }) => {
 					<div className='flex flex-row justify-between'>
 						<p className="text-xs text-gray-700">Usa mínimo una minúscula</p>
 						<HelpCircleOutline
-						color={'#616161'}
+							color={'#616161'}
 							title={'ha?'}
 							height="16px"
 							width="16px"
 						/>
 					</div>
-				</div>
+				</div>}
 
 				{/*Repetir contraseña */}
 				<div className="flex flex-col space-y-1">
-					<p className="text-sm">Repetir contraseña</p>
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500'>*</p>
+						<p className="text-sm">Repetir contraseña</p>
+					</div>
 					<input
 						className="input w-full"
+						type='password'
 						value = {passbiValue}
 						onChange = { (e) => setPassbi(e.target.value)}
 						required
@@ -255,7 +193,7 @@ const Signup = ({ tags }) => {
 					/>
 
 					{/*Contraseñas coinciden! Viva! */}
-					<div className='flex fle-row justify-start space-x-1'>
+					{false && <div className='flex fle-row justify-start space-x-1'>
 						<CheckmarkCircle
 							color={'#4CAF50'} 
 							title={'Tick'}
@@ -263,7 +201,7 @@ const Signup = ({ tags }) => {
 							width="16px"
 						/>
 						<p className="text-xs">Las contraseñas coinciden</p>
-					</div>
+					</div>}
 				</div>
 			</>
 		)
@@ -298,7 +236,6 @@ const Signup = ({ tags }) => {
 								
 								{(signUpPage === 1) && pageOne()}
 								{(signUpPage === 2) && pageTwo()}
-								{(signUpPage === 3) && pageThree()}
 
 								{/*Botones atrás y siguiente */}
 								<div className="flex flex-row justify-between space-x-4 items-center">
@@ -309,14 +246,14 @@ const Signup = ({ tags }) => {
 									>
 										{(signUpPage === 1) ? 'Cancelar' : 'Atrás'}
 									</button>
-									{(signUpPage !== 3) && <button 
+									{(signUpPage !== 2) && <button 
 										type="button"
 										className="btn-primary w-full"
 										onClick={()=> nextPage()}
 									>
 										Siguiente
 									</button>}
-									{(signUpPage === 3) && <button 
+									{(signUpPage === 2) && <button 
 										type="submit"
 										className="btn-primary w-full"
 									>
