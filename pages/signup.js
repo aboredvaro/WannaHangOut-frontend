@@ -21,17 +21,13 @@ const Signup = ({ tags }) => {
 		return array.length>0?array:''
 	}
 
-	//const [selectedRole, setSelectedRole] = useState('2')
-	//const [nickValue, setNick] = useState('')
 	const [nameValue, setName] = useState('')
-	//const [surnameValue, setSurname] = useState('')
-	//const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
-	//const [phoneValue, setPhone] = useState('')
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
-	//const [photoValue, setPhoto] = useState('')
 	const [signUpPage, setSignUpPage] = useState(1)
+	const [checkPsw, setCheckPsw] = useState('')
+	const [ticks, setTicks] = useState(0)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -100,15 +96,35 @@ const Signup = ({ tags }) => {
 		4. Un símbolo
 		5. 8 caracteres
 	*/
-	{/*ASI SE TIENE Q COMPROBAR LAS COSAS: PRIMERO SE COMPRUEBA LA LOGICA DESPUES SE GUARDA EN EL USESTATE */}
-	const handleName = (a) => {
-		if(/\d/.test(a)) {
-			alert('Nombre no puede tener un número')
+	const handlePsw = (psw) => {
+		setCheckPsw('')
+		var cont = 0
+		console.log(ticks)
+		if(psw === '') {
+			setPassword(psw)
+			return false
 		}
-		setName(a)
+		if(!(psw.length >= 8)){
+			setCheckPsw('Debe contener al menos 8 carácteres')
+		} else cont = cont + 1
+		if(!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(psw)){
+			setCheckPsw('Usa mínimo un símbolo')
+		} else cont = cont + 1
+		if(!/\d/.test(psw)) {
+			setCheckPsw('Usa mínimo un número')
+		} else cont = cont + 1
+		if(!/[A-Z]/.test(psw)) {
+			setCheckPsw('Usa mínimo una mayúscula')
+		} else cont = cont + 1
+		if(!/[a-z]/.test(psw)) {
+			setCheckPsw('Usa mínimo una minúscula')
+		} else cont = cont + 1
+
+		setTicks(cont)
+		setPassword(psw)
 	}
 
-	const handleCancel = async event =>{
+	const handleCancel = async event => {
 		router.push('/')
 	}
 
@@ -117,7 +133,13 @@ const Signup = ({ tags }) => {
 	}
 
 	const nextPage = () => {
-		setSignUpPage(signUpPage + 1)
+		if(/\d/.test(nameValue)) {
+			alert('El nombre no puede contener números')
+		}
+		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
+			alert('El email introducido no es válido')
+		}
+		else { setSignUpPage(signUpPage + 1) }
 	}
 
 	function pageOne() {
@@ -132,7 +154,7 @@ const Signup = ({ tags }) => {
 					<input
 						className="input w-full"
 						value = {nameValue}
-						onChange = { (e) => handleName(e.target.value)} 
+						onChange = { (e) => setName(e.target.value)} 
 						required
 						autoFocus
 					/>
@@ -170,8 +192,7 @@ const Signup = ({ tags }) => {
 						type='password'
 						value = {passwordValue}
 						onChange = { (e) => {
-							setPassword(e.target.value)
-							checkPsw()
+							handlePsw(e.target.value)
 						}}
 						required
 						autoFocus
@@ -179,18 +200,18 @@ const Signup = ({ tags }) => {
 				</div>
 
 				{/*Indicadores y alertas */}
-				{false && <div className="flex flex-col space-y-1">
+				{<div className="flex flex-col space-y-1">
 					{/*Barritas */}
 					<div className='flex flex-row justify-center space-x-0.5'>
-						<div className='w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'/>
-						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
-						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
-						<div className='w-18.4 h-1 shadow-card bg-gray-300'/>
-						<div className='w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'/>
+						<div className={(ticks > 0) ? 'w-18.4 h-1 rounded-l-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'} />
+						<div className={(ticks > 1) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(ticks > 2) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(ticks > 3) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(ticks > 4) ? 'w-18.4 h-1 rounded-r-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'} />
 					</div>
 					{/*Alerta + (?) */}
 					<div className='flex flex-row justify-between'>
-						<p className="text-xs text-gray-700">Usa mínimo una minúscula</p>
+						<p className="text-xs text-gray-700">{checkPsw}</p>
 						<HelpCircleOutline
 							color={'#616161'}
 							title={'ha?'}
