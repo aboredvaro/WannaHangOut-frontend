@@ -4,7 +4,7 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { PersonOutline, CheckmarkCircle, HelpCircleOutline } from 'react-ionicons'
+import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -31,7 +31,7 @@ const Signup = ({ tags }) => {
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
 	const [photoValue, setPhoto] = useState('')
-	const [pswVisible, setPswVisible] = useState(false)
+	const [pswMatch, setPswMatch] = useState(false)
 	const [signUpPage, setSignUpPage] = useState(1)
 
 	const handleSubmit = async event => {
@@ -45,8 +45,7 @@ const Signup = ({ tags }) => {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST'
-		})
-			.then(response => { if (response.ok) return response.json() })
+		}).then(response => { if (response.ok) return response.json() })
 		
 		if(ses) {
 			alert('Nick en uso')
@@ -78,10 +77,8 @@ const Signup = ({ tags }) => {
 				method: 'POST'
 			}
 		).then(response => {
-			if (response.ok)
-				return response.json()
-		}
-		)
+			if (response.ok) return response.json()
+		})
 
 		if(!isNaN(res)) {
 			router.push('/')
@@ -187,7 +184,7 @@ const Signup = ({ tags }) => {
 						className="input w-full"
 						type='password'
 						value = {passbiValue}
-						onChange = { (e) => setPassbi(e.target.value)}
+						onChange = { (e) => {setPassbi(e.target.value)}}
 						required
 						autoFocus
 					/>
@@ -201,6 +198,17 @@ const Signup = ({ tags }) => {
 							width="16px"
 						/>
 						<p className="text-xs">Las contraseñas coinciden</p>
+					</div>}
+
+					{/*Fallo! :( */}
+					{false && <div className='flex fle-row justify-start space-x-1'>
+						<CloseCircle
+							color={'#F44336'}
+							title={'Bad password'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">¡Las contraseñas no coinciden!</p>
 					</div>}
 				</div>
 			</>
