@@ -21,26 +21,31 @@ const Signup = ({ tags }) => {
 		return array.length>0?array:''
 	}
 
-	const [selectedRole, setSelectedRole] = useState('2')
-	const [nickValue, setNick] = useState('')
+	//const [selectedRole, setSelectedRole] = useState('2')
+	//const [nickValue, setNick] = useState('')
 	const [nameValue, setName] = useState('')
-	const [surnameValue, setSurname] = useState('')
-	const [descriptionValue, setDescription] = useState('')
+	//const [surnameValue, setSurname] = useState('')
+	//const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
-	const [phoneValue, setPhone] = useState('')
+	//const [phoneValue, setPhone] = useState('')
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
-	const [photoValue, setPhoto] = useState('')
+	//const [photoValue, setPhoto] = useState('')
 	const [signUpPage, setSignUpPage] = useState(1)
-
-	useEffect(() => {
-		alert('A')
-	},[passwordValue])
 
 	const handleSubmit = async event => {
 		event.preventDefault()
 
-		const ses = await fetch(`${url}/api/existNick`, {
+		const req = JSON.stringify({	
+			id_role: 2,
+			name: nameValue,
+			mail: emailValue,
+			pass: passwordValue
+		})
+
+		alert(req)
+
+		/*const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
 				nick: nickValue
 			}),
@@ -85,8 +90,22 @@ const Signup = ({ tags }) => {
 
 		if(!isNaN(res)) {
 			router.push('/')
-		}
+		}*/
 	}
+
+	/*
+		1. Una minúscula
+		2. Una mayúscula
+		3. Un número
+		4. Un símbolo
+		5. 8 caracteres
+	*/
+	useEffect(() => {
+		const regex = /\d/
+		if(regex.test(passwordValue)) {
+			alert('Tiene un numero')
+		}
+	},[passwordValue])
 
 	const handleCancel = async event =>{
 		router.push('/')
@@ -149,7 +168,10 @@ const Signup = ({ tags }) => {
 						className="input w-full"
 						type='password'
 						value = {passwordValue}
-						onChange = { (e) => setPassword(e.target.value)}
+						onChange = { (e) => {
+							setPassword(e.target.value)
+							checkPsw()
+						}}
 						required
 						autoFocus
 					/>
