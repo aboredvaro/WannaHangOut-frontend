@@ -100,12 +100,13 @@ const Signup = ({ tags }) => {
 		4. Un símbolo
 		5. 8 caracteres
 	*/
-	useEffect(() => {
-		const regex = /\d/
-		if(regex.test(passwordValue)) {
-			alert('Tiene un numero')
+	{/*ASI SE TIENE Q COMPROBAR LAS COSAS: PRIMERO SE COMPRUEBA LA LOGICA DESPUES SE GUARDA EN EL USESTATE */}
+	const handleName = (a) => {
+		if(/\d/.test(a)) {
+			alert('Nombre no puede tener un número')
 		}
-	},[passwordValue])
+		setName(a)
+	}
 
 	const handleCancel = async event =>{
 		router.push('/')
@@ -131,7 +132,7 @@ const Signup = ({ tags }) => {
 					<input
 						className="input w-full"
 						value = {nameValue}
-						onChange = { (e) => setName(e.target.value)} 
+						onChange = { (e) => handleName(e.target.value)} 
 						required
 						autoFocus
 					/>
