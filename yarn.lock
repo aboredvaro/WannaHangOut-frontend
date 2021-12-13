@@ -763,6 +763,30 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
+blueimp-canvas-to-blob@3:
+  version "3.29.0"
+  resolved "https://registry.yarnpkg.com/blueimp-canvas-to-blob/-/blueimp-canvas-to-blob-3.29.0.tgz#d965f06cb1a67fdae207a2be56683f55ef531466"
+  integrity sha512-0pcSSGxC0QxT+yVkivxIqW0Y4VlO2XSDPofBAqoJ1qJxgH9eiUDLv50Rixij2cDuEfx4M6DpD9UGZpRhT5Q8qg==
+
+blueimp-file-upload@^10.32.0:
+  version "10.32.0"
+  resolved "https://registry.yarnpkg.com/blueimp-file-upload/-/blueimp-file-upload-10.32.0.tgz#897c91f813ccf4b6cd14db2da3da237ce433e04e"
+  integrity sha512-3WMJw5Cbfz94Adl1OeyH+rRpGwHiNHzja+CR6aRWPoAtwrUwvP5gXKo0XdX+sdPE+iCU63Xmba88hoHQmzY8RQ==
+  optionalDependencies:
+    blueimp-canvas-to-blob "3"
+    blueimp-load-image "5"
+    blueimp-tmpl "3"
+
+blueimp-load-image@5:
+  version "5.16.0"
+  resolved "https://registry.yarnpkg.com/blueimp-load-image/-/blueimp-load-image-5.16.0.tgz#16b763f57e6725f8865517bca8eb7c3dc7d41e09"
+  integrity sha512-3DUSVdOtlfNRk7moRZuTwDmA3NnG8KIJuLcq3c0J7/BIr6X3Vb/EpX3kUH1joxUhmoVF4uCpDfz7wHkz8pQajA==
+
+blueimp-tmpl@3:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/blueimp-tmpl/-/blueimp-tmpl-3.20.0.tgz#bed897db362c70d3740e0ad1020ce84bfa15ceaa"
+  integrity sha512-g6ln9L+VX8ZA4WA8mgKMethYH+5teroJ2uOkCvcthy9Y9d9LrQ42OAMn+r3ECKu9CB+xe9GOChlIUJBSxwkI6g==
+
 bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.9:
   version "4.12.0"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.12.0.tgz#775b3f278efbb9718eec7361f483fb36fbbfea88"
@@ -1009,6 +1033,21 @@ classnames@2.2.6:
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
 
+cloudinary-core@^2.10.2:
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/cloudinary-core/-/cloudinary-core-2.12.0.tgz#fe20231e7bf6a52116c61a2a03c04fcc60b968a3"
+  integrity sha512-EXvnWuq3Ah6pZHB2vEfkrJ4tCGlccZo3xsmt1f+bmrB53jU42ZrnX+v8xKRMot9c/STSO7GPbxbhJQ/z/xRazg==
+
+cloudinary@^1.27.1:
+  version "1.27.1"
+  resolved "https://registry.yarnpkg.com/cloudinary/-/cloudinary-1.27.1.tgz#41abace12827dd1edc06ff511d8da2e261b3845f"
+  integrity sha512-NrSVdzD2yJUMwL4UTfOjlq+bkc88SaNoZjhibLnpI40c46vfIlz2Y77R9HfgYIQ1Lx/k+U1WKZuiQ5Z2Wd2Dsg==
+  dependencies:
+    cloudinary-core "^2.10.2"
+    core-js "3.6.5"
+    lodash "^4.17.11"
+    q "^1.5.1"
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -1097,6 +1136,11 @@ core-js-pure@^3.19.0:
   version "3.19.1"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.19.1.tgz#edffc1fc7634000a55ba05e95b3f0fe9587a5aa4"
   integrity sha512-Q0Knr8Es84vtv62ei6/6jXH/7izKmOrtrxH9WJTHLCMAVeU+8TF8z8Nr08CsH4Ot0oJKzBzJJL9SJBYIv7WlfQ==
+
+core-js@3.6.5:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
+  integrity sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA==
 
 core-js@^1.0.0:
   version "1.2.7"
@@ -3183,6 +3227,11 @@ purgecss@^4.0.3:
     glob "^7.1.7"
     postcss "^8.3.5"
     postcss-selector-parser "^6.0.6"
+
+q@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
 querystring-es3@0.2.1, querystring-es3@^0.2.0:
   version "0.2.1"
