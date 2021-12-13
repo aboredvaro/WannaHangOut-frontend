@@ -9,7 +9,6 @@ import { Listbox } from '@headlessui/react'
 const Activities = ({
 	activities,
 	locations,
-	entities,
 	tags,
 	addressList
 }) => {
@@ -247,9 +246,6 @@ export async function getServerSideProps() {
 	const locations = await fetch(`${url}/api/getLocationWithActivities`)
 		.then(response => response.json())
 
-	const entities = await fetch(`${url}/api/getEntitiesWithActivities`)
-		.then(response => response.json())
-
 	const tags = await fetch(`${url}/api/getAllTags`)
 	 	.then(response => response.json())
 
@@ -260,7 +256,6 @@ export async function getServerSideProps() {
   	props:{
 	   	activities,
 			locations,
-			entities,
 			tags,
 			addressList
    		}

@@ -22,6 +22,7 @@ const MapContainer = ({
 				google = {google}
 				zoom = {zoom}
 				style = {mapStyles}
+				mapId = {process.env.APIKEY_GOOGLE_MAP_ID}
 				initialCenter = {center}
 				containerStyle = {containerStyle}
 			>

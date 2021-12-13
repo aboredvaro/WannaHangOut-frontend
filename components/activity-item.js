@@ -32,11 +32,11 @@ const ActivityItem = ({
 		<>
 
 			<Link href={`/activity?id=${activity.id_activity}`} passHref>
-				<div className="flex flex-row w-full p-3 space-x-4 items-center bg-orange-100">
+				<div className="flex flex-row w-full p-3 space-x-4 items-center">
 
 					<div className="flex flex-col h-full justify-between">
 						
-						<div className="flex flex-col">
+						<div className="flex flex-col pb-3">
 							<label className="text-xl font-semibold text-gray-700">{activity.title}</label>
 							<label className="text-xs font-regular text-orange-600">{new Date(activity.dateAct).toLocaleDateString()}</label>
 
@@ -47,18 +47,21 @@ const ActivityItem = ({
 							</div>
 						</div>
 
-						<div className="flex flex-row">
-							<img className="object-cover w-8 h-8 mr-2 rounded-full" src={entity && entity.avatar} alt="Foto Perfil"/>
-							<div className="flex flex-row">
-								<div className="flex flex-col">
-									<label className="text-xs font-medium text-gray-700">{entity && entity.nick}</label>
-									<label className="text-supporting-1 font-regular text-gray-400">3.4 sobre 5.0</label>
-								</div>
+						<div className="flex flex-row space-x-2 items-center">
+							<img className="object-cover w-8 h-8 rounded-full" src={entity && entity.avatar} alt="Foto Perfil"/>
+							<div className="flex flex-col">
+								<label className="text-xs font-medium text-gray-700">{entity && entity.nick}</label>
+								<label className="text-supporting-2 font-regular text-gray-400">3.4 sobre 5.0</label>
 							</div>
 
-							<div className="flex flex-row">
-								<div></div>
-								<div></div>
+							<div className="flex flex-row space-x-2 items-end">
+								{activity.seats < 20 && 
+									<div className="flex flex-row px-2 rounded-md bg-purple-50 text-sm font-regular text-purple-600">Últimas plazas</div>
+								}	
+								{activity.price == 0 ? 
+									<div className="flex flex-row px-2 items-center justify-center rounded-md bg-gray-50 text-sm font-regular text-gray-500">Gratis</div> :
+								 	<div className="flex flex-row px-2 items-center justify-center rounded-md bg-green-50 text-sm font-regular text-green-600">{activity.price}€</div>
+								}
 							</div>
 
 						</div>
