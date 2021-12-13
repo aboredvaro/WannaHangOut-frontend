@@ -27,7 +27,8 @@ const Signup = ({ tags }) => {
 	const [passbiValue, setPassbi] = useState('')
 	const [signUpPage, setSignUpPage] = useState(1)
 	const [checkPsw, setCheckPsw] = useState('')
-	const [ticks, setTicks] = useState(0)
+	const [barritas, setBarritas] = useState(0)
+	const [match, setMatch] = useState(false)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -99,7 +100,6 @@ const Signup = ({ tags }) => {
 	const handlePsw = (psw) => {
 		setCheckPsw('')
 		var cont = 0
-		console.log(ticks)
 		if(psw === '') {
 			setPassword(psw)
 			return false
@@ -120,9 +120,25 @@ const Signup = ({ tags }) => {
 			setCheckPsw('Usa mínimo una minúscula')
 		} else cont = cont + 1
 
-		setTicks(cont)
+		setBarritas(cont)
+
+		if(cont === 5) {
+			setCheckPsw('Contraseña segura, ¡bien hecho!')
+		}
+
 		setPassword(psw)
 	}
+
+	/*const handlePswBi = (pswBi) => {
+		setMatch(false)
+		if(pswBi === '') {
+			setPassbi(pswBi)
+			return false
+		} 
+		setMatch(false)
+		(passwordValue === pswBi) ? setMatch(true) : null
+		setPassbi(pswBi)
+	}*/
 
 	const handleCancel = async event => {
 		router.push('/')
@@ -140,6 +156,21 @@ const Signup = ({ tags }) => {
 			alert('El email introducido no es válido')
 		}
 		else { setSignUpPage(signUpPage + 1) }
+	}
+
+	function tickVerde() {
+		if(barritas === 5) {
+			return(
+				<>
+					<CheckmarkCircle
+						color={'#4CAF50'} 
+						title={'Tick'}
+						height="16px"
+						width="16px"
+					/>
+				</>
+			)
+		} else return (<></>)
 	}
 
 	function pageOne() {
@@ -203,21 +234,24 @@ const Signup = ({ tags }) => {
 				{<div className="flex flex-col space-y-1">
 					{/*Barritas */}
 					<div className='flex flex-row justify-center space-x-0.5'>
-						<div className={(ticks > 0) ? 'w-18.4 h-1 rounded-l-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'} />
-						<div className={(ticks > 1) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
-						<div className={(ticks > 2) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
-						<div className={(ticks > 3) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
-						<div className={(ticks > 4) ? 'w-18.4 h-1 rounded-r-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'} />
+						<div className={(barritas > 0) ? 'w-18.4 h-1 rounded-l-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'} />
+						<div className={(barritas > 1) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 2) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 3) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 4) ? 'w-18.4 h-1 rounded-r-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'} />
 					</div>
 					{/*Alerta + (?) */}
 					<div className='flex flex-row justify-between'>
-						<p className="text-xs text-gray-700">{checkPsw}</p>
-						<HelpCircleOutline
-							color={'#616161'}
-							title={'ha?'}
-							height="16px"
-							width="16px"
-						/>
+						<div className='flex fle-row justify-start space-x-1'>
+							{tickVerde()}
+							<p className="text-xs text-gray-700">{checkPsw}</p>
+						</div>
+							<HelpCircleOutline
+								color={'#616161'}
+								title={'ha?'}
+								height="16px"
+								width="16px"
+							/>
 					</div>
 				</div>}
 
@@ -231,13 +265,13 @@ const Signup = ({ tags }) => {
 						className="input w-full"
 						type='password'
 						value = {passbiValue}
-						onChange = { (e) => {setPassbi(e.target.value)}}
+						onChange = { (e) => {handlePswBi(e.target.value)}}
 						required
 						autoFocus
 					/>
 
 					{/*Contraseñas coinciden! Viva! */}
-					{false && <div className='flex fle-row justify-start space-x-1'>
+					{match && <div className='flex fle-row justify-start space-x-1'>
 						<CheckmarkCircle
 							color={'#4CAF50'} 
 							title={'Tick'}
@@ -248,7 +282,7 @@ const Signup = ({ tags }) => {
 					</div>}
 
 					{/*Fallo! :( */}
-					{false && <div className='flex fle-row justify-start space-x-1'>
+					{!match && <div className='flex fle-row justify-start space-x-1'>
 						<CloseCircle
 							color={'#F44336'}
 							title={'Bad password'}
