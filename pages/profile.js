@@ -33,7 +33,9 @@ const Profile = ( {
 		setImgArray(imgsAux)*/
 	}
 
-	getActImg()
+	function toUpperFirst(fecha) {
+		return fecha.charAt(0).toUpperCase() + fecha.slice(1)
+	}
 	
 	return (
 		<>
@@ -89,7 +91,7 @@ const Profile = ( {
 										<div className='flex flex-col items-start space-y-4'>
 											<div className='flex flex-col items-start space-y-0'>
 												<p className='text-2xl font-semibold'>{activity.title}</p>
-												<p className='text-sm text-orange-600'>{new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+												<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
 												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
 											</div>
 
@@ -127,7 +129,7 @@ const Profile = ( {
 										<div className='flex flex-col items-start space-y-4'>
 											<div className='flex flex-col items-start space-y-0'>
 												<p className='text-2xl font-semibold'>{activity.title}</p>
-												<p className='text-sm text-orange-600'>{new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+												<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
 												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
 											</div>
 

@@ -35,14 +35,26 @@ const Signup = ({ tags }) => {
 
 		if(!match || barritas !== 5) return false
 
-		const req = JSON.stringify({	
-			id_role: 2,
-			name: nameValue,
-			mail: emailValue,
-			pass: passwordValue
+		const res = await fetch(
+			`${url}/api/createNewEntity`,{
+				body: JSON.stringify({		
+					id_role: 2,
+					name: nameValue,
+					mail: emailValue,
+					pass: passwordValue
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		).then(response => {
+			if (response.ok) return response.json()
 		})
 
-		alert(req)
+		if(!isNaN(res)) {
+			router.push('/')
+		}
 
 		/*const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
