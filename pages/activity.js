@@ -27,8 +27,8 @@ const ActivityPage = ({
 
 	const containerStyle = {
 		position: 'relative',
-		width: '1080px',
-		height: '360px'
+		width: '640px',
+		height: '260px'
 	}
 
 	const center = {
@@ -81,15 +81,15 @@ const ActivityPage = ({
 			<Navbar />
 
 			{/** Actividad */}
-			<div className="flex flex-col w-full justify-center md:h-screen md:max-h-screen md:flex-grow-0 md:flex-shrink px-28 bg-green-100">	
+			<div className="flex flex-col w-full h-full items-center px-28 bg-green-100">	
 
-				<div className="flex flex-col h-full py-28 bg-red-200">
+				<div className="flex flex-col w-auto h-full pt-28 bg-red-200">
 
 					{/** Primera parte. Foto y Titulo */}
-					<div className="flex flex-row bg-white">
-						<img className="object-cover w-160 h-80" src={'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'} alt="Foto Actividad"/>
+					<div className="flex flex-row bg-white items-stretch">
+						<img className="relative w-full max-w-screen-sm" src={'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'} alt="Foto Actividad"/>
 
-						<div className="flex flex-col h-80 p-6 justify-between">
+						<div className="flex flex-col h-full w-full border-2 border-red-400 p-6 justify-between">
 
 							{/** Información de Actividad */}
 							<div className="flex flex-col space-y-8">
@@ -147,10 +147,10 @@ const ActivityPage = ({
 					</div>
 
 					{/** Segunda parte. Descripción y demás */}
-					<div className="flex flex-row bg-white">
+					<div className="flex flex-row max-w-screen-xl bg-purple-300">
 
 						{/** Descripción,mapa,categorías y compartir*/}
-						<div className="flex flex-col space-y-10 p-10 ">
+						<div className="flex flex-col h-full space-y-10 p-10 ">
 					
 							{/** Descripción */}
 							<div className="flex flex-col space-y-3">
@@ -161,7 +161,7 @@ const ActivityPage = ({
 							{/** Mapa */}
 							<div className="flex flex-col space-y-3">
 								<label className="text-lg font-medium text-gray-700">Mapa</label>
-								<div className="flex flex-col justify-center h-64">
+								<div className="hidden xl:flex flex-col h-64 max-h-full">
 									<MapContainer
 										containerStyle={containerStyle}
 										center={center}
@@ -173,19 +173,26 @@ const ActivityPage = ({
 							</div>
 
 							{/** Categorías */}
-							<div>
+							<div className="flex flex-col sapce-y-3">
+								<label className="text-lg font-medium text-gray-700">Categorías</label>
 
+								<div className="flex flex-row space-x-2">
+									{/** Mostrar lista de categorías */}
+								</div>
 							</div>
 
 							{/** Compartir */}
-							<div>
-
+							<div className="flex flex-col space-y-3">
+								<label className="text-lg font-medium text-gray-700">Compartir con amigos</label>
+								<div className="flex flex-row space-x-6">
+									{/** Iconos Redes Sociales */}
+								</div>	
 							</div>
 
 						</div>
 							
 						{/** Fecha y Ubicación (panel derecho)*/}
-						<div className="flex flex-col px-6 py-10 space-y-10">
+						<div className="flex flex-col h-full px-6 py-10 space-y-10">
 
 							{/** Fecha */}
 							<div className="flex flex-col space-y-2">
