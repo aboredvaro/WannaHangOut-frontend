@@ -81,15 +81,21 @@ const ActivityPage = ({
 			<Navbar />
 
 			{/** Actividad */}
-			<div className="flex flex-col w-full h-full items-center px-28 bg-green-100">	
+			<div className="relative flex flex-col w-full items-center px-28 bg-green-100">
 
-				<div className="flex flex-col w-auto h-full pt-28 bg-red-200">
+				<div className="absolute top-0 left-0 w-screen h-screen bg-purple-200"></div>
+
+				<div className="flex flex-col w-auto h-full pt-28 z-10">
 
 					{/** Primera parte. Foto y Titulo */}
 					<div className="flex flex-row bg-white items-stretch">
-						<img className="relative w-full max-w-screen-sm" src={'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'} alt="Foto Actividad"/>
 
-						<div className="flex flex-col h-full w-full border-2 border-red-400 p-6 justify-between">
+						{/** Imagen */}
+						<div className="flex flex-col w-screen max-w-3xl h-auto">
+							<img className="w-full" src={'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'} alt="Foto Actividad"/>
+						</div>
+
+						<div className="flex flex-col w-screen max-w-sm p-6 justify-between">
 
 							{/** Información de Actividad */}
 							<div className="flex flex-col space-y-8">
@@ -135,22 +141,22 @@ const ActivityPage = ({
 							</div>
 
 							{/** Botones de Actividad */}
-							<div className="flex flex-col justify-center space-y-2">
+							<div className="flex flex-col w-full items-center space-y-2">
 								{activity.price == 0 ? 
 									<label className="text-base font-medium text-gray-700">Gratis</label> :
 									<label className="text-base font-medium text-gray-700">{activity.price} €</label>
 								}
 
-								<button type="submit" className="btn-primary">Apuntarme</button>
+								<button type="submit" className="btn-primary w-full">Apuntarme</button>
 							</div>
 						</div>
 					</div>
 
 					{/** Segunda parte. Descripción y demás */}
-					<div className="flex flex-row max-w-screen-xl bg-purple-300">
+					<div className="flex flex-row bg-purple-300">
 
 						{/** Descripción,mapa,categorías y compartir*/}
-						<div className="flex flex-col h-full space-y-10 p-10 ">
+						<div className="flex flex-col w-full h-full space-y-10 p-10 bg-red-400 bg-opacity-30">
 					
 							{/** Descripción */}
 							<div className="flex flex-col space-y-3">
@@ -192,7 +198,7 @@ const ActivityPage = ({
 						</div>
 							
 						{/** Fecha y Ubicación (panel derecho)*/}
-						<div className="flex flex-col h-full px-6 py-10 space-y-10">
+						<div className="flex flex-col w-full max-w-sm h-full px-6 py-10 space-y-10">
 
 							{/** Fecha */}
 							<div className="flex flex-col space-y-2">
