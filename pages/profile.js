@@ -7,26 +7,33 @@ import ActivityItem from '../components/activity-item'
 const Profile = ( {
 	entity, score, activities
 } ) => {
-	console.log(activities)
 
+	const [imgArray, setImgArray] = useState([])
+ 
 	function AvgScore() {
 		if(score[0].media == null) { 
 			return ' Aún no hay reviews'
 		}
 		else return (score[0].media + ' sobre 5,0')
-	}
+	}	
 
-	async function getImgAct(actId) {
-		const imgUrl = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
+	async function getActImg() {
+		/*const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
 			.then(response => response.json())
-		
-		return(
-			<>
-				<img className='object-cover w-110 h-60 rounded-lg bg-gray-700' src={imgUrl} alt='Imagen de la actividad' />
-			</>
-		)
+		console.log(response)
+		return response[0]*/
+		var imgsAux = []
+		activities.map(async activity => {
+			const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
+				.then(response => response.json())
+			imgsAux.push(response[0])
+		})
+		console.log(imgsAux)
+		setImgArray(imgsAux)
 	}
 
+	getActImg()
+	
 	return (
 		<>
 			<Navbar />
@@ -68,13 +75,13 @@ const Profile = ( {
 						
 						{/*Actividades hosteadas */}
 						<div className='flex flex-row justify-start space-x-2'>
-							{(activities.length > 0) && activities.map(activity => {
+							{(activities.length > 0) && activities.map((activity, i) => {
 								return (	
 									<>
 										<div className='flex flex-col w-110 h-96 '>
 											{/*Foto de la act */}
 											<div>
-												{getImgAct(activity.id_activity)}	
+												<img className='object-cover w-110 h-60 rounded-lg' src={imgArray[i]} alt='Imagen de la actividad' />
 											</div>
 
 											{/*Datos de la act */}
@@ -112,7 +119,7 @@ export async function getServerSideProps(ctx) {
 
 	const activities = await fetch(`${url}/api/getActivitiesFromEntity?id_entity=${id}`)
 		.then(response => response.json())
-
+	
 	return {
 		props: {
 			entity,
