@@ -5,40 +5,53 @@ import url from '../utils/server.js'
 
 const Profile = ( {entity, score} ) => {
 
-	function EntityRole() {
-		if(entity.id_role.toString() === '1') {
-			return (
-				<>
-					<p className="text-gray-800">Teléfono de contacto: {entity.phone}</p>
-					<p className="text-gray-800">Email: {entity.mail}</p>
-				</>
-			)
-		}
-	}
-
 	function AvgScore() {
 		if(score[0].media == null) {
 			return ' Aún no hay reviews'
 		}
-		else return score[0].media
+		else return (score[0].media + ' sobre 5,0')
 	}
 
 	return (
 		<>
 			<Navbar />
 
-			<div className="w-full flex flex-col space-y-5 py-24 items-center">
-				<h1 className="text-4xl">{entity.nick}</h1>
-				<img className="object-cover w-16 h-16 mr-2 rounded-full" src={entity.avatar} alt="Foto Perfil"/>
-				<h2 className="text-3xl">{entity.name}</h2>
-				<Link href={`/modify-account?id=${entity.id_entity}`}>
-					<a className='flex flex-row justify-center items-center text-base font-medium text-orange-600 px-6 h-10 bg-orange-100 active:bg-orange-200 active:bg-opacity-75 transition-colors duration-150 ease-in-out rounded-lg'>
-						Modificar datos
-					</a>
-				</Link>
-				<p className="text-gray-800">{entity.description}</p>
-				{EntityRole()}
-				<p className="text-gray-800">Puntuación media de actividades: {AvgScore()} ({score[0].reviews} reviews)</p>
+			<div className='flex flex-col w-full h-full items-center justify-center space-y-10 p-20'>
+
+				<div className='flex flex-col w-full items-center space-y-10'>
+					{/*Foto y datos  */}
+					<div className='flex flex-col w-full h-full items-center justify-center space-y-4'>
+						{/*<h1 className="text-4xl">{entity.nick}</h1>*/}
+						<img className="object-cover w-40 h-40 rounded-full" src={entity.avatar} alt="Foto Perfil"/>
+						
+						<div className='flex flex-col items-center space-y-0'>
+							<p className="text-2xl font-medium">{entity.name}</p>
+							{/*Review */}
+							<div className='flex flex-row justify-center space-x-2'>
+								<p className="text-base text-gray-400">{AvgScore()}</p>
+								<p className="text-base text-gray-400 font-bold">·</p>
+								<p className="text-base text-gray-400">{score[0].reviews} reviews</p>
+							</div>
+						</div>
+
+						<p className="text-base text-gray-400">{entity.description}</p>
+
+						<Link href={`/modify-account?id=${entity.id_entity}`}>
+							<a className='btn-secondary w-56 text-bold'>
+								Editar perfil
+							</a>
+						</Link>
+					</div>
+
+					{/*Actividades hosteadas */}
+					<div className='flex flex-col w-full p-6'>
+						<div className='flex flex-row justify-start space-x-4'>
+							<p className='text-2xl font-medium'>Eventos creados</p>
+							<p className='text-2xl font-medium'>Eventos creados</p>
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</>
 	)

@@ -218,8 +218,8 @@ const Signup = ({ tags }) => {
 				{/*Nombre */}
 				<div className="flex flex-col space-y-1">
 					<div className='flex flex-row justify-start space-y-0.5'>
-						<p className='text-sm text-red-500'>*</p>
-						<p className="text-sm">Nombre</p>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Nombre</p>
 					</div>
 					<input
 						className="input w-full"
@@ -233,8 +233,8 @@ const Signup = ({ tags }) => {
 				{/*Correo */}
 				<div className="flex flex-col space-y-1">
 					<div className='flex flex-row justify-start space-y-0.5'>
-						<p className='text-sm text-red-500'>*</p>
-						<p className="text-sm">Correo</p>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Correo</p>
 					</div>
 					<input
 						className="input w-full"
@@ -254,8 +254,8 @@ const Signup = ({ tags }) => {
 				{/*Contraseña */}
 				<div className="flex flex-col space-y-1">
 					<div className='flex flex-row justify-start space-y-0.5'>
-						<p className='text-sm text-red-500'>*</p>
-						<p className="text-sm">Contraseña</p>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Contraseña</p>
 					</div>
 					<input
 						className="input w-full"
@@ -297,8 +297,8 @@ const Signup = ({ tags }) => {
 				{/*Repetir contraseña */}
 				<div className="flex flex-col space-y-1">
 					<div className='flex flex-row justify-start space-y-0.5'>
-						<p className='text-sm text-red-500'>*</p>
-						<p className="text-sm">Repetir contraseña</p>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Repetir contraseña</p>
 					</div>
 					<input
 						className="input w-full"
@@ -330,8 +330,8 @@ const Signup = ({ tags }) => {
 						<div className="flex flex-col justify-between space-y-10">
 							{/*N. pagina*/}
 							<div className="flex flex-col space-y-1">
-								<p className="text-xs text-gray-400">{signUpPage} de 2</p>
-								<p className="text-2xl text-gray-600">
+								<p className="text-xs text-gray-400 font-medium">{signUpPage} de 2</p>
+								<p className="text-2xl text-gray-600 font-medium">
 									{(signUpPage === 1)
 										? 'Datos personales' : (signUpPage === 2)
 											? 'Seguridad' : ''
@@ -368,7 +368,7 @@ const Signup = ({ tags }) => {
 									</button>}
 								</div>
 								<div className="relative flex flex-row justify-center space-x-2">
-									<p className="text-sm text-gray-400 font-medium">¿Ya eres miembro?</p>
+									<p className="text-sm text-gray-400">¿Ya eres miembro?</p>
 									<Link href="/login">
 										<a className="text-sm text-orange-500 font-medium">Iniciar sesión</a>
 									</Link>
