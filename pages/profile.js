@@ -10,10 +10,21 @@ const Profile = ( {
 	console.log(activities)
 
 	function AvgScore() {
-		if(score[0].media == null) {
+		if(score[0].media == null) { 
 			return ' Aún no hay reviews'
 		}
 		else return (score[0].media + ' sobre 5,0')
+	}
+
+	async function getImgAct(actId) {
+		const imgUrl = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
+			.then(response => response.json())
+		
+		return(
+			<>
+				<img className='object-cover w-110 h-60 rounded-lg bg-gray-700' src={imgUrl} alt='Imagen de la actividad' />
+			</>
+		)
 	}
 
 	return (
@@ -63,7 +74,7 @@ const Profile = ( {
 										<div className='flex flex-col w-110 h-96 '>
 											{/*Foto de la act */}
 											<div>
-												<img className='object-cover w-110 h-60 rounded-lg bg-gray-700' src={null}/>
+												{getImgAct(activity.id_activity)}	
 											</div>
 
 											{/*Datos de la act */}

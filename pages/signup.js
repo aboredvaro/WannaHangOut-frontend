@@ -184,13 +184,13 @@ const Signup = ({ tags }) => {
 				<>
 					{/*Contraseñas coinciden! Viva! */}
 					{((passbiValue !== '') && (barritas === 5)) && <div className='flex fle-row justify-start space-x-1'>
-							<CheckmarkCircle
-								color={'#4CAF50'} 
-								title={'Tick'}
-								height="16px"
-								width="16px"
-							/>
-							<p className="text-xs">Las contraseñas coinciden</p>
+						<CheckmarkCircle
+							color={'#4CAF50'} 
+							title={'Tick'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">Las contraseñas coinciden</p>
 					</div>}
 				</>
 			)
