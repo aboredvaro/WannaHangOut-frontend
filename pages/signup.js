@@ -229,7 +229,7 @@ const Signup = ({ tags }) => {
 			<>
 				{/*Nombre */}
 				<div className="flex flex-col space-y-1">
-					<div className='flex flex-row justify-start space-y-0.5'>
+					<div className='flex flex-row justify-start space-x-0.5'>
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Nombre</p>
 					</div>
@@ -244,7 +244,7 @@ const Signup = ({ tags }) => {
 					
 				{/*Correo */}
 				<div className="flex flex-col space-y-1">
-					<div className='flex flex-row justify-start space-y-0.5'>
+					<div className='flex flex-row justify-start space-x-0.5'>
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Correo</p>
 					</div>
@@ -253,7 +253,6 @@ const Signup = ({ tags }) => {
 						value = {emailValue}
 						onChange = { (e) => setEmail(e.target.value)}
 						required
-						autoFocus
 					/>
 				</div>
 			</>
