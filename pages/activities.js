@@ -76,7 +76,7 @@ const Activities = ({
 					min_duration_max: undefined, // No se le pasa
 					seats_min: undefined, // No se le pasa
 					seats_max: undefined, // No se le pasa
-					dateAct_min: , // Fecha de hoy
+					dateAct_min: undefined, // Fecha de hoy
 					dateAct_max: event.target.dateMax.value, // Fecha del input
 					id_tags: getSelectedTags(),
 					id_entity_creator: undefined

@@ -14,17 +14,21 @@ const ActivityPage = ({
 	activity,
 	actScore,
 	reviewsList,
-	address
+	address,
+	imageActivity,
+	entity
 }) => {
 	const router = useRouter()
+
+	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 	var addressList = []	// array para que pueda usarse el mapa
 	addressList.push(address)
 
 	const containerStyle = {
 		position: 'relative',
-		width: '600px',
-		height: '400px'
+		width: '1080px',
+		height: '360px'
 	}
 
 	const center = {
@@ -76,73 +80,142 @@ const ActivityPage = ({
 		<>
 			<Navbar />
 
-			<div className="w-full flex flex-col space-y-12 my-24 items-center">
-        
-				<h1 className="text-4xl font-medium">Actividad</h1>
+			{/** Actividad */}
+			<div className="flex flex-col w-full justify-center md:h-screen md:max-h-screen md:flex-grow-0 md:flex-shrink px-28 bg-green-100">	
 
-				<div className="flex flex-col space-y-4">
+				<div className="flex flex-col h-full py-28 bg-red-200">
 
-					{
-						<ActivityItem
-							key={activity.id_activity}
-							id_activity={activity.id_activity}
-							title={activity.title}
-							description={activity.description}
-							id_entity_host={activity.id_entity_creator}
-							seats={activity.seats}
-							price={activity.price}
-							location={activity.location}
-							dateAct={activity.dateAct}
-							min_duration={activity.min_duration}
-							score={actScore[0].media}
-						/>
-					}
+					{/** Primera parte. Foto y Titulo */}
+					<div className="flex flex-row bg-white">
+						<img className="object-cover w-160 h-80" src={'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'} alt="Foto Actividad"/>
 
-					<div className="flex flex-col items-center justify-center">
-						<MapContainer 
-							containerStyle={containerStyle}
-							center={center}
-							zoom={15}
-							addressList={addressList}
-						/>
+						<div className="flex flex-col h-80 p-6 justify-between">
+
+							{/** Información de Actividad */}
+							<div className="flex flex-col space-y-8">
+
+								<div className="flex flex-row space-x-4">
+
+									{/** Fecha y Lugar */}
+									<div className="flex flex-col">
+										<label className="text-sm font-medium text-orange-500">{  new Date(activity.dateAct).toLocaleDateString('es-ES', options)}</label>
+										<div className="flex flex-row space-x-2">
+											<label className="text-sm font-regular text-gray-400">Calle {address.direction}</label>
+											<label className="text-sm font-bold text-gray-400"> · </label>
+											<label className="text-sm font-regular text-gray-400"> {address.location}</label>
+										</div>
+									</div>
+
+									{/** Boton de Compartir */}
+									<div>
+
+									</div>
+								</div>
+
+								{/** Titulo, Plazas, Entidad... */}
+								<div className="flex flex-col space-y-2">
+
+									{/** Ult. plazas */}
+									<div className="flex flex-row px-2">
+										{activity.seats < 20 &&
+											<div className="flex flex-row px-2 rounded-md bg-purple-50 text-sm font-regular text-purple-600">Últimas plazas</div>
+										}	
+									</div>
+
+									{/** Titulo */}
+									<label className="text-2xl font-semibold text-gray-700">{activity.title}</label>
+
+									{/** Nick y avatar del perfil creador */}
+									<div className="flex flex-row space-x-2 items-center">
+										<img className="object-cover w-8 h-8 rounded-full" src={entity && entity.avatar} alt="Foto Perfil"/>
+										<label className="text-xs font-regular text-gray-700">{entity && entity.nick}</label>
+									</div>
+
+								</div>
+							</div>
+
+							{/** Botones de Actividad */}
+							<div className="flex flex-col justify-center space-y-2">
+								{activity.price == 0 ? 
+									<label className="text-base font-medium text-gray-700">Gratis</label> :
+									<label className="text-base font-medium text-gray-700">{activity.price} €</label>
+								}
+
+								<button type="submit" className="btn-primary">Apuntarme</button>
+							</div>
+						</div>
 					</div>
 
-					{(sessionID === activity.id_entity_creator) &&
-						<>
-							<Link href={`/modify-activity?id=${activity.id_activity}`}>
-								<a className="rounded-full border-2 text-center cursor-pointer">Modificar</a>
-							</Link>
-							<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
-								<button type="submit" className="rounded-full border-2 ">Borrar</button>
-							</form>
-						</>
-					}
-					
-					{
-						(isLogged && participated && pastDate()) && (
-							<CreateReviewItem 
-								id_activity_prop={activity.id_activity}
-							/>
-						)
-					}
+					{/** Segunda parte. Descripción y demás */}
+					<div className="flex flex-row bg-white">
 
-					{reviewsList.map(review => {
-						return (
-							<ReviewItem
-								key={review.id_review}
-								id_review={review.id_review}
-								id_activity={review.id_activity}
-								id_entity={review.id_entity}
-								title={review.title}
-								description={review.description}
-								points={review.points}
-								deleted={review.deleted}
-								userId={sessionID}
-							/>)
-					})
-					}
+						{/** Descripción,mapa,categorías y compartir*/}
+						<div className="flex flex-col space-y-10 p-10 ">
 					
+							{/** Descripción */}
+							<div className="flex flex-col space-y-3">
+								<label className="text-lg font-medium text-gray-700">Descripción</label>
+								<label className="text-base font-regular text-gray-700">{activity.description}</label>
+							</div>	
+
+							{/** Mapa */}
+							<div className="flex flex-col space-y-3">
+								<label className="text-lg font-medium text-gray-700">Mapa</label>
+								<div className="flex flex-col justify-center h-64">
+									<MapContainer
+										containerStyle={containerStyle}
+										center={center}
+										zoom={16}
+										addressList={addressList}
+									/>
+								</div>
+								<label className="text-sm font-regular text-gray-400">{'Calle ' + address.direction + ', ' + address.location}</label>
+							</div>
+
+							{/** Categorías */}
+							<div>
+
+							</div>
+
+							{/** Compartir */}
+							<div>
+
+							</div>
+
+						</div>
+							
+						{/** Fecha y Ubicación (panel derecho)*/}
+						<div className="flex flex-col px-6 py-10 space-y-10">
+
+							{/** Fecha */}
+							<div className="flex flex-col space-y-2">
+								<label className="text-lg font-medium text-gray-700">Día y Hora</label>	
+								<div className="flex flex-col">
+									<label className="text-sm font-regular text-gray-700">{  new Date(activity.dateAct).toLocaleDateString('es-ES', options)}</label>
+									<label className="text-sm font-regular text-gray-700">{new Date(activity.dateAct).getHours() + new Date(activity.dateAct).getMinutes()}</label>
+								</div>
+
+								<label className="text-sm font-medium text-orange-500">Añadir al calendario</label>
+							</div>
+
+							{/** Ubicación */}
+							<div className="flex flex-col space-y-2">
+								<label className="text-lg font-medium text-gray-700">Ubicación</label>	
+								<div className="flex flex-col">
+									<label className="text-sm font-regular text-gray-700">Calle {address.direction}</label>
+									<label className="text-sm font-regular text-gray-700">{address.location}</label>
+									<label className="text-sm font-regular text-gray-700">{address.codPos + ',' + address.location}</label>
+								</div>
+
+								<label className="text-sm font-medium text-orange-500">Ver Mapa</label>
+							</div>
+
+						</div>
+
+					</div>
+
 				</div>
+		
 			</div>
 		</>
 	)
@@ -165,15 +238,42 @@ export async function getServerSideProps(ctx) {
 	const reviewsList = await fetch(`${url}/api/getAllReviewByActivityID?id_activity=${id}`)
 		.then(response => response.json())
 
+	const imageActivity = await fetch(`${url}/api/getImageByIdActivity?id_activity=${activity.id_activity}&?cant=${1}`)
+		.then(response => response.json())
+
+	const entity = await await fetch(`${url}/api/getEntityByID?id_entity=${activity.id_entity_creator}`)
+		.then(response => response.json())
+
 	return {
 		props: {
 			activity,
 			address,
 			actScore,
-			reviewsList
+			reviewsList,
+			imageActivity,
+			entity
 		}
 	}
-
 }
+
+/*
+				{(sessionID === activity.id_entity_creator) &&
+					<>
+						<Link href={`/modify-activity?id=${activity.id_activity}`}>
+							<a className="rounded-full border-2 text-center cursor-pointer">Modificar</a>
+						</Link>
+						<form className="flex flex-col space-y-4" onSubmit={deleteActivity}>
+							<button type="submit" className="rounded-full border-2 ">Borrar</button>
+						</form>
+					</>
+				}
+				
+				{
+					(isLogged && participated && pastDate()) && (
+						<CreateReviewItem 
+							id_activity_prop={activity.id_activity}
+						/>
+					)
+				}	*/		
 
 export default ActivityPage

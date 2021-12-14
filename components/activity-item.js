@@ -10,17 +10,17 @@ const ActivityItem = ({
 	const [entity,setEntity] = useState(null)
 	const [address,setAddress] = useState(null)
 	//const [score,setScore] = useState(null)
-	const [urlImage, setUrlImage] = useState(null)
+	//const [urlImage, setUrlImage] = useState(null)
 
 	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 	
 	useEffect(() => {
 		const getProps = async() => {
 			
-			const imageAux = await fetch(`${url}/api/getImageByIdActivity?id_activity=${3}&?cant=${1}`)
-				.then(response => response.json())
+			//const imageAux = await fetch(`${url}/api/getImageByIdActivity?id_activity=${3}&?cant=${1}`)
+			//	.then(response => response.json())
 
-			console.log(imageAux)
+			//console.log(imageAux)
 
 			const entityAux = await fetch(`${url}/api/getEntityByID?id_entity=${activity.id_entity_creator}`)
 				.then(response => response.json())
