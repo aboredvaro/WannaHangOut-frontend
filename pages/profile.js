@@ -47,7 +47,7 @@ const Profile = ( {entity, score} ) => {
 					<div className='flex flex-col w-full p-6'>
 						<div className='flex flex-row justify-start space-x-4'>
 							<p className='text-2xl font-medium'>Eventos creados</p>
-							<p className='text-2xl font-medium'>Eventos creados</p>
+							<p className='text-2xl text-gray-400 font-medium'>12</p>
 						</div>
 					</div>
 
