@@ -156,7 +156,7 @@ const Signup = ({ tags }) => {
 		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El email introducido no es válido')
 		}
-		else { setSignUpPage(signUpPage + 1) }
+		else { setSignUpPage(signUpPage + 1) } 
 	}
 
 	function tickVerde() {
