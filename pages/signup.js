@@ -33,6 +33,8 @@ const Signup = ({ tags }) => {
 	const handleSubmit = async event => {
 		event.preventDefault()
 
+		if(!match || barritas !== 5) return false
+
 		const req = JSON.stringify({	
 			id_role: 2,
 			name: nameValue,
@@ -150,7 +152,9 @@ const Signup = ({ tags }) => {
 	}
 
 	const nextPage = () => {
-		if(/\d/.test(nameValue)) {
+		if(/\d/.test(nameValue) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
+			alert('El nombre no puede contener números \nEl email introducido no es válido')
+		}else if(/\d/.test(nameValue)) {
 			alert('El nombre no puede contener números')
 		}
 		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
@@ -179,7 +183,7 @@ const Signup = ({ tags }) => {
 			return(
 				<>
 					{/*Contraseñas coinciden! Viva! */}
-					{(passbiValue !== '') && <div className='flex fle-row justify-start space-x-1'>
+					{((passbiValue !== '') && (barritas === 5)) && <div className='flex fle-row justify-start space-x-1'>
 							<CheckmarkCircle
 								color={'#4CAF50'} 
 								title={'Tick'}
@@ -194,7 +198,7 @@ const Signup = ({ tags }) => {
 			return(
 				<>
 					{/*Fallo! :( */}
-					{(passbiValue !== '') && <div className='flex fle-row justify-start space-x-1'>
+					{((passbiValue !== '') && (barritas === 5)) && <div className='flex fle-row justify-start space-x-1'>
 						<CloseCircle
 							color={'#F44336'}
 							title={'Bad password'}
