@@ -5,7 +5,7 @@ import url from '../utils/server.js'
 import ActivityItem from '../components/activity-item'
 
 const Profile = ( {
-	entity, score, activities
+	entity, score, createdActivities, signedUpToActs
 } ) => {
 
 	const [imgArray, setImgArray] = useState([])
@@ -22,14 +22,15 @@ const Profile = ( {
 			.then(response => response.json())
 		console.log(response)
 		return response[0]*/
-		var imgsAux = []
-		activities.map(async activity => {
+
+		/*var imgsAux = []
+		createdActivities.map(async activity => {
 			const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
 				.then(response => response.json())
 			imgsAux.push(response[0])
 		})
 		console.log(imgsAux)
-		setImgArray(imgsAux)
+		setImgArray(imgsAux)*/
 	}
 
 	getActImg()
@@ -53,7 +54,7 @@ const Profile = ( {
 							<div className='flex flex-row justify-center space-x-2'>
 								<p className="text-base text-gray-400">{AvgScore()}</p>
 								<p className="text-base text-gray-400 font-bold">·</p>
-								<p className="text-base text-gray-400">{(activities.length === 1) ? activities.length + ' Actividad' : activities.length + ' Actividades'}</p>
+								<p className="text-base text-gray-400">{(createdActivities.length === 1) ? createdActivities.length + ' Actividad' : createdActivities.length + ' Actividades'}</p>
 							</div>
 						</div>
 
@@ -67,37 +68,78 @@ const Profile = ( {
 					</div>
 
 					{/*Actividades hosteadas */}
-					<div className='flex flex-col w-full p-6'>
+					<div className='flex flex-col w-full p-6 space-y-6'>
 						<div className='flex flex-row justify-start space-x-4'>
 							<p className='text-2xl font-medium'>Eventos creados</p>
-							<p className='text-2xl text-gray-400 font-medium'>{activities.length}</p>
+							<p className='text-2xl text-gray-400 font-medium'>{createdActivities.length}</p>
 						</div>
 						
 						{/*Actividades hosteadas */}
-						<div className='flex flex-row justify-start space-x-2'>
-							{(activities.length > 0) && activities.map((activity, i) => {
+						<div className='overflow-x-auto flex flex-row justify-start space-x-2'>
+							{(createdActivities.length > 0) && createdActivities.map((activity, i) => {
 								return (	
-									<>
-										<div className='flex flex-col w-110 h-96 '>
-											{/*Foto de la act */}
-											<div>
-												<img className='object-cover w-110 h-60 rounded-lg' src={imgArray[i]} alt='Imagen de la actividad' />
-											</div>
+									
+									<div className='flex flex-col w-110 h-96 ' key={activity.id_activity}>
+										{/*Foto de la act */}
+										<div>
+											<img className='object-cover w-110 h-60 rounded-lg bg-purple-300' src={null} alt='Imagen de la actividad' />
+										</div>
 
-											{/*Datos de la act */}
-											<div className='flex flex-col items-start space-y-4'>
-												<div className='flex flex-col items-start space-y-0'>
-													<p className='text-2xl font-semibold'>{activity.title}</p>
-													<p className='text-sm text-orange-600'>{new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}</p>
-													{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
-												</div>
-
+										{/*Datos de la act */}
+										<div className='flex flex-col items-start space-y-4'>
+											<div className='flex flex-col items-start space-y-0'>
+												<p className='text-2xl font-semibold'>{activity.title}</p>
+												<p className='text-sm text-orange-600'>{new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
 											</div>
 
 										</div>
-									</>
+
+									</div>
+								
 								)
 							})}
+							{(createdActivities.length === 0) && <p className='text-lg font-medium text-gray-400'>
+								Aquí aparecerán los eventos que ha creado este usuario
+							</p>}
+						</div>
+					</div>
+
+					{/*Actividades a las que está apuntado */}
+					<div className='flex flex-col w-full p-6 space-y-6'>
+						<div className='flex flex-row justify-start space-x-4'>
+							<p className='text-2xl font-medium'>Eventos a los que estoy apuntado</p>
+							<p className='text-2xl text-gray-400 font-medium'>{signedUpToActs.length}</p>
+						</div>
+						
+						{/*Actividades a las que está apuntada */}
+						<div className='overflow-x-auto flex flex-row justify-start space-x-2'>
+							{(signedUpToActs.length > 0) && signedUpToActs.map((activity, i) => {
+								return (	
+									
+									<div className='flex flex-col w-110 h-96 ' key={activity.id_activity}>
+										{/*Foto de la act */}
+										<div>
+											<img className='object-cover w-110 h-60 rounded-lg bg-purple-300' src={null} alt='Imagen de la actividad' />
+										</div>
+
+										{/*Datos de la act */}
+										<div className='flex flex-col items-start space-y-4'>
+											<div className='flex flex-col items-start space-y-0'>
+												<p className='text-2xl font-semibold'>{activity.title}</p>
+												<p className='text-sm text-orange-600'>{new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' })}</p>
+												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
+											</div>
+
+										</div>
+
+									</div>
+									
+								)
+							})}
+							{(signedUpToActs.length === 0) && <p className='text-lg font-medium text-gray-400'>
+								Aquí aparecerán los eventos a los que se ha apuntado este usuario
+							</p>}
 						</div>
 					</div>
 
@@ -117,14 +159,18 @@ export async function getServerSideProps(ctx) {
 	const score = await fetch(`${url}/api/getAverageScoreByEntityCreator?id_entity_creator=${id}`)
 		.then(response => response.json())
 
-	const activities = await fetch(`${url}/api/getActivitiesFromEntity?id_entity=${id}`)
+	const createdActivities = await fetch(`${url}/api/getActivitiesCreatedByEntity?id_entity=${id}`)
 		.then(response => response.json())
-	
+		 
+	const signedUpToActs = await fetch(`${url}/api/getActivitiesUserSignUpTo?id_entity=${id}`)
+		.then(response => response.json())
+
 	return {
 		props: {
 			entity,
 			score,
-			activities
+			createdActivities,
+			signedUpToActs
 		}
 	}
 
