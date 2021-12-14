@@ -102,6 +102,7 @@ const Signup = ({ tags }) => {
 		var cont = 0
 		if(psw === '') {
 			setPassword(psw)
+			setBarritas(0)
 			return false
 		}
 		if(!(psw.length >= 8)){
@@ -129,16 +130,16 @@ const Signup = ({ tags }) => {
 		setPassword(psw)
 	}
 
-	/*const handlePswBi = (pswBi) => {
+	const handlePswBi = (pswBi) => {
 		setMatch(false)
 		if(pswBi === '') {
 			setPassbi(pswBi)
 			return false
 		} 
-		setMatch(false)
+
 		(passwordValue === pswBi) ? setMatch(true) : null
 		setPassbi(pswBi)
-	}*/
+	}
 
 	const handleCancel = async event => {
 		router.push('/')
@@ -171,6 +172,40 @@ const Signup = ({ tags }) => {
 				</>
 			)
 		} else return (<></>)
+	}
+
+	function twoPswMatch() {
+		if(match){
+			return(
+				<>
+					{/*Contraseñas coinciden! Viva! */}
+					{(passbiValue !== '') && <div className='flex fle-row justify-start space-x-1'>
+							<CheckmarkCircle
+								color={'#4CAF50'} 
+								title={'Tick'}
+								height="16px"
+								width="16px"
+							/>
+							<p className="text-xs">Las contraseñas coinciden</p>
+					</div>}
+				</>
+			)
+		} else if(!match) {
+			return(
+				<>
+					{/*Fallo! :( */}
+					{(passbiValue !== '') && <div className='flex fle-row justify-start space-x-1'>
+						<CloseCircle
+							color={'#F44336'}
+							title={'Bad password'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">¡Las contraseñas no coinciden!</p>
+					</div>}
+				</>
+			)
+		}
 	}
 
 	function pageOne() {
@@ -270,27 +305,7 @@ const Signup = ({ tags }) => {
 						autoFocus
 					/>
 
-					{/*Contraseñas coinciden! Viva! */}
-					{match && <div className='flex fle-row justify-start space-x-1'>
-						<CheckmarkCircle
-							color={'#4CAF50'} 
-							title={'Tick'}
-							height="16px"
-							width="16px"
-						/>
-						<p className="text-xs">Las contraseñas coinciden</p>
-					</div>}
-
-					{/*Fallo! :( */}
-					{!match && <div className='flex fle-row justify-start space-x-1'>
-						<CloseCircle
-							color={'#F44336'}
-							title={'Bad password'}
-							height="16px"
-							width="16px"
-						/>
-						<p className="text-xs">¡Las contraseñas no coinciden!</p>
-					</div>}
+					{twoPswMatch()}
 				</div>
 			</>
 		)
