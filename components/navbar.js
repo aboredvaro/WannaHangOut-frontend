@@ -23,7 +23,7 @@ const Navbar = ({}) => {
 	useEffect(() => {
 		const getUserSession = async() => {
 			const userSession = session()
-			setIsLogged(session)
+			setIsLogged(userSession)
 
 			if (userSession) {
 				const userHash = getSession()
