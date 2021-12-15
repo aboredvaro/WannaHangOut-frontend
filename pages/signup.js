@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
 import { EyeOutline, EyeOffOutline } from 'react-ionicons'
+import { session, setSession } from '../utils/session'
+import sha from '../utils/sha.js'
 
 const Signup = ({ tags }) => {
 
@@ -57,7 +59,8 @@ const Signup = ({ tags }) => {
 		})
 
 		if(!isNaN(res)) {
-			router.push('/')
+			setSession(sha(emailValue),sha(passwordValue))
+			router.push('/profile?id=' + res)
 		}
 
 		/*const ses = await fetch(`${url}/api/existNick`, {

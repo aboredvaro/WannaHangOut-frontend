@@ -1,14 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Navbar from '../components/navbar'
 import url from '../utils/server.js'
 import ActivityItem from '../components/activity-item'
+import { session, getSession } from '../utils/session.js'
 
 const Profile = ( {
 	entity, score, createdActivities, signedUpToActs
 } ) => {
 
-	const [imgArray, setImgArray] = useState([])
+	const [sessionID, setSessionID] = useState()
+	const [isLogged, setIsLogged] = useState(false)
+
+	useEffect(() => {
+		const getUserSession = async() => {
+			setIsLogged(session())
+			
+			const userHash = getSession()
+			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+				.then(response => response.json())
+				.then(response => response.id_entity)
+				
+			setSessionID(userID)
+			
+		}
+		getUserSession()
+	}, [])
  
 	function AvgScore() {
 		if(score[0].media == null) { 
@@ -16,22 +33,6 @@ const Profile = ( {
 		}
 		else return (score[0].media + ' sobre 5')
 	}	
-
-	async function getActImg() {
-		/*const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
-			.then(response => response.json())
-		console.log(response)
-		return response[0]*/
-
-		/*var imgsAux = []
-		createdActivities.map(async activity => {
-			const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
-				.then(response => response.json())
-			imgsAux.push(response[0])
-		})
-		console.log(imgsAux)
-		setImgArray(imgsAux)*/
-	}
 
 	function toUpperFirst(fecha) {
 		return fecha.charAt(0).toUpperCase() + fecha.slice(1)
@@ -61,15 +62,17 @@ const Profile = ( {
 
 							{/**Barra inferior inf creador + gratis y últimas plazas */}
 							<div className='flex flex-rom w-full justify-between'>
-								<div className='flex flex-row justify-start space-x-2'>
-									<div>
-										<img className='object-cover w-10 h-10 rounded-full' src={activity.avatar} alt='Imagen del creador' />
+								<Link href={'/profile?id=' + activity.id_entity_creator} >
+									<div className='flex flex-row justify-start space-x-2'>
+										<div>
+											<img className='object-cover w-10 h-10 rounded-full' src={activity.avatar} alt='Imagen del creador' />
+										</div>
+										<div className='flex flex-col items-start space-y-0'>
+											<p className='text-sm'>{activity.name}</p>
+											<p className='text-xs text-gray-400'>{(activity.avgScoreOfEntity === 0) ? 'Aún no hay reviews' : activity.avgScoreOfEntity + ' sobre 5'}</p>
+										</div>
 									</div>
-									<div className='flex flex-col items-start space-y-0'>
-										<p className='text-sm'>{activity.name}</p>
-										<p className='text-xs text-gray-400'>{(activity.avgScoreOfEntity === 0) ? 'Aún no hay reviews' : activity.avgScoreOfEntity + ' sobre 5'}</p>
-									</div>
-								</div>
+								</Link>
 
 								{/**Flags (ultimas plazas, gratis) */}
 								<div className='flex flex-row justify-end space-x-2'>
@@ -112,12 +115,13 @@ const Profile = ( {
 						</div>
 
 						<p className="text-base text-gray-400">{entity.description}</p>
-
-						<Link href={`/modify-account?id=${entity.id_entity}`}>
+						{console.log (sessionID + '' + entity.id_entity)}
+						{isLogged && (sessionID === entity.id_entity) && <Link href={`/modify-account?id=${entity.id_entity}`}>
+							
 							<a className='btn-secondary w-56 text-bold'>
 								Editar perfil
 							</a>
-						</Link>
+						</Link>}
 					</div>
 
 					{/*Actividades hosteadas */}
