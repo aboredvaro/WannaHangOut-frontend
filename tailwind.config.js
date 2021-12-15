@@ -39,6 +39,12 @@ module.exports = {
 			},
 			boxShadow: {
       	'card': '0 24px 32px rgba(0, 0, 0, 0.04)',
+			},
+			transitionProperty: {
+				'width': 'width',
+				'height': 'height',
+				'spacing': 'margin, padding',
+				'size': 'height, width',
 			}
 		},
 	},
