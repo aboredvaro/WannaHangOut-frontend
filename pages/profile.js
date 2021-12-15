@@ -14,7 +14,7 @@ const Profile = ( {
 		if(score[0].media == null) { 
 			return ' Aún no hay reviews'
 		}
-		else return (score[0].media + ' sobre 5,0')
+		else return (score[0].media + ' sobre 5')
 	}	
 
 	async function getActImg() {
@@ -35,6 +35,57 @@ const Profile = ( {
 
 	function toUpperFirst(fecha) {
 		return fecha.charAt(0).toUpperCase() + fecha.slice(1)
+	}
+
+	function activityComp(activity) {
+		return(
+			<>	
+			<div className='flex-none'>
+				<div className='flex flex-col w-113 h-103 space-y-4' key={activity.id_activity}>
+					{/*Foto de la act */}
+					<div>
+						<img className='object-cover w-108 h-60 rounded-lg' src={activity.urlPath} alt='Imagen de la actividad' />
+					</div>
+
+					{/*Datos de la act */}
+					<div className='flex flex-col items-start space-y-4'>
+						<div className='flex flex-col items-start space-y-0'>
+							<p className='text-2xl font-semibold'>{activity.title}</p>
+							<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
+							<div className='flex flex-row justify-start space-x-1.5'>
+								<p className='text-sm text-gray-400'>{activity.direction}</p>
+								<p className='text-sm text-gray-400 font-bold'>·</p>
+								<p className='text-sm text-gray-400'>{activity.location}</p>
+							</div>
+						</div>
+
+						{/**Barra inferior inf creador + gratis y últimas plazas */}
+						<div className='flex flex-rom w-full justify-between'>
+							<div className='flex flex-row justify-start space-x-2'>
+								<div>
+									<img className='object-cover w-10 h-10 rounded-full' src={activity.avatar} alt='Imagen del creador' />
+								</div>
+								<div className='flex flex-col items-start space-y-0'>
+									<p className='text-sm'>{activity.name}</p>
+									<p className='text-xs text-gray-400'>{(activity.avgScoreOfEntity === 0) ? 'Aún no hay reviews' : activity.avgScoreOfEntity + ' sobre 5'}</p>
+								</div>
+							</div>
+
+							{/**Flags (ultimas plazas, gratis) */}
+							<div className='flex flex-row justify-end space-x-2'>
+								{(activity.ocupation >= 0,9) && <div className='flex flex-row w-36 h-8 bg-purple-50 rounded-md justify-center items-center py-1 px-3'>
+									<p className='text-base text-purple-600'>Últimas plazas</p>
+								</div>}
+								{(activity.price === 0) && <div className='flex flex-row w-20 h-8 bg-gray-50 rounded-md justify-center items-center py-1 px-3'>
+									<p className='text-base text-gray-500'>Gratis</p>
+								</div>}
+							</div>
+						</div>
+					</div>
+
+				</div></div>
+			</>
+		)
 	}
 	
 	return (
@@ -80,25 +131,7 @@ const Profile = ( {
 						<div className='overflow-x-auto flex flex-row justify-start space-x-2'>
 							{(createdActivities.length > 0) && createdActivities.map((activity, i) => {
 								return (	
-									
-									<div className='flex flex-col w-110 h-96 ' key={activity.id_activity}>
-										{/*Foto de la act */}
-										<div>
-											<img className='object-cover w-110 h-60 rounded-lg bg-purple-300' src={null} alt='Imagen de la actividad' />
-										</div>
-
-										{/*Datos de la act */}
-										<div className='flex flex-col items-start space-y-4'>
-											<div className='flex flex-col items-start space-y-0'>
-												<p className='text-2xl font-semibold'>{activity.title}</p>
-												<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
-												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
-											</div>
-
-										</div>
-
-									</div>
-								
+									activityComp(activity)
 								)
 							})}
 							{(createdActivities.length === 0) && <p className='text-lg font-medium text-gray-400'>
@@ -107,36 +140,18 @@ const Profile = ( {
 						</div>
 					</div>
 
-					{/*Actividades a las que está apuntado */}
+					{/*Actividades apuntadas */}
 					<div className='flex flex-col w-full p-6 space-y-6'>
 						<div className='flex flex-row justify-start space-x-4'>
 							<p className='text-2xl font-medium'>Eventos a los que estoy apuntado</p>
 							<p className='text-2xl text-gray-400 font-medium'>{signedUpToActs.length}</p>
 						</div>
 						
-						{/*Actividades a las que está apuntada */}
-						<div className='overflow-x-auto flex flex-row justify-start space-x-2'>
+						{/*Actividades apuntadas */}
+						<div className='overflow-x-scroll flex flex-row justify-start space-x-4'>
 							{(signedUpToActs.length > 0) && signedUpToActs.map((activity, i) => {
 								return (	
-									
-									<div className='flex flex-col w-110 h-96 ' key={activity.id_activity}>
-										{/*Foto de la act */}
-										<div>
-											<img className='object-cover w-110 h-60 rounded-lg bg-purple-300' src={null} alt='Imagen de la actividad' />
-										</div>
-
-										{/*Datos de la act */}
-										<div className='flex flex-col items-start space-y-4'>
-											<div className='flex flex-col items-start space-y-0'>
-												<p className='text-2xl font-semibold'>{activity.title}</p>
-												<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
-												{/*<p className='text-2xl font-medium'>Eventos creados</p>*/}
-											</div>
-
-										</div>
-
-									</div>
-									
+									activityComp(activity)
 								)
 							})}
 							{(signedUpToActs.length === 0) && <p className='text-lg font-medium text-gray-400'>
