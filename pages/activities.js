@@ -1,30 +1,35 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import Navbar from '../components/navbar'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import MapContainer from '../components/map'
-import { Listbox } from '@headlessui/react'
+import { Listbox, Transition } from '@headlessui/react'
+import { CheckmarkOutline } from 'react-ionicons'
 
 const Activities = ({
 	activities,
 	tags,
-	addressList
+	locations
 }) => {
 
-	const getLocations = () => { activities && activities.map(act => act.province) }
-	
+	const [addressList, setAddressList] = useState(null)
+
+	// const getLocations = () => { return activities && [...new Set(activities.map(act => act.province))] }
+
 	const [mapHeight, setMapHeight] = useState(0)
-	const [selectedLocation, setSelectedLocation] = useState(0)
+	const [selectedLocation, setSelectedLocation] = useState(locations && locations[0])
 
 	function getMapHeight() {
 		setMapHeight(document.querySelector('#map').offsetHeight)
 	}
 	
 	useEffect(() => {
+		const getAddressList = () => { return activities && activities.map(act => new Object({ id_address: act.id_address, province: act.province, codPos: act.codPos, location: act.location, direction: act.direction, latitude: act.latitude, longitude: act.longitude })) }
+		setAddressList(getAddressList())
 		getMapHeight()
-		window.addEventListener('resize', () => {(typeof ifgetMapHeight !== undefined) && getMapHeight()} )
-	})
+		window.addEventListener('resize', () => {(typeof window !== undefined) && getMapHeight()} )
+	}, [activities])
 
 	const containerStyle = {
 		position: 'relative',
@@ -108,22 +113,72 @@ const Activities = ({
 					</div>
 					
 					<form onSubmit={handleSubmit}>
-						<div className="flex flex-col ">
-							{/* Seleccion de Ubicacion 
+						<div className="flex flex-col">
+							{/* Seleccion de Ubicacion */}
 
-							<div>
+							{locations && (
+								<div className="relative flex flex-col h-0 mx-6">
+									<Listbox value={selectedLocation} onChange={setSelectedLocation}>
+										<div className="relative">
+											<Listbox.Button className="relative w-full h-10 py-2 pl-3 pr-10 text-left bg-white rounded-lg border border-gray-200 cursor-pointer sm:text-sm">
+												<span className="block truncate">{selectedLocation}</span>
+												<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+												√
+												</span>
+											</Listbox.Button>
+											<Transition
+												as={Fragment}
+												leave="transition ease-in duration-100"
+												leaveFrom="opacity-100"
+												leaveTo="opacity-0"
+											>
+												<Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 sm:text-sm">
+													{locations.map((location, locationIdx) => (
+														<Listbox.Option
+															key={locationIdx}
+															className={({ active }) => `${active ? 'text-gray-900 bg-gray-100' : 'text-gray-600'} cursor-pointer select-none relative py-2 pl-10 pr-4`}
+															value={location}
+														>
+															{({ selected, active }) => (
+																<>
+																	<span className={`${selected ? 'font-medium text-gray-900' : 'font-normal'} block truncate`}>
+																		{location}
+																	</span>
+																	{selected ? (
+																		<span className="text-amber-600 absolute inset-y-0 left-0 flex items-center pl-3">
+																			<CheckmarkOutline
+																				className="text-gray-700"
+																				color={''}
+																				height="16px"
+																				width="16px"
+																			/>
+																		</span>
+																	) : null}
+																</>
+															)}
+														</Listbox.Option>
+													))}
+												</Listbox.Options>
+											</Transition>
+										</div>
+									</Listbox>
+								</div>
+							)}
+
+							{/* <div className="relative flex flex-row items-center h-10 mx-6 bg-white border border-gray-200 rounded-md">
 								<Listbox value={selectedLocation} onChange={setSelectedLocation}>
-									<Listbox.Button>{selectedLocation}</Listbox.Button>
+									<Listbox.Button>
+										<div className="ralative flex flex-row w-full h-full bg-red-100">
+											{selectedLocation}
+										</div>
+									</Listbox.Button>
 									<Listbox.Options>
-										{
-											getLocations().map(({location}, i) => 
-												<Listbox.Option key={i} value={location}>{location}</Listbox.Option>
-											)
-										}
+										{locations && locations.map(({location}, i) => {
+											<Listbox.Option key={i} value={location}>{location}</Listbox.Option>
+										})}
 									</Listbox.Options>
 								</Listbox>
-							</div> 
-							*/}
+							</div> */}
 
 							<div className="flex flex-row items-center px-3 py-2 m-3 w-68 h-14 ">
 							</div>
@@ -168,12 +223,11 @@ const Activities = ({
 								
 								<div className="flex flex-col justify-center pb-1">	
 									{
-										tags.map(({id_tags,name}, i) =>		
+										tags.map(({id_tags,name}, i) =>
 											<div className="flex flex-row items-center w-60" key={i}>
 												<input className="items-center justify-center mr-2" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
 												<label className="text-base font-regular text-gray-700">{name}</label>
 											</div>
-											
 										)
 									}
 								</div>
@@ -227,20 +281,18 @@ export async function getServerSideProps() {
 	const activities = await fetch(`${url}/api/getAllActivities`)
 		.then(response => response.json())
 
-	// const locations = await fetch(`${url}/api/getLocationWithActivities`)
-	// 	.then(response => response.json())
+	const locations = await fetch(`${url}/api/getLocationWithActivities`)
+	 	.then(response => response.json())
+	 	.then(json => json.map(loc => loc.location))
 
 	const tags = await fetch(`${url}/api/getAllTags`)
-	 	.then(response => response.json())
-
-	const addressList = await fetch(`${url}/api/getAllAddressOfActivities`)
 	 	.then(response => response.json())
 
 	return {
   	props:{
 	   	activities,
 			tags,
-			addressList
+			locations
    		}
 	}
 }

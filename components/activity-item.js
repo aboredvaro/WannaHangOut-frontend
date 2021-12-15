@@ -4,44 +4,12 @@ import Link from 'next/link'
 const ActivityItem = ({
 	activity
 }) => {
-
-	// const [entity,setEntity] = useState(null)
-	// const [address,setAddress] = useState(null)
-	//const [score,setScore] = useState(null)
-	//const [urlImage, setUrlImage] = useState(null)
-
-	var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
-	
-	useEffect(() => {
-		const getProps = async() => {
-			
-			//const imageAux = await fetch(`${url}/api/getImageByIdActivity?id_activity=${3}&?cant=${1}`)
-			//	.then(response => response.json())
-
-			//console.log(imageAux)
-
-			// const entityAux = await fetch(`${url}/api/getEntityByID?id_entity=${activity.id_entity_creator}`)
-			// 	.then(response => response.json())
-
-			// const addressAux = await fetch(`${url}/api/getAddressByID?id_address=${activity.id_address}`)
-			// 	.then(response => response.json())
-
-			//const scoreAux = await fetch(`${url}/api/getAverageScoreByEntityCreator?id_entity_creator=${activity.id_entity_creator}`)
-			//.then(response => response.json())
-
-			// setEntity(entityAux)
-			// setAddress(addressAux)
-			//setScore(scoreAux[1])
-			//setUrlImage(imageAux)
-		}
-
-		getProps()
-	})
+	const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
 
 	return (
 		<div className="py-4">
-			<Link href={`/activity?id=${activity.id_activity}`}>
-				<a className="flex flex-row w-full p-3 space-x-4 justify-between">
+			<Link href={`/activity?id=${activity.id_activity}`} passHref>
+				<div className="flex flex-row w-full p-3 space-x-4 justify-between">
 
 					<div className="flex flex-col w-full justify-between">
 						
@@ -83,7 +51,7 @@ const ActivityItem = ({
 					<div>
 						<img className="object-cover w-96 h-auto rounded" src={activity && activity.urlPath} alt="Foto Actividad"/>
 					</div>
-				</a>
+				</div>
 			</Link>
 		</div>
 	)
