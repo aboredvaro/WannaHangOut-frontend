@@ -22,13 +22,16 @@ const Navbar = ({}) => {
 
 	useEffect(() => {
 		const getUserSession = async() => {
-			setIsLogged(session())
+			const userSession = session()
+			setIsLogged(userSession)
 
-			const userHash = getSession()
-			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
-				.then(response => response.json())
-			
-			setSessionID(userID)
+			if (userSession) {
+				const userHash = getSession()
+				const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+					.then(response => response.json())
+				
+				setSessionID(userID)
+			}
 		}
 		getUserSession()
 	}, [])
@@ -188,7 +191,7 @@ const Navbar = ({}) => {
 								<div>
 									<Menu.Button className='relative flex flex-row items-center h-10 px-1.5 space-x-2'>
 										<div className={`relative flex flex-row w-8 h-8 bg-gray-100 ${(sessionID === false) ? 'animate-pulse' : ''} ring-1 ring-gray-200 rounded-full overflow-hidden`}>
-											{sessionID && <img src={sessionID.avatar} className='absolute w-full h-full rounded-full' alt='user avatar' />}
+											{sessionID && <img src={sessionID.avatar} className='absolute w-full h-full rounded-full object-cover' alt='user avatar' />}
 										</div>
 
 										<div className='hidden md:flex flex-row items-center'>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Map, GoogleApiWrapper, InfoWindow,Marker } from 'google-maps-react'
 
 const MapContainer = ({
@@ -8,8 +8,6 @@ const MapContainer = ({
 	zoom,
 	addressList
 }) => {
-
-	//const [selectedActivity, setSelectedActivity] = useState(null)
 
 	return (
 		<div className="relative flex flex-col w-full h-full">

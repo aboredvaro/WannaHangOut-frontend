@@ -8,14 +8,14 @@ import { Listbox } from '@headlessui/react'
 
 const Activities = ({
 	activities,
-	locations,
 	tags,
 	addressList
 }) => {
+
+	const getLocations = () => { activities && activities.map(act => act.province) }
 	
 	const [mapHeight, setMapHeight] = useState(0)
-	const [listActivities, setListActivities] = useState(activities)
-	const [selectedLocation, setSelectedLocation] = useState(locations[0])
+	const [selectedLocation, setSelectedLocation] = useState(0)
 
 	function getMapHeight() {
 		setMapHeight(document.querySelector('#map').offsetHeight)
@@ -37,7 +37,7 @@ const Activities = ({
 		lng: -0.376805
 	}
 
-	function getSelectedTags(){
+	function getSelectedTags() {
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
@@ -52,7 +52,7 @@ const Activities = ({
 		return array
 	}
 
-	function getSelectedLocation(){
+	function getSelectedLocation() {
 		var selectElement = document.querySelector('#location')
 		var selected = selectElement.value
 
@@ -96,11 +96,6 @@ const Activities = ({
 	return (
 		<div className="flex flex-col w-full md:h-screen md:max-h-screen md:flex-grow-0 md:flex-shrink">
 			<Navbar />
-
-			{/* TEST (BORRAR) */}
-			<div className="hidden flex-row w-full h-full max-h-full overflow-hidden bg-green-100">
-				<div className="h-screen"></div>
-			</div>
 				
 			<div className="relative flex flex-row w-full h-full flex-grow-0 overflow-hidden">
 
@@ -108,8 +103,8 @@ const Activities = ({
 				<div className="relative flex flex-col flex-shrink-0 w-72 h-full bg-gray-50 overflow-auto pb-16 border-r border-gray-100">
 
 					<div className="flex flex-col px-6 py-10 w-72">
-						<label className="text-3xl font-medium text-gray-700">Filtros</label>
-						<label className="text-base font-regular text-gray-400">{listActivities.length} Resultados</label>
+						<span className="text-3xl font-medium text-gray-700">Filtros</span>
+						<span className="text-base font-regular text-gray-400">{activities.length} Resultados</span>
 					</div>
 					
 					<form onSubmit={handleSubmit}>
@@ -121,7 +116,7 @@ const Activities = ({
 									<Listbox.Button>{selectedLocation}</Listbox.Button>
 									<Listbox.Options>
 										{
-											locations.map(({location}, i) => 
+											getLocations().map(({location}, i) => 
 												<Listbox.Option key={i} value={location}>{location}</Listbox.Option>
 											)
 										}
@@ -196,20 +191,18 @@ const Activities = ({
 				</div>
 
 				{/* Actividades */}
-				<div className="flex flex-col w-full h-full p-3 space-y-2 overflow-auto divide-y-2 divide-gray-100">
+				<div className="flex flex-col w-full h-full p-3 overflow-auto divide-y divide-gray-100">
 				
-					{ listActivities && (
-						listActivities.map(act=> {
-							return (	
+					{ activities && (
+						activities.map((act) => {
+							return (
 								<ActivityItem
 									key={act.id_activity}
 									activity={act}
 								/>
 							)
 						})
-					)
-						
-					}
+					)}
 				
 				</div>
 
@@ -234,8 +227,8 @@ export async function getServerSideProps() {
 	const activities = await fetch(`${url}/api/getAllActivities`)
 		.then(response => response.json())
 
-	const locations = await fetch(`${url}/api/getLocationWithActivities`)
-		.then(response => response.json())
+	// const locations = await fetch(`${url}/api/getLocationWithActivities`)
+	// 	.then(response => response.json())
 
 	const tags = await fetch(`${url}/api/getAllTags`)
 	 	.then(response => response.json())
@@ -246,7 +239,6 @@ export async function getServerSideProps() {
 	return {
   	props:{
 	   	activities,
-			locations,
 			tags,
 			addressList
    		}
