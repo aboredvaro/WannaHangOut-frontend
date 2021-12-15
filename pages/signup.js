@@ -296,12 +296,12 @@ const Signup = ({ tags }) => {
 							{tickVerde()}
 							<p className="text-xs text-gray-700">{checkPsw}</p>
 						</div>
-							<HelpCircleOutline
-								color={'#616161'}
-								title={'ha?'}
-								height="16px"
-								width="16px"
-							/>
+						<HelpCircleOutline
+							color={'#616161'}
+							title={'ha?'}
+							height="16px"
+							width="16px"
+						/>
 					</div>
 				</div>}
 
@@ -394,7 +394,7 @@ const Signup = ({ tags }) => {
 	    )
 }
 
-export async function getServerSideProps() {
+/*export async function getServerSideProps() {
 
 	const tags = await fetch(`${url}/api/getAllTags`)
 		.then(response => response.json())
@@ -404,6 +404,6 @@ export async function getServerSideProps() {
 			tags
 		}
 	}
-}
+}*/
 
 export default Signup
