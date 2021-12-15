@@ -62,53 +62,6 @@ const Signup = ({ tags }) => {
 			setSession(sha(emailValue),sha(passwordValue))
 			router.push('/profile?id=' + res)
 		}
-
-		/*const ses = await fetch(`${url}/api/existNick`, {
-			body: JSON.stringify({
-				nick: nickValue
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		}).then(response => { if (response.ok) return response.json() })
-		
-		if(ses) {
-			alert('Nick en uso')
-			return false
-		}
-		
-		const res = await fetch(
-			`${url}/api/createNewEntity`,{
-				body: JSON.stringify({	
-					id_role: selectedRole,
-					phone: phoneValue,
-					nick: nickValue,
-					name: nameValue,
-					surname: selectedRole==='1'?'':surnameValue,
-					description: descriptionValue,
-					mail: emailValue,
-					pass: passwordValue,
-					avatar: photoValue,
-					tags_ent: tags,
-					codPos: cpValue,
-					latitude: latitudeValue,
-					longitude: longitudeValue,
-					location: locationValue,
-					direction: directionValue
-				}),
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			}
-		).then(response => {
-			if (response.ok) return response.json()
-		})
-
-		if(!isNaN(res)) {
-			router.push('/')
-		}*/
 	}
 
 	/*
