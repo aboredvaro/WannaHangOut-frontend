@@ -41,9 +41,9 @@ const ActivityItem = ({
 	return (
 		<div className="py-4">
 			<Link href={`/activity?id=${activity.id_activity}`}>
-				<a className="flex flex-row w-full p-3 space-x-4 justify-between cursor-pointer">
+				<a className="flex flex-row w-full p-3 space-x-4 justify-between">
 
-					<div className="flex flex-col w-full h-full justify-between">
+					<div className="flex flex-col w-full justify-between">
 						
 						<div className="flex flex-col pb-3">
 							<span className="text-2xl font-semibold text-gray-700">{activity.title}</span>
