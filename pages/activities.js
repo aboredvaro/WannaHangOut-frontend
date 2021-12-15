@@ -1,24 +1,35 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar'
 import ActivityItem from '../components/activity-item'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import MapContainer from '../components/map'
+import { Listbox } from '@headlessui/react'
 
 const Activities = ({
 	activities,
-	locations,
-	entities,
 	tags,
 	addressList
 }) => {
+
+	const getLocations = () => { activities && activities.map(act => act.province) }
 	
-	const [listActivities, setListActivities] = useState(activities)
+	const [mapHeight, setMapHeight] = useState(0)
+	const [selectedLocation, setSelectedLocation] = useState(0)
+
+	function getMapHeight() {
+		setMapHeight(document.querySelector('#map').offsetHeight)
+	}
 	
+	useEffect(() => {
+		getMapHeight()
+		window.addEventListener('resize', () => {(typeof ifgetMapHeight !== undefined) && getMapHeight()} )
+	})
+
 	const containerStyle = {
 		position: 'relative',
-		width: '800px',
-		height: '500px'
+		width: '384px',
+		height: mapHeight
 	}
 
 	const center = {
@@ -26,7 +37,7 @@ const Activities = ({
 		lng: -0.376805
 	}
 
-	function getSelectedTags(){
+	function getSelectedTags() {
 		var array = []
 		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
@@ -41,19 +52,8 @@ const Activities = ({
 		return array
 	}
 
-	function getSelectedLocation(){
+	function getSelectedLocation() {
 		var selectElement = document.querySelector('#location')
-		var selected = selectElement.value
-
-		if(selected == ''){
-			return undefined
-		}
-
-		return selected
-	}
-
-	function getSelectedEntity(){
-		var selectElement = document.querySelector('#id_entity')
 		var selected = selectElement.value
 
 		if(selected == ''){
@@ -70,16 +70,16 @@ const Activities = ({
 			`${url}/api/filterActivitiesBy`,{
 				body: JSON.stringify({
 					location: getSelectedLocation(),
-					price_min: event.target.precioMin.value,
-					price_max: event.target.precioMax.value,
-					min_duration_min: event.target.duracionMin.value,
-					min_duration_max:event.target.duracionMax.value,
-					seats_min: event.target.plazasMin.value, 
-					seats_max: event.target.plazasMax.value,
-					dateAct_min: event.target.dateMin.value,
-					dateAct_max: event.target.dateMax.value,
+					price_min: event.target.precioMin.value, // ?
+					price_max: event.target.precioMax.value, // ?
+					min_duration_min: undefined, // No se le pasa
+					min_duration_max: undefined, // No se le pasa
+					seats_min: undefined, // No se le pasa
+					seats_max: undefined, // No se le pasa
+					dateAct_min: undefined, // Fecha de hoy
+					dateAct_max: event.target.dateMax.value, // Fecha del input
 					id_tags: getSelectedTags(),
-					id_entity_creator: getSelectedEntity()
+					id_entity_creator: undefined
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -94,117 +94,131 @@ const Activities = ({
 	}
 
 	return (
-		<>
+		<div className="flex flex-col w-full md:h-screen md:max-h-screen md:flex-grow-0 md:flex-shrink">
 			<Navbar />
+				
+			<div className="relative flex flex-row w-full h-full flex-grow-0 overflow-hidden">
 
-			<div className="w-full flex flex-col space-y-12 my-24 items-center">
+				{/* Filtros */}
+				<div className="relative flex flex-col flex-shrink-0 w-72 h-full bg-gray-50 overflow-auto pb-16 border-r border-gray-100">
 
-				<div>
-					<h2 className="text-xl font-normal">FILTROS</h2>
-					<div>
-						<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-							<div>
-								<label>Localidad </label>
-								<select id='location'>
-      								<option></option>
-									{
-										  locations.map(({location}, i) => 
-										  	<option key={i} value={location}>{location}</option>
-										  )
-									}
-   								 </select>
-							</div>    
-							<div>
-								<label>PRECIOS (€) </label>
-								<label className="text-gray-800"htmlFor="precioMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="precioMin" name="precioMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="precioMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="precioMax" name="precioMax" placeholder=""/>
-							</div>    
-							<div>
-								<label>DURACION (min) </label>
-								<label className="text-gray-800"htmlFor="duracionMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="duracionMin" name="duracionMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="duracionMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="duracionMax" name="duracionMax" placeholder=""/>
-							</div>
-							<div>
-								<label>Plazas </label>
-								<label className="text-gray-800"htmlFor="plazasMin">Desde  </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="plazasMin" name="plazasMin" placeholder="0"/>
-								<label className="text-gray-800"htmlFor="plazasMax"> Hasta </label>
-								<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="plazasMax" name="plazasMax" placeholder=""/>
-							</div>        
-							<div>
-								<label>Fecha </label>
-								<input type="date" id="dateMin" name="dateMin" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
-								<input type="date" id="dateMax" name="dateMax" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
-							</div>
-							<div>
-								<label>Creado por </label>
-								<select id='id_entity'>
-      								<option></option>
-									{
-										  entities.map(({id_entity, nick}, i) => 
-										  	<option key={i} value={id_entity}>{nick}</option>
-										  )
-									}
-   								 </select>
-							</div>    
-							<div>
-								<label >Intereses: </label>
-								{
-									tags.map(({id_tags,name}, i) =>
-										<div className="w-full sm:w-auto" key={i}>
-											<label className="inline-flex items-center">
-												<input className="form-radio" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
-												<span className="ml-2">{name}</span>
-											</label>
-										</div>
-									)
-								}
-							</div>   
-
-							<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Aplicar</button>
-
-						</form>
+					<div className="flex flex-col px-6 py-10 w-72">
+						<span className="text-3xl font-medium text-gray-700">Filtros</span>
+						<span className="text-base font-regular text-gray-400">{activities.length} Resultados</span>
 					</div>
-				</div>
-        
-				<h1 className="text-4xl font-medium">Lista de actividades</h1>
+					
+					<form onSubmit={handleSubmit}>
+						<div className="flex flex-col ">
+							{/* Seleccion de Ubicacion 
 
-				<div className="flex flex-col items-center justify-center">
-					<MapContainer 
+							<div>
+								<Listbox value={selectedLocation} onChange={setSelectedLocation}>
+									<Listbox.Button>{selectedLocation}</Listbox.Button>
+									<Listbox.Options>
+										{
+											getLocations().map(({location}, i) => 
+												<Listbox.Option key={i} value={location}>{location}</Listbox.Option>
+											)
+										}
+									</Listbox.Options>
+								</Listbox>
+							</div> 
+							*/}
+
+							<div className="flex flex-row items-center px-3 py-2 m-3 w-68 h-14 ">
+							</div>
+
+							{/* Fecha */}
+							<div className="flex flex-row items-center px-3 py-2 mx-3 mb-3">
+								<div className="flex flex-col">
+									<label className="text-sm font-medium text-gray-700">Fecha </label>
+									<input type="date" id="dateMax" name="dateMax" className="rounded-lg border border-gray-600 focus:border-gray-600"></input>
+								</div>
+							</div>
+
+							{/* Precios */}
+							<div className="flex flex-col justify-center px-3 py-2 w-68 h-32 mx-3 mb-3">
+								<div className="flex flex-col justify-start mb-4">
+									<label className="text-sm font-medium text-gray-700">Precio</label>
+									<label className="text-base font-regular text-gray-400">Todos los precios</label>
+								</div>
+
+								<div className="flex flex-col pb-1 mx-3 mb-2">
+									<div className="flex flex-row items-center mb-3">
+										<input className="items-center justify-center mr-2" type="checkbox" id="precioGratis" name="precioGratis"/>
+										<label className="text-base font-regular">Gratis</label>
+									</div>
+									<div className="flex flex-row items-center">
+										<input className="items-center justify-center mr-2" type="checkbox" id="precioPago" name="precioPago"/>
+										<label className="text-base font-regular">Pago</label>
+									</div>
+								</div>
+	
+							</div>  	
+							    
+							{/* Tags */}
+							<div className="flex flex-col px-3 py-2 w-68 mx-3">
+
+								<div className="flex flex-row mb-4">
+									<div className="flex flex-col">
+										<label className="text-sm font-medium text-gray-700">Categoría</label>
+										<label className="text-base font-regular text-gray-400">Todas las cateogorías</label>
+									</div>
+								</div>
+								
+								<div className="flex flex-col justify-center pb-1">	
+									{
+										tags.map(({id_tags,name}, i) =>		
+											<div className="flex flex-row items-center w-60" key={i}>
+												<input className="items-center justify-center mr-2" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+												<label className="text-base font-regular text-gray-700">{name}</label>
+											</div>
+											
+										)
+									}
+								</div>
+
+							</div>   
+						</div>		
+						
+						{/* Botón */}
+						<div className="fixed bottom-0 left-0 flex flex-col px-3 py-3 w-72 bg-gray-50">
+							<button type="submit" className="btn-primary">Aplicar Filtros</button>
+						</div>
+
+					</form>	
+					
+				</div>
+
+				{/* Actividades */}
+				<div className="flex flex-col w-full h-full p-3 overflow-auto divide-y divide-gray-100">
+				
+					{ activities && (
+						activities.map((act) => {
+							return (
+								<ActivityItem
+									key={act.id_activity}
+									activity={act}
+								/>
+							)
+						})
+					)}
+				
+				</div>
+
+				{/* Mapa */}
+				<div id="map" className="hidden xl:flex flex-col w-96 h-full max-h-full">
+					<MapContainer
 						containerStyle={containerStyle}
 						center={center}
-						zoom={13}
+						zoom={12}
 						addressList={addressList}
 					/>
 				</div>
 
-				<div className="flex flex-col space-y-4">
-					{
-						listActivities.map(activity => {
-							return (	// añadir mensaje si no hay ninguna actividad
-								<ActivityItem
-									key={activity.id_activity}
-									id_activity={activity.id_activity}
-									title={activity.title}
-									description={activity.description}
-									id_entity_host={activity.id_entity_creador}
-									seats={activity.seats}
-									price={activity.price}
-									location={activity.location}
-									dateAct={activity.dateAct}
-									min_duration={activity.min_duration}
-								/>
-							)
-						})
-					}
-				</div>
-
 			</div>
-		</>
+
+		</div>
 	)
 }
 
@@ -213,11 +227,8 @@ export async function getServerSideProps() {
 	const activities = await fetch(`${url}/api/getAllActivities`)
 		.then(response => response.json())
 
-	const locations = await fetch(`${url}/api/getLocationWithActivities`)
-		.then(response => response.json())
-
-	const entities = await fetch(`${url}/api/getEntitiesWithActivities`)
-		.then(response => response.json())
+	// const locations = await fetch(`${url}/api/getLocationWithActivities`)
+	// 	.then(response => response.json())
 
 	const tags = await fetch(`${url}/api/getAllTags`)
 	 	.then(response => response.json())
@@ -228,8 +239,6 @@ export async function getServerSideProps() {
 	return {
   	props:{
 	   	activities,
-			locations,
-			entities,
 			tags,
 			addressList
    		}
