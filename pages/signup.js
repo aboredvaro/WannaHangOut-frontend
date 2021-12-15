@@ -5,6 +5,8 @@ import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
+import { EyeOutline, EyeOffOutline } from 'react-ionicons'
+
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -29,6 +31,8 @@ const Signup = ({ tags }) => {
 	const [checkPsw, setCheckPsw] = useState('')
 	const [barritas, setBarritas] = useState(0)
 	const [match, setMatch] = useState(false)
+	const [showPassword, setShowPassword] = useState(false)
+	const [passwordFocused, setPasswordFocused] = useState(false)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -268,16 +272,34 @@ const Signup = ({ tags }) => {
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Contraseña</p>
 					</div>
-					<input
-						className="input w-full"
-						type='password'
-						value = {passwordValue}
-						onChange = { (e) => {
-							handlePsw(e.target.value)
-						}}
-						required
-						autoFocus
-					/>
+					<div className="relative w-full">
+						<div className={`${passwordFocused ? '' : 'opacity-25'} hover:opacity-100`}>
+							<EyeOutline
+								className={`absolute ${showPassword ? 'hidden' : ''} right-3 top-2 cursor-pointer`}
+								color={'#4B5563'}
+								height="24px"
+								width="24px"
+								onClick={() => {setShowPassword(!showPassword)}}
+							/>
+							<EyeOffOutline
+								className={`absolute ${showPassword ? '' : 'hidden'} right-3 top-2 cursor-pointer`}
+								color={'#4B5563'}
+								height="24px"
+								width="24px"
+								onClick={() => {setShowPassword(!showPassword)}}
+							/>
+						</div>
+						<input
+							className="input w-full"
+							type={showPassword ? 'text' : 'password'}
+							value = {passwordValue}
+							onChange = { (e) => {
+								handlePsw(e.target.value)
+							}}
+							required
+							autoFocus
+						/>
+					</div>
 				</div>
 
 				{/*Indicadores y alertas */}
@@ -311,14 +333,32 @@ const Signup = ({ tags }) => {
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Repetir contraseña</p>
 					</div>
-					<input
-						className="input w-full"
-						type='password'
-						value = {passbiValue}
-						onChange = { (e) => {handlePswBi(e.target.value)}}
-						required
-						autoFocus
-					/>
+					<div className="relative w-full">
+						<div className={`${passwordFocused ? '' : 'opacity-25'} hover:opacity-100`}>
+							<EyeOutline
+								className={`absolute ${showPassword ? 'hidden' : ''} right-3 top-2 cursor-pointer`}
+								color={'#4B5563'}
+								height="24px"
+								width="24px"
+								onClick={() => {setShowPassword(!showPassword)}}
+							/>
+							<EyeOffOutline
+								className={`absolute ${showPassword ? '' : 'hidden'} right-3 top-2 cursor-pointer`}
+								color={'#4B5563'}
+								height="24px"
+								width="24px"
+								onClick={() => {setShowPassword(!showPassword)}}
+							/>
+						</div>
+						<input
+							className="input w-full"
+							type={showPassword ? 'text' : 'password'}
+							value = {passbiValue}
+							onChange = { (e) => {handlePswBi(e.target.value)}}
+							required
+							autoFocus
+						/>
+					</div>
 
 					{twoPswMatch()}
 				</div>

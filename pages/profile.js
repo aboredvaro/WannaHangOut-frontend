@@ -40,50 +40,50 @@ const Profile = ( {
 	function activityComp(activity) {
 		return(
 			<>	
-			<div className='flex-none'>
-				<div className='flex flex-col w-113 h-103 space-y-4' key={activity.id_activity}>
-					{/*Foto de la act */}
-					<div>
-						<img className='object-cover w-108 h-60 rounded-lg' src={activity.urlPath} alt='Imagen de la actividad' />
-					</div>
-
-					{/*Datos de la act */}
-					<div className='flex flex-col items-start space-y-4'>
-						<div className='flex flex-col items-start space-y-0'>
-							<p className='text-2xl font-semibold'>{activity.title}</p>
-							<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
-							<div className='flex flex-row justify-start space-x-1.5'>
-								<p className='text-sm text-gray-400'>{activity.direction}</p>
-								<p className='text-sm text-gray-400 font-bold'>·</p>
-								<p className='text-sm text-gray-400'>{activity.location}</p>
-							</div>
+				<div className='flex-none'>
+					<div className='flex flex-col w-113 h-103 space-y-4' key={activity.id_activity}>
+						{/*Foto de la act */}
+						<div>
+							<img className='object-cover w-108 h-60 rounded-lg' src={activity.urlPath} alt='Imagen de la actividad' />
 						</div>
 
-						{/**Barra inferior inf creador + gratis y últimas plazas */}
-						<div className='flex flex-rom w-full justify-between'>
-							<div className='flex flex-row justify-start space-x-2'>
-								<div>
-									<img className='object-cover w-10 h-10 rounded-full' src={activity.avatar} alt='Imagen del creador' />
-								</div>
-								<div className='flex flex-col items-start space-y-0'>
-									<p className='text-sm'>{activity.name}</p>
-									<p className='text-xs text-gray-400'>{(activity.avgScoreOfEntity === 0) ? 'Aún no hay reviews' : activity.avgScoreOfEntity + ' sobre 5'}</p>
+						{/*Datos de la act */}
+						<div className='flex flex-col items-start space-y-4'>
+							<div className='flex flex-col items-start space-y-0'>
+								<p className='text-2xl font-semibold'>{activity.title}</p>
+								<p className='text-sm text-orange-600'>{toUpperFirst(new Date(activity.dateAct).toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' }))}</p>
+								<div className='flex flex-row justify-start space-x-1.5'>
+									<p className='text-sm text-gray-400'>{activity.direction}</p>
+									<p className='text-sm text-gray-400 font-bold'>·</p>
+									<p className='text-sm text-gray-400'>{activity.location}</p>
 								</div>
 							</div>
 
-							{/**Flags (ultimas plazas, gratis) */}
-							<div className='flex flex-row justify-end space-x-2'>
-								{(activity.ocupation >= 0,9) && <div className='flex flex-row w-36 h-8 bg-purple-50 rounded-md justify-center items-center py-1 px-3'>
-									<p className='text-base text-purple-600'>Últimas plazas</p>
-								</div>}
-								{(activity.price === 0) && <div className='flex flex-row w-20 h-8 bg-gray-50 rounded-md justify-center items-center py-1 px-3'>
-									<p className='text-base text-gray-500'>Gratis</p>
-								</div>}
+							{/**Barra inferior inf creador + gratis y últimas plazas */}
+							<div className='flex flex-rom w-full justify-between'>
+								<div className='flex flex-row justify-start space-x-2'>
+									<div>
+										<img className='object-cover w-10 h-10 rounded-full' src={activity.avatar} alt='Imagen del creador' />
+									</div>
+									<div className='flex flex-col items-start space-y-0'>
+										<p className='text-sm'>{activity.name}</p>
+										<p className='text-xs text-gray-400'>{(activity.avgScoreOfEntity === 0) ? 'Aún no hay reviews' : activity.avgScoreOfEntity + ' sobre 5'}</p>
+									</div>
+								</div>
+
+								{/**Flags (ultimas plazas, gratis) */}
+								<div className='flex flex-row justify-end space-x-2'>
+									{(activity.ocupation >= 0,9) && <div className='flex flex-row w-36 h-8 bg-purple-50 rounded-md justify-center items-center py-1 px-3'>
+										<p className='text-base text-purple-600'>Últimas plazas</p>
+									</div>}
+									{(activity.price === 0) && <div className='flex flex-row w-20 h-8 bg-gray-50 rounded-md justify-center items-center py-1 px-3'>
+										<p className='text-base text-gray-500'>Gratis</p>
+									</div>}
+								</div>
 							</div>
 						</div>
-					</div>
 
-				</div></div>
+					</div></div>
 			</>
 		)
 	}
