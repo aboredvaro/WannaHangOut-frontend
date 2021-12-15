@@ -45,6 +45,13 @@ module.exports = {
 				'height': 'height',
 				'spacing': 'margin, padding',
 				'size': 'height, width',
+			},
+			width: {
+				'110': '27.5rem',
+				'18.4' : '4.6rem',
+				'103' : '25.813rem',
+				'108' : '27rem',
+				'113' : '28.25rem'
 			}
 		},
 	},
