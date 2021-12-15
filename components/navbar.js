@@ -22,13 +22,17 @@ const Navbar = ({}) => {
 
 	useEffect(() => {
 		const getUserSession = async() => {
-			setIsLogged(session())
+			const userSession = session()
+			setIsLogged(userSession)
 
-			const userHash = getSession()
-			const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
-				.then(response => response.json())
-			
-			setSessionID(userID)
+			if (userSession) {
+				const userHash = getSession()
+				const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
+					.then(response => response.json())
+					.then(response => response.id_entity)
+				
+				setSessionID(userID)
+			}
 		}
 		getUserSession()
 	}, [])
