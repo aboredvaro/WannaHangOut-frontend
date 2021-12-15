@@ -28,7 +28,6 @@ const Navbar = ({}) => {
 				const userHash = getSession()
 				const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
 					.then(response => response.json())
-					.then(response => response.id_entity)
 				
 				setSessionID(userID)
 			}
