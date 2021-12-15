@@ -166,7 +166,7 @@ const Navbar = ({}) => {
 								<div>
 									<Menu.Button className='relative flex flex-row items-center h-10 px-1.5 space-x-2'>
 										<div className={`relative flex flex-row w-8 h-8 bg-gray-200 ${(sessionID === false) ? 'animate-pulse' : ''} ring-1 ring-gray-200 rounded-full overflow-hidden`}>
-											{sessionID && <img src={sessionID.avatar} className='absolute w-full h-full rounded-full' alt='user avatar' />}
+											{sessionID && <img src={sessionID.avatar} className='absolute w-full h-full rounded-full object-cover' alt='user avatar' />}
 										</div>
 
 										<div className='flex flex-row items-center'>
