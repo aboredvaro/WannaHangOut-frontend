@@ -84,7 +84,7 @@ const Navbar = ({}) => {
 
 			{/* Logo y búsqueda */}
 			<div className={`flex flex-row items-center ${searchFocused ? 'space-x-0 md:space-x-6' : 'space-x-6'} w-full md:w-auto`}>
-				<Link href="/" passHref>
+				<Link href="/activities" passHref>
 					<div className={`${searchFocused ? 'hidden md:flex' : 'flex'} flex-col flex-shrink-0 transform -translate-y-px cursor-pointer`}>
 						<div className='hidden md:flex'>
 							<Image
