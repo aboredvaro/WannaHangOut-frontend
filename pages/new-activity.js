@@ -66,7 +66,7 @@ const CreateActivity = ({
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
-		
+		console.log('AAAAAAAAAAAAAAAAAAA' + sessionID)
 		var auxTags = getSelected()
 
 		const res = await fetch(
@@ -90,9 +90,12 @@ const CreateActivity = ({
 				},
 				method: 'POST'
 			}
-		)
+		).then(response => {
+			if (response.ok) return response.json()
+		})
+
 		if(!isNaN(res)) {
-			router.push('activity?id=' + res)
+			router.push('/')
 		}
 
 	}	
@@ -107,7 +110,7 @@ const CreateActivity = ({
                 const userID = await fetch(`${url}/api/getEntityByHash?entityHash=${userHash}`)
                     .then(response => response.json())
                 
-                setSessionID(userID)
+                setSessionID(userID.id_entity)
             }
         }
         getUserSession()
