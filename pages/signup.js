@@ -135,17 +135,17 @@ const Signup = ({ tags }) => {
 			alert('El email introducido no es válido')
 		}
 		else { 
-			var hash = sha(emailValue)
+			/*var hash = sha(emailValue)
 			const ses = await fetch(`${url}/api/getEntityByHash?entityHash=${hash}`)
 				.then(response => {
 					if (response.ok)
 						return response.json()})
 			
-			console.log(ses)
+			//console.log(ses)
 
-			if(ses === -1) {
+			//if(ses === -1) {*/
 				setSignUpPage(signUpPage + 1)
-			} else alert('Correo en uso')
+			//} else alert('Correo en uso')
 		}
 	}
 
