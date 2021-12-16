@@ -46,11 +46,11 @@ const QR = (props) => {
 					<p className="text-sm text-gray-400">Feria de proyectos PIN 2021</p>
 				</div>
 
-				<div className="flex flex-row justify-center items-center max-w-md text-base font-medium text-center text-red-600 bg-red-50 px-6 py-4 rounded-xl">
+				<div className="hidden flex-row justify-center items-center max-w-md text-base font-medium text-center text-red-600 bg-red-50 px-6 py-4 rounded-xl">
 					La aplicación está actualmente en desarrollo. La versión final se publicará el Jueves 16 de Diciembre.
 				</div>
 
-				<div className="hidden flex-col space-y-4 items-center">
+				<div className="flex flex-col space-y-4 items-center">
 					<Link href="/">
 						<a className="flex flex-row justify-center items-center text-base font-medium text-white bg-orange-500 px-6 h-10 rounded-lg">Ir a la web</a>
 					</Link>
@@ -190,7 +190,7 @@ const QR = (props) => {
 						</p>
 					</div>
 
-					<div className="hidden flex-col space-y-2">
+					<div className="flex flex-col space-y-2">
 						<a className="flex flex-row justify-center items-center text-base font-medium text-white bg-orange-500 px-6 h-10 rounded-lg">Ir a la web</a>
 						
 						<a className="flex flex-row justify-center items-center text-base font-medium text-gray-700 bg-gray-100 px-6 h-10 rounded-lg">Compartir proyecto</a>
