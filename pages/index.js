@@ -33,7 +33,7 @@ const Home = (props) => {
 					<Link href="/activities">
 						<a className="text-xl text-orange-500">Mostrar lista de actividades</a>
 					</Link>
-					<a href={'/profile?id=' + 1}className="text-1xl ">Prueba perfil</a>
+					<a href={'/new-activity'}className="text-1xl ">Prueba modificar actividad</a>
 				</div>
 
 			</div>
