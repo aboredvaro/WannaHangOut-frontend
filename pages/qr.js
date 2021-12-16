@@ -191,9 +191,16 @@ const QR = (props) => {
 					</div>
 
 					<div className="flex flex-col space-y-2">
-						<a className="flex flex-row justify-center items-center text-base font-medium text-white bg-orange-500 px-6 h-10 rounded-lg">Ir a la web</a>
+						<a className="flex flex-row justify-center items-center text-base font-medium text-white bg-orange-500 px-6 h-10 rounded-lg">
+							Ir a la web
+						</a>
 						
-						<a className="flex flex-row justify-center items-center text-base font-medium text-gray-700 bg-gray-100 px-6 h-10 rounded-lg">Compartir proyecto</a>
+						<a
+							onClick={() => openModal()}
+							className="flex flex-row justify-center items-center text-base font-medium text-gray-700 bg-gray-100 px-6 h-10 rounded-lg"
+						>
+							Compartir proyecto
+						</a>
 					</div>
 
 				</div>
