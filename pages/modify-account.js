@@ -1,22 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { putImagesIntoCloudinary } from '../utils/cloudinary.js'
 
 const Modificar = ({entity}) => {
-
-	function getSelected(){
-		var array = []
-		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
-
-		for(var i = 0; i < checkboxes.length; i++){
-			array.push(checkboxes[i].value)
-		}
-		log(array)
-
-		return array.length>0?array:''
-	}
 
 	const [avatar, setAvatar] = useState(entity.avatar)
 	const [nick, setNick] = useState(entity.nick)
@@ -62,8 +50,13 @@ const Modificar = ({entity}) => {
 
 	}
 
-	const fileInput = document.getElementById("fileInput")
-	fileInput.addEventListener("change", handleFiles, false)
+	const [fileInput, setFileInput ] = useState()
+
+	useEffect(() => {
+		setFileInput(document.getElementById("fileInput"))
+	})
+
+	fileInput && fileInput.addEventListener("change", handleFiles, false)
 
 	function handleFiles() {
 		putImagesIntoCloudinary(URL.createObjectURL(this.files[0]), 'user')
