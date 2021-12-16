@@ -1,214 +1,341 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
-import { useRouter } from 'next/router'
 
-const Modificar = ({ entity }) => {
+const Modificar = ({tags, entity, address }) => {
 
-	const router = useRouter()
+	function getSelected(){
+		var array = []
+		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
 
-	const [avatar, setAvatar] = useState(entity.avatar)
-	const [nick, setNick] = useState(entity.nick)
-	const [name, setName] = useState(entity.name)
-	const [descp, setDescp] = useState(entity.description)
-	const [email, setEmail] = useState(entity.mail)
+		for(var i = 0; i < checkboxes.length; i++){
+			array.push(checkboxes[i].value)
+		}
+		log(array)
+
+		return array.length>0?array:''
+	}
+
+	const [selectedRole, setSelectedRole] = useState(entity.id_role.toString())
+	const [nickValue, setNick] = useState(entity.nick)
+	const [nameValue, setName] = useState(entity.name)
+	const [surnameValue, setSurname] = useState(entity.surname)
+	const [descriptionValue, setDescription] = useState(entity.description)
+	const [emailValue, setEmail] = useState(entity.mail)
+	const [phoneValue, setPhone] = useState(entity.phone.toString())
+	const [cpValue, setCP] = useState(address.codPos.toString())
+	const [locationValue, setLocation] = useState(address.location)
+	const [directionValue, setDirection] = useState(address.direction)
+	const [latitudeValue, setLatitude] = useState(address.latitude)
+	const [longitudeValue, setLongitude] = useState(address.longitude)
+	const [passwordValue, setPassword] = useState('')
+	const [passbiValue, setPassbi] = useState('')
+	const [photoValue, setPhoto] = useState(entity.avatar)
+	const [pswVisible, setPswVisible] = useState(false)
+
+	function RoleSelection(props) {
+		if (selectedRole === '2') {
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Rol: User</label>
+						</div>
+						<div>
+							<label className="text-gray-800">Nick: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+								value = {nickValue}
+								onChange = { (e) => setNick(e.target.value)} 
+								required/>
+						</div>					
+						<div>
+							<label className="text-gray-800">Nombre: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
+								value = {nameValue}
+								onChange = { (e) => setName(e.target.value)} 
+								required/>
+						</div>
+						<div>
+							<label className="text-gray-800">Apellidos: </label>
+							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
+								value = {surnameValue}
+								onChange = { (e) => setSurname(e.target.value)}/>
+						</div>
+					</div>
+				</>
+			)
+		} 
+		return(
+			<>
+				<div className="space-y-4 items-center font-medium"key='shop1'>
+					<div>
+						<label className="text-gray-800">Rol: Shop</label>
+					</div>
+					<div>
+						<label className="text-gray-800">Nick: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
+							value = {nickValue}
+							onChange = { (e) => setNick(e.target.value)} 
+							required/>
+					</div>
+				
+					<div>
+						<label className="text-gray-800">Razón social: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
+							value = {nameValue}
+							onChange = { (e) => setName(e.target.value)} 
+							required
+							key="shop1"/>
+					</div>
+				</div>
+			</>
+		)
+	}
+
+	function ShowPassword(props) {
+		if(!pswVisible){
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>
+							<label className="text-gray-800">Nueva contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="password" 
+								id="pass" 
+								name="pass" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}/>
+						</div>
+					</div>
+				</>
+			)
+		} else if(pswVisible) {
+			return(
+				<>
+					<div className="space-y-4 items-center font-medium">
+						<div>						
+							<label className="text-gray-800">Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Contraseña"
+								value = {passwordValue}
+								onChange = { (e) => setPassword(e.target.value)}/>
+						</div>
+						<div>
+							<label className="text-gray-800">Repita Su Contraseña: </label>
+							<input 
+								className="rounded-lg border border-gray-600 focus:border-gray-600"
+								type="text" 
+								placeholder=" Repita su contraseña"
+								value = {passbiValue}
+								onChange = { (e) => setPassbi(e.target.value)}/>
+						</div>
+					</div>
+				</>
+			)
+		}
+		
+	}
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
 
-		if(/\d/.test(name) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
-			alert('El nombre no puede contener números \nEl email introducido no es válido')
-			return false
-		}else if(/\d/.test(name)) {
-			alert('El nombre no puede contener números')
-			return false
+		if(!/^\d+$/.test(phoneValue)) {
+			alert('No puede haber letras en su número de teléfono')
+			return
 		}
-		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)) {
-			alert('El email introducido no es válido')
-			return false
+		if(phoneValue.trim().length!==9) {
+			alert(typeof(phoneValue)+ 'Su número de teléfono debe tener 9 cifras')
+			return
+		} 
+		if(!/^\d+$/.test(cpValue)) {
+			alert('No puede haber letras en su Código Postal')
+			return
 		}
-
-		const ses = await fetch(`${url}/api/existNick`, {
-			body: JSON.stringify({
-				nick: nick
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST'
-		})
-			.then(response => {
-				if (response.ok)
-					return response.json()})
+		if(cpValue.trim().length!==5) {
+			alert('Su código postal debe tener 5 cifras')
+			return
+		}
+		if(isNaN(latitudeValue) || isNaN(longitudeValue)) {
+			alert('No puede haber letras en los campos de latitud y longitud')
+			return
+		}
+		if(passwordValue.localeCompare(passbiValue)!==0) {
+			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
+			return
+		}
 		
-		if(ses) {
-			alert('Nick en uso')
+		var tags = getSelected()
+		if(tags ==='') {
+			alert('Debe seleccionar al menos una etiqueta')
 			return false
+		}
+		var bodyFetch = {
+			id_entity: entity.id_entity.toString(),
+			id_role: selectedRole,
+			phone: phoneValue,
+			nick: nickValue,
+			name: nameValue,
+			surname: selectedRole==='1'?'':surnameValue,
+			description: descriptionValue,
+			mail: emailValue,
+			avatar: photoValue,
+			tags_ent: tags,
+			codPos: cpValue,
+			id_address: address.id_address.toString(),
+			latitude: latitudeValue,
+			longitude: longitudeValue,
+			location: locationValue,
+			direction: directionValue,
+			deleted: 0
+		}
+		if(passwordValue !== '') {
+			bodyFetch={...bodyFetch, pass: passwordValue}
 		}
 
 		const res = await fetch(
 			`${url}/api/updateEntity`,{
-				body: JSON.stringify({
-					id_entity: entity.id_entity.toString(),
-					id_role: entity.id_role,
-					phone: entity.phone,
-					nick: nick,
-					name: name,
-					surname: entity.surname,
-					description: descp,
-					mail: email,
-					avatar: avatar,
-					tags_ent: entity.tags_ent,
-					codPos: entity.codPos,
-					id_address: entity.id_address,
-					latitude: entity.latitude,
-					longitude: entity.longitude,
-					location: entity.location,
-					direction: entity.direction,
-					deleted: 0,
-					pass: entity.pass
-			}),
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'PUT'
-		})
-		
-		if(res) {
-			router.push('/profile?id=' + entity.id_entity)
-		}
+				body: JSON.stringify(bodyFetch),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'PUT'
+			})
+			.then(response => console.log(response.text()))
 
 	}
 
-	const handleCancel = async event => {
-		router.push('/')
+	const handleDeleteSubmit = async event => {
+		event.preventDefault()	
+
+		const res = await fetch(
+			`${url}/api/deleteEntityById`,{
+				body: JSON.stringify({	
+					id_entity: entity.id_entity.toString()
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(response => console.log(response.text()))
 	}
 
 	return (
 		<>
 			<Navbar />
 			
-			<div className='flex flex-col w-full h-full items-center justify-center py-20'>
+			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
+        
+				<h1 className="text-4xl">Modifique su cuenta</h1>
 
-					{/*Caja blanca */}
-					<form
-						onSubmit={handleSubmit}
-						className="flex flex-col w-110 p-8 rounded-xl shadow-card bg-white border border-gray-100 space-y-4"
-					>
-						<div className="flex flex-col justify-between space-y-10">
-							<div className='flex flex-row w-full justify-center'>
-								<p className="text-2xl text-gray-600 font-medium">Modifique su cuenta</p>
-							</div>
+				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
+					<div>
+						{RoleSelection() }	
+					</div>
 
-							<div className="flex flex-col justify-between space-y-4">
+					<div>
+						<div><label className="text-gray-800">Descripción: </label></div>
+						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"
+							value = {descriptionValue}
+							onChange = { (e) => setDescription(e.target.value)}/>
+					</div>
+					<div>
+						<label className="text-gray-800">Email: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"
+							value = {emailValue}
+							onChange = { (e) => setEmail(e.target.value)}/>
+					</div>
+					<div>
+						<label className="text-gray-800">Teléfono: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"
+							value = {phoneValue}
+							onChange = { (e) => setPhone(e.target.value)}/>
+					</div>
+					<div>
+						<label >Choose tags: </label>
+						{
+							tags.map(({id_tags,name}, i) =>
+								<div className="w-full sm:w-auto" key={i}>
+									<label className="inline-flex items-center">
+							  		<input className="form-radio" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+							  		<span className="ml-2">{name}</span>
+									</label>
+						 		 </div>
+							)
+						}
+					</div>
+					<div>
+						<label className="text-gray-800">Código Postal: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"
+							value = {cpValue}
+							onChange = { (e) => setCP(e.target.value)}/>
+					</div>
+					<div>
+						<label className="text-gray-800">Localidad: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"
+							value = {locationValue}
+							onChange = { (e) => setLocation(e.target.value)}/>
+					</div>
+					<div>
+						<label className="text-gray-800">Dirección: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"
+							value = {directionValue}
+							onChange = { (e) => setDirection(e.target.value)}/>
+					</div>
+					<div>
+						<label classirection="text-gray-800">Latitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"
+							value = {latitudeValue}
+							onChange = { (e) => setLatitude(e.target.value)}/>
+					</div>
+					<div>
+						<label className="text-gray-800">Longitud: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"
+							value = {longitudeValue}
+							onChange = { (e) => setLongitude(e.target.value)}/>
+					</div>
+					<div>
+						{ShowPassword ()}
+					</div>
+					<div>
+						<input type="checkbox" 
+							value={pswVisible}
+							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
+					</div>
+					<div>
+						<label className="text-gray-800">Foto: </label>
+						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"
+							value = {photoValue}
+							onChange = { (e) => setPhoto(e.target.value)}/>
+					</div>
+					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Guardar cambios</button>		
+				</form>
 
-								{/**Foto perfil */}
-								<div className='flex flex-col items-center'>
-									<img className='object-cover w-28 h-28 rounded-full' src={avatar} />
-								</div>
-								<div className="flex flex-col space-y-1">
-									<div className='flex flex-row justify-start space-x-0.5'>
-										<p className='text-sm text-red-500 font-semibold'>*</p>
-										<p className="text-sm font-medium">URL de imagen</p>
-									</div>
-									<div className='flex flex-row justify-start space-x-2'>
-									<input
-										className="input w-full"
-										value = {avatar}
-										onChange = { (e) => setAvatar(e.target.value)}
-										required
-									/>
-									<button 
-									type='button'
-										className='btn-terciary w-24'
-										onClick={() => setAvatar('')}
-									>
-										Borrar
-									</button>
-									</div>
-								</div>
-							
-								
-								{/*Nick */}
-								<div className="flex flex-col space-y-1">
-									<div className='flex flex-row justify-start space-x-0.5'>
-										<p className='text-sm text-red-500 font-semibold'>*</p>
-										<p className="text-sm font-medium">Nick</p>
-									</div>
-									<input
-										className="input w-full"
-										value = {nick}
-										onChange = { (e) => setNick(e.target.value)}
-										required
-									/>
-								</div>
+				<h1 className="text-4xl">Darse de baja</h1>
 
-								{/*Nombre */}
-								<div className="flex flex-col space-y-1">
-									<div className='flex flex-row justify-start space-x-0.5'>
-										<p className='text-sm text-red-500 font-semibold'>*</p>
-										<p className="text-sm font-medium">Nombre</p>
-									</div>
-									<input
-										className="input w-full"
-										value = {name}
-										onChange = { (e) => setName(e.target.value)} 
-										required
-										autoFocus
-									/>
-								</div>
+				<form className="flex flex-col space-y-4" onSubmit={handleDeleteSubmit}>
+					
+					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Darse de baja</button>		
+				</form>
 
-								{/*Correo */}
-									<div className="flex flex-col space-y-1">
-										<div className='flex flex-row justify-start space-x-0.5'>
-											<p className='text-sm text-red-500 font-semibold'>*</p>
-											<p className="text-sm font-medium">Correo</p>
-										</div>
-										<input
-											className="input w-full"
-											value = {email}
-											onChange = { (e) => setEmail(e.target.value)}
-											required
-										/>
-									</div>
-
-								{/*Descripción */}
-								<div className="flex flex-col space-y-1">
-									<div className='flex flex-row justify-start space-x-0.5'>
-										<p className='text-sm text-red-500 font-semibold'>*</p>
-										<p className="text-sm font-medium">Descripción</p>
-									</div>
-									<textarea className="w-full h-20 resize-none px-3 bg-gray-50 border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 rounded-lg appearance-none outline-none"
-										value = {descp}
-										onChange = { (e) => setDescp(e.target.value)} 
-										required
-										autoFocus
-									/>
-								</div>
-
-								<div className="flex flex-row justify-between space-x-4 items-center">
-									<button
-										type="button"
-										className="btn-terciary w-full"
-										onClick={()=> handleCancel()}
-									>
-										Cancelar
-									</button>
-									<button 
-										type="submit" 
-										className="btn-primary w-full"
-									>
-										Guardar cambios
-									</button>
-								</div>
-							</div>
-						</div>
-					</form>
 			</div>
 		</>
-	    )	
-	}
+	    )	}
 	
 export async function getServerSideProps(ctx) {
 
@@ -216,10 +343,18 @@ export async function getServerSideProps(ctx) {
 
 	const entity = await fetch(`${url}/api/getEntityByID?id_entity=${id}`)
 		.then(response => response.json())
+	
+	const tags = await fetch(`${url}/api/getAllTags`)
+		.then(response => response.json())
+
+	const address = await fetch(`${url}/api/getAddressByID?id_address=${entity.id_address}`)
+		.then(response => response.json())
 
 	return{
 		props:{
-			entity
+			tags,
+			entity,
+			address
 		}
 	}
 		

@@ -4,7 +4,6 @@ import Navbar from '../components/navbar'
 import url from '../utils/server.js'
 import { session, getSession } from '../utils/session'
 import ActivityItem from '../components/activity-item'
-import { session, getSession } from '../utils/session.js'
 
 const Profile = ( {
 	entity,
@@ -41,6 +40,22 @@ const Profile = ( {
 		}
 		else return (score[0].media + ' sobre 5')
 	}	
+
+	async function getActImg() {
+		/*const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
+			.then(response => response.json())
+		console.log(response)
+		return response[0]*/
+
+		/*var imgsAux = []
+		createdActivities.map(async activity => {
+			const response = await fetch(`${url}/api/getImageByIdActivity?id_activity=${actId}&cant=1`)
+				.then(response => response.json())
+			imgsAux.push(response[0])
+		})
+		console.log(imgsAux)
+		setImgArray(imgsAux)*/
+	}
 
 	function toUpperFirst(fecha) {
 		return fecha.charAt(0).toUpperCase() + fecha.slice(1)

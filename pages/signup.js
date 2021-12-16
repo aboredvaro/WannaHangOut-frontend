@@ -4,11 +4,7 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { PersonOutline, CheckmarkCircle, CloseCircle } from 'react-ionicons'
-import { EyeOutline, EyeOffOutline } from 'react-ionicons'
-import { session, setSession } from '../utils/session'
-import sha from '../utils/sha.js'
-
+import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -33,8 +29,6 @@ const Signup = ({ tags }) => {
 	const [checkPsw, setCheckPsw] = useState('')
 	const [barritas, setBarritas] = useState(0)
 	const [match, setMatch] = useState(false)
-	const [showPassword, setShowPassword] = useState(false)
-	const [passwordFocused, setPasswordFocused] = useState(false)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
@@ -59,9 +53,55 @@ const Signup = ({ tags }) => {
 		})
 
 		if(!isNaN(res)) {
-			setSession(sha(emailValue),sha(passwordValue))
-			router.push('/profile?id=' + res)
+			router.push('/')
 		}
+
+		/*const ses = await fetch(`${url}/api/existNick`, {
+			body: JSON.stringify({
+				nick: nickValue
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		}).then(response => { if (response.ok) return response.json() })
+		
+		if(ses) {
+			alert('Nick en uso')
+			return false
+		}
+		
+		const res = await fetch(
+			`${url}/api/createNewEntity`,{
+				body: JSON.stringify({	
+					id_role: selectedRole,
+					phone: phoneValue,
+					nick: nickValue,
+					name: nameValue,
+					surname: selectedRole==='1'?'':surnameValue,
+					description: descriptionValue,
+					mail: emailValue,
+					pass: passwordValue,
+					avatar: photoValue,
+					tags_ent: tags,
+					codPos: cpValue,
+					latitude: latitudeValue,
+					longitude: longitudeValue,
+					location: locationValue,
+					direction: directionValue
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		).then(response => {
+			if (response.ok) return response.json()
+		})
+
+		if(!isNaN(res)) {
+			router.push('/')
+		}*/
 	}
 
 	/*
@@ -100,10 +140,8 @@ const Signup = ({ tags }) => {
 		if(cont === 5) {
 			setCheckPsw('Contraseña segura, ¡bien hecho!')
 		}
-		
-		setPassword(psw)
 
-		if(psw === passbiValue) setMatch(true)
+		setPassword(psw)
 	}
 
 	const handlePswBi = (pswBi) => {
@@ -113,7 +151,7 @@ const Signup = ({ tags }) => {
 			return false
 		} 
 
-		if(passwordValue === pswBi) setMatch(true)
+		(passwordValue === pswBi) ? setMatch(true) : null
 		setPassbi(pswBi)
 	}
 
@@ -125,7 +163,7 @@ const Signup = ({ tags }) => {
 		setSignUpPage(signUpPage - 1)
 	}
 
-	const nextPage = async() => {
+	const nextPage = () => {
 		if(/\d/.test(nameValue) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El nombre no puede contener números \nEl email introducido no es válido')
 		}else if(/\d/.test(nameValue)) {
@@ -134,19 +172,7 @@ const Signup = ({ tags }) => {
 		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El email introducido no es válido')
 		}
-		else { 
-			var hash = sha(emailValue)
-			const ses = await fetch(`${url}/api/getEntityByHash?entityHash=${hash}`)
-				.then(response => {
-					if (response.ok)
-						return response.json()})
-			
-			console.log(ses)
-
-			if(ses === -1) {
-				setSignUpPage(signUpPage + 1)
-			} else alert('Correo en uso')
-		}
+		else { setSignUpPage(signUpPage + 1) } 
 	}
 
 	function tickVerde() {
@@ -242,34 +268,16 @@ const Signup = ({ tags }) => {
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Contraseña</p>
 					</div>
-					<div className="relative w-full">
-						<div className={`${passwordFocused ? '' : 'opacity-25'} hover:opacity-100`}>
-							<EyeOutline
-								className={`absolute ${showPassword ? 'hidden' : ''} right-3 top-2 cursor-pointer`}
-								color={'#4B5563'}
-								height="24px"
-								width="24px"
-								onClick={() => {setShowPassword(!showPassword)}}
-							/>
-							<EyeOffOutline
-								className={`absolute ${showPassword ? '' : 'hidden'} right-3 top-2 cursor-pointer`}
-								color={'#4B5563'}
-								height="24px"
-								width="24px"
-								onClick={() => {setShowPassword(!showPassword)}}
-							/>
-						</div>
-						<input
-							className="input w-full"
-							type={showPassword ? 'text' : 'password'}
-							value = {passwordValue}
-							onChange = { (e) => {
-								handlePsw(e.target.value)
-							}}
-							required
-							autoFocus
-						/>
-					</div>
+					<input
+						className="input w-full"
+						type='password'
+						value = {passwordValue}
+						onChange = { (e) => {
+							handlePsw(e.target.value)
+						}}
+						required
+						autoFocus
+					/>
 				</div>
 
 				{/*Indicadores y alertas */}
@@ -288,6 +296,12 @@ const Signup = ({ tags }) => {
 							{tickVerde()}
 							<p className="text-xs text-gray-700">{checkPsw}</p>
 						</div>
+							<HelpCircleOutline
+								color={'#616161'}
+								title={'ha?'}
+								height="16px"
+								width="16px"
+							/>
 					</div>
 				</div>}
 
@@ -297,32 +311,14 @@ const Signup = ({ tags }) => {
 						<p className='text-sm text-red-500 font-semibold'>*</p>
 						<p className="text-sm font-medium">Repetir contraseña</p>
 					</div>
-					<div className="relative w-full">
-						<div className={`${passwordFocused ? '' : 'opacity-25'} hover:opacity-100`}>
-							<EyeOutline
-								className={`absolute ${showPassword ? 'hidden' : ''} right-3 top-2 cursor-pointer`}
-								color={'#4B5563'}
-								height="24px"
-								width="24px"
-								onClick={() => {setShowPassword(!showPassword)}}
-							/>
-							<EyeOffOutline
-								className={`absolute ${showPassword ? '' : 'hidden'} right-3 top-2 cursor-pointer`}
-								color={'#4B5563'}
-								height="24px"
-								width="24px"
-								onClick={() => {setShowPassword(!showPassword)}}
-							/>
-						</div>
-						<input
-							className="input w-full"
-							type={showPassword ? 'text' : 'password'}
-							value = {passbiValue}
-							onChange = { (e) => {handlePswBi(e.target.value)}}
-							required
-							autoFocus
-						/>
-					</div>
+					<input
+						className="input w-full"
+						type='password'
+						value = {passbiValue}
+						onChange = { (e) => {handlePswBi(e.target.value)}}
+						required
+						autoFocus
+					/>
 
 					{twoPswMatch()}
 				</div>
@@ -398,7 +394,7 @@ const Signup = ({ tags }) => {
 	    )
 }
 
-/*export async function getServerSideProps() {
+export async function getServerSideProps() {
 
 	const tags = await fetch(`${url}/api/getAllTags`)
 		.then(response => response.json())
@@ -408,6 +404,6 @@ const Signup = ({ tags }) => {
 			tags
 		}
 	}
-}*/
+}
 
 export default Signup
