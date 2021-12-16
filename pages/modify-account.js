@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
+import { putImagesIntoCloudinary } from '../utils/cloudinary.js'
 
 const Modificar = ({entity}) => {
 
@@ -18,6 +19,10 @@ const Modificar = ({entity}) => {
 	}
 
 	const [avatar, setAvatar] = useState(entity.avatar)
+	const [nick, setNick] = useState(entity.nick)
+	const [name, setName] = useState(entity.name)
+	const [descp, setDescp] = useState(entity.description)
+	const [email, setEmail] = useState(entity.mail)
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
@@ -57,6 +62,14 @@ const Modificar = ({entity}) => {
 
 	}
 
+	const fileInput = document.getElementById("fileInput")
+	fileInput.addEventListener("change", handleFiles, false)
+
+	function handleFiles() {
+		putImagesIntoCloudinary(URL.createObjectURL(this.files[0]), 'user')
+		setAvatar(URL.createObjectURL(this.files[0]))
+	}
+
 	return (
 		<>
 			<Navbar />
@@ -80,29 +93,87 @@ const Modificar = ({entity}) => {
 									<img className='object-cover w-28 h-28 rounded-full' src={avatar} />
 								</div>
 
+								<input type="file" id="fileInput" onChange={(e) => {setAvatar(e.target.value)}}/>
+
+								{/*Nick */}
 								<div className="flex flex-col space-y-1">
 									<div className='flex flex-row justify-start space-x-0.5'>
-										<p className="text-sm font-medium">URL imagen</p>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Nick</p>
 									</div>
 									<input
 										className="input w-full"
-										id='urlfoto'
+										value = {nick}
+										onChange = { (e) => setNick(e.target.value)}
 										required
 									/>
 								</div>
-								<button
-									type="button"
-									className="btn-terciary w-full"
-									onClick={()=> setAvatar(document.getElementById('urlfoto').value)}
-								>Cambiar foto</button>
 
+								{/*Nombre */}
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Nombre</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {name}
+										onChange = { (e) => setName(e.target.value)} 
+										required
+										autoFocus
+									/>
+								</div>
 
+								{/*Correo */}
+									<div className="flex flex-col space-y-1">
+										<div className='flex flex-row justify-start space-x-0.5'>
+											<p className='text-sm text-red-500 font-semibold'>*</p>
+											<p className="text-sm font-medium">Correo</p>
+										</div>
+										<input
+											className="input w-full"
+											value = {email}
+											onChange = { (e) => setEmail(e.target.value)}
+											required
+										/>
+									</div>
+
+								{/*Descripción */}
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Descripción</p>
+									</div>
+									<textarea class="w-full h-20 resize-none px-3 bg-gray-50 border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 rounded-lg appearance-none outline-none"
+										value = {descp}
+										onChange = { (e) => setDescp(e.target.value)} 
+										required
+										autoFocus
+									/>
+								</div>
+
+								<div className="flex flex-row justify-between space-x-4 items-center">
+									<button
+										type="button"
+										className="btn-terciary w-full"
+										onClick={()=> handleCancel()}
+									>
+										Cancelar
+									</button>
+									<button 
+										type="submit" 
+										className="btn-primary w-full"
+									>
+										Guardar cambios
+									</button>
+								</div>
 							</div>
 						</div>
 					</form>
 			</div>
 		</>
-	    )	}
+	    )	
+	}
 	
 export async function getServerSideProps(ctx) {
 
