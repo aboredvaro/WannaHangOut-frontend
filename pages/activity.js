@@ -208,9 +208,8 @@ const ActivityPage = ({
 
 								<button
 									className="btn-primary w-full"
-									onClick={() => { handleSubscription() }}
 								>
-									{userIsSubscribed ? 'Ya estás apuntado' : 'Apuntarme'}
+									{userIsSubscribed && false ? 'Ya estás apuntado' : 'Apuntarme'}
 								</button>
 							</div>
 						</div>
