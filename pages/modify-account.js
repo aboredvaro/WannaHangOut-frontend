@@ -51,6 +51,10 @@ const Modificar = ({ entity }) => {
 
 	}
 
+	const handleCancel = async event => {
+		router.push('/')
+	}
+
 	return (
 		<>
 			<Navbar />

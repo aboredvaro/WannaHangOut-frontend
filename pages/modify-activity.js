@@ -28,6 +28,10 @@ const ModifyActivity = ({
 	const dd = date.getDay()
 	*/
 
+	const handleCancel = async event => {
+		router.push('/')
+	}
+
 	function formatDate(date) {
 		var d = new Date(date),
 			month = '' + (d.getMonth() + 1),
