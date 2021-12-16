@@ -17,6 +17,36 @@ const Modificar = ({ entity }) => {
 	const handleSubmit = async event => {
 		event.preventDefault()	
 
+		if(/\d/.test(name) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
+			alert('El nombre no puede contener números \nEl email introducido no es válido')
+			return false
+		}else if(/\d/.test(name)) {
+			alert('El nombre no puede contener números')
+			return false
+		}
+		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(email)) {
+			alert('El email introducido no es válido')
+			return false
+		}
+
+		const ses = await fetch(`${url}/api/existNick`, {
+			body: JSON.stringify({
+				nick: nick
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+			.then(response => {
+				if (response.ok)
+					return response.json()})
+		
+		if(ses) {
+			alert('Nick en uso')
+			return false
+		}
+
 		const res = await fetch(
 			`${url}/api/updateEntity`,{
 				body: JSON.stringify({

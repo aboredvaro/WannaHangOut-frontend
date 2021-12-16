@@ -48,7 +48,7 @@ const ModifyActivity = ({
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
-
+		
 		const res = await fetch(
 			`${url}/api/updateActivity`,{
 				body: JSON.stringify({	

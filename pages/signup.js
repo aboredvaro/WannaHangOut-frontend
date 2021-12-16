@@ -4,7 +4,7 @@ import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
+import { PersonOutline, CheckmarkCircle, CloseCircle } from 'react-ionicons'
 import { EyeOutline, EyeOffOutline } from 'react-ionicons'
 import { session, setSession } from '../utils/session'
 import sha from '../utils/sha.js'
@@ -100,8 +100,10 @@ const Signup = ({ tags }) => {
 		if(cont === 5) {
 			setCheckPsw('Contraseña segura, ¡bien hecho!')
 		}
-
+		
 		setPassword(psw)
+
+		if(psw === passbiValue) setMatch(true)
 	}
 
 	const handlePswBi = (pswBi) => {
@@ -111,7 +113,7 @@ const Signup = ({ tags }) => {
 			return false
 		} 
 
-		(passwordValue === pswBi) ? setMatch(true) : null
+		if(passwordValue === pswBi) setMatch(true)
 		setPassbi(pswBi)
 	}
 
@@ -123,7 +125,7 @@ const Signup = ({ tags }) => {
 		setSignUpPage(signUpPage - 1)
 	}
 
-	const nextPage = () => {
+	const nextPage = async() => {
 		if(/\d/.test(nameValue) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El nombre no puede contener números \nEl email introducido no es válido')
 		}else if(/\d/.test(nameValue)) {
@@ -132,7 +134,19 @@ const Signup = ({ tags }) => {
 		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El email introducido no es válido')
 		}
-		else { setSignUpPage(signUpPage + 1) } 
+		else { 
+			var hash = sha(emailValue)
+			const ses = await fetch(`${url}/api/getEntityByHash?entityHash=${hash}`)
+				.then(response => {
+					if (response.ok)
+						return response.json()})
+			
+			console.log(ses)
+
+			if(ses === -1) {
+				setSignUpPage(signUpPage + 1)
+			} else alert('Correo en uso')
+		}
 	}
 
 	function tickVerde() {
@@ -274,12 +288,6 @@ const Signup = ({ tags }) => {
 							{tickVerde()}
 							<p className="text-xs text-gray-700">{checkPsw}</p>
 						</div>
-						<HelpCircleOutline
-							color={'#616161'}
-							title={'ha?'}
-							height="16px"
-							width="16px"
-						/>
 					</div>
 				</div>}
 
