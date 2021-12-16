@@ -9,7 +9,7 @@ const ActivityItem = ({
 	return (
 		<div className="py-4">
 			<Link href={`/activity?id=${activity.id_activity}`} passHref>
-				<div className="flex flex-row w-full p-3 space-x-4 justify-between">
+				<div className="flex flex-row w-full p-3 space-x-4 justify-between cursor-pointer">
 
 					<div className="flex flex-col w-full justify-between">
 						
@@ -39,9 +39,11 @@ const ActivityItem = ({
 								{activity.ocupation > 0.75 && (
 									<div className="flex flex-row items-center h-8 px-4 rounded-md bg-purple-100 bg-opacity-60 text-sm font-regular text-purple-600">Últimas plazas</div>
 								)}	
-								{activity.price === 0 && (
+								{activity.price === 0 ? 
 									<div className="flex flex-row items-center h-8 px-4 rounded-md bg-gray-100 text-sm font-regular text-gray-500">Gratis</div>
-								)}
+									:
+									<div className="flex flex-row items-center h-8 px-4 rounded-md bg-green-50 text-sm font-regular text-green-600">{activity && activity.price}€</div>
+								}
 							</div>
 
 						</div>

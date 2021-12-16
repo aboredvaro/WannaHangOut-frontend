@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Map, GoogleApiWrapper, InfoWindow,Marker } from 'google-maps-react'
+import { Map, GoogleApiWrapper, InfoWindow ,Marker } from 'google-maps-react'
 
 const MapContainer = ({
 	google,
