@@ -33,7 +33,7 @@ const Activities = ({
 	}, [acivityList])
 
 	useEffect(() => {
-		const today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`
+		const today = `${new Date().getFullYear()+1}-${new Date().getMonth() + 1}-${new Date().getDate()}`
 		document.querySelector('#dateMax').value = today
 	}, [tags])
 
@@ -124,7 +124,7 @@ const Activities = ({
 															{({ selected, active }) => (
 																<>
 																	<span className={`${selected ? 'font-medium text-gray-900' : 'font-normal'} block truncate`}>
-																		{location}
+																		{location.replace(/,/g, ' ')}
 																	</span>
 																	{selected ? (
 																		<span className="text-amber-600 absolute inset-y-0 left-0 flex items-center pl-3">
