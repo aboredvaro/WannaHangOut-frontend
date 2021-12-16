@@ -1,11 +1,15 @@
 import React, {useState} from 'react'
 import url from '../utils/server'
 import log from '../utils/log'
+import Navbar from '../components/navbar'
+import { useRouter } from 'next/router'
 
 const ModifyActivity = ({
 	activity,
 	address
 }) => {
+
+	const router = useRouter()
 
 	const [titleValue, setTitle] = useState(activity.title)
 	const [descriptionValue, setDescription] = useState(activity.description)
@@ -13,9 +17,9 @@ const ModifyActivity = ({
 	const [priceValue, setPrice] = useState(activity.price)
 	const [durationValue, setDuration] = useState(activity.min_duration)
 	const [dateValue, setDate] = useState(activity.dateAct)
-	const [directionValue, setDirection] = useState(address.direction)
-	const [codPosValue, setCodPos] = useState(address.codPos)
-	const [locationValue, setLocation] = useState(address.location)
+	const [directionValue, setDirection] = useState(activity.direction)
+	const [codPosValue, setCodPos] = useState(activity.codPos)
+	const [locationValue, setLocation] = useState(activity.location)
 
 	/*
 	const date = new Date(activity.dateAct)
@@ -23,6 +27,20 @@ const ModifyActivity = ({
 	const mm = date.getMonth()
 	const dd = date.getDay()
 	*/
+
+	function formatDate(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+	
+		if (month.length < 2) 
+			month = '0' + month;
+		if (day.length < 2) 
+			day = '0' + day;
+	
+		return [year, month, day].join('-');
+	}
 
 	const handleSubmit = async event => {
 		event.preventDefault()	
@@ -32,117 +50,189 @@ const ModifyActivity = ({
 				body: JSON.stringify({	
 					id_activity: activity.id_activity,
 					id_entity_creator: activity.id_entity_creator,
-					title: event.target.title.value,
-					description: event.target.description.value,
-					seats: event.target.seats.value,
-					price: event.target.price.value,
-					dateAct: activity.dateAct,
-					min_duration: event.target.duration.value,
-					tags_act: [],
+					title: titleValue,
+					description: descriptionValue,
+					seats: seatsValue,
+					price: priceValue,
+					dateAct: dateValue,
+					min_duration: durationValue,
+					tags_act: activity.tags_act,
 					deleted: 0,
 					id_address: activity.id_address,
-					codPos: event.target.codPos.value,
-					location: event.target.location.value,
-					direction: event.target.direction.value,
+					codPos: codPosValue,
+					location: locationValue,
+					direction: directionValue,
 				}),
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
-			})
-			.then(response => console.log(response))
-			.then(response => {
-				window.location.href = 'http://localhost:3001/activities'	// Esto habria que cambiarlo es un poco gitano
-			})
+			}
+		)
+		if(res) {
+			router.push('activity?id=' + activity.id_activity)
+		}
 
 	}	
 
 	return (
 		<>
-			<div className="font-sans w-full h-screen flex flex-col space-y-12 my-24 items-center">
+			<Navbar />
+			
+			<div className='flex flex-col w-full h-full items-center justify-center py-20'>
 
-				<h1 className="text-4xl font-medium">Modificar Actividad</h1>
+				{/*Caja blanca */}
+				<form
+					onSubmit={handleSubmit}
+					className="flex flex-col w-110 p-8 rounded-xl shadow-card bg-white border border-gray-100 space-y-4"
+				>
+					<div className="flex flex-col justify-between space-y-10">
+						<div className='flex flex-row w-full justify-center'>
+							<p className="text-2xl text-gray-600 font-medium">Modifique su evento</p>
+						</div>
 
-				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>	
-	
-					<div>
-						<label className="text-gray-800"htmlFor="title">Titulo </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="title"
-							name="title"
-							value={titleValue}
-							onChange={ (event) => setTitle(event.target.value)}
-						/>
+						<div className="flex flex-col justify-between space-y-4">
+
+							<img className='object-cover w-108 h-60 rounded-lg' src={activity.urlPath}/>
+
+							<div className="flex flex-col space-y-1">
+								<div className='flex flex-row justify-start space-x-0.5'>
+									<p className='text-sm text-red-500 font-semibold'>*</p>
+									<p className="text-sm font-medium">Título</p>
+								</div>
+								<input
+									className="input w-full"
+									value = {titleValue}
+									onChange = { (e) => setTitle(e.target.value)}
+									required
+								/>
+							</div>
+
+							{/*Descripción */}
+							<div className="flex flex-col space-y-1">
+								<div className='flex flex-row justify-start space-x-0.5'>
+									<p className='text-sm text-red-500 font-semibold'>*</p>
+									<p className="text-sm font-medium">Descripción</p>
+								</div>
+								<textarea className="w-full h-24 resize-none p-3 bg-gray-50 border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 rounded-lg appearance-none outline-none"
+									value = {descriptionValue}
+									onChange = { (e) => setDescription(e.target.value)} 
+									required
+									autoFocus
+								/>
+							</div>
+
+							{/**Seats */}
+							<div className='flex flex-row space-x-1'>
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Plazas</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {seatsValue}
+										onChange = { (e) => setSeats(e.target.value)}
+										required
+									/>
+								</div>
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Precio</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {priceValue}
+										onChange = { (e) => setPrice(e.target.value)}
+										required
+									/>
+								</div>
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Duración (min)</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {durationValue}
+										onChange = { (e) => setDuration(e.target.value)}
+										required
+									/>
+								</div>
+							</div>
+
+							{/**Fecha */}
+							<div className="flex flex-col space-y-1">
+								<div className="flex flex-col">
+									<label className="text-sm font-medium text-gray-700">Fecha </label>
+									<input type="date" id="dateMax" name="dateMax" className="input w-full"
+										value={formatDate(dateValue)}
+										onChange = { (e) => setDate(e.target.value)}
+									></input>
+								</div>
+							</div>
+
+							{/*Dirección */}
+							<div className="flex flex-col space-y-1">
+								<div className='flex flex-row justify-start space-x-0.5'>
+									<p className='text-sm text-red-500 font-semibold'>*</p>
+									<p className="text-sm font-medium">Dirección</p>
+								</div>
+								<input
+									className="input w-full"
+									value = {directionValue}
+									onChange = { (e) => setDirection(e.target.value)}
+									required
+								/>
+							</div>
+
+							<div className='flex flex-row space-x-2'>
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Código Postal</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {codPosValue}
+										onChange = { (e) => setCodPos(e.target.value)}
+										required
+									/>
+								</div>
+
+								<div className="flex flex-col space-y-1">
+									<div className='flex flex-row justify-start space-x-0.5'>
+										<p className='text-sm text-red-500 font-semibold'>*</p>
+										<p className="text-sm font-medium">Localidad</p>
+									</div>
+									<input
+										className="input w-full"
+										value = {locationValue}
+										onChange = { (e) => setLocation(e.target.value)}
+										required
+									/>
+								</div>
+							</div>
+							<div className="flex flex-row justify-between space-x-4 items-center">
+									<button
+										type="button"
+										className="btn-terciary w-full"
+										onClick={()=> handleCancel()}
+									>
+										Cancelar
+									</button>
+									<button 
+										type="submit" 
+										className="btn-primary w-full"
+									>
+										Guardar cambios
+									</button>
+							</div>
+
+						</div>
 					</div>
-					<div>
-						<label htmlFor="description">Descripcion </label>
-						<textarea className="rounded-lg border border-gray-600 focus:border-gray-600" rows="3" cols="20"
-							name="description"
-							value={descriptionValue}
-							onChange={ (event) => setDescription(event.target.value)}
-						></textarea>
-					</div>
-					<div>
-						<label htmlFor="seats">Aforo </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="seats" 
-							name="seats" 
-							value={seatsValue}
-							onChange={ (event) => setSeats(event.target.value)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="price">Precio </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="price" 
-							name="price" 
-							value={priceValue}
-							onChange={ (event) => setPrice(event.target.value)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="duration">Duracion(min) </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="duration"
-							name="duration" 
-							value={durationValue}
-							onChange={ (event) => setDuration(event.target.value)}
-						/>
-					</div>
-					{/*
-					<div>
-						<label htmlFor="codPos">Fecha</label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="date" id="date" 
-							name="date" 
-							value={yy + '-' + mm + '-' + dd}
-							onChange={(event) => setDate(event.target.value)}
-						/>
-					</div>
-					*/ }
-					<div>
-						<label htmlFor="direction">Direccion </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="direction" 
-							name="direction" 
-							value={directionValue}
-							onChange={(event) => setDirection(event.target.value)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="location">Localidad </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="location" 
-							name="location" 
-							value={locationValue}
-							onChange={(event) => setLocation(event.target.value)}
-						/>
-					</div>
-					<div>
-						<label htmlFor="codPos">Codigo Postal </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600" type="text" id="codPos" 
-							name="codPos" 
-							value={codPosValue}
-							onChange={(event) => setCodPos(event.target.value)}
-						/>
-					</div>
-					
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Modificar</button>		
 				</form>
-
 			</div>
 		</>
 	)
@@ -154,14 +244,10 @@ export async function getServerSideProps(ctx){
 
 	const activity = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 		.then(response => response.json())
-	
-	const address = await fetch(`${url}/api/getAddressByID?id_address=${activity.id_address}`)
-		.then(response => response.json())
 
 	return{
 		props:{
-			activity,
-			address
+			activity
 		}
 	}
 }

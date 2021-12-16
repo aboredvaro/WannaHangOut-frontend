@@ -20,29 +20,29 @@ const Modificar = ({ entity }) => {
 		const res = await fetch(
 			`${url}/api/updateEntity`,{
 				body: JSON.stringify({
-			id_entity: entity.id_entity.toString(),
-			id_role: entity.id_role,
-			phone: entity.phone,
-			nick: nick,
-			name: name,
-			surname: entity.surname,
-			description: descp,
-			mail: email,
-			avatar: avatar,
-			tags_ent: entity.tags_ent,
-			codPos: entity.codPos,
-			id_address: entity.id_address,
-			latitude: entity.latitude,
-			longitude: entity.longitude,
-			location: entity.location,
-			direction: entity.direction,
-			deleted: 0,
-			pass: entity.pass
-		}),
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		method: 'PUT'
+					id_entity: entity.id_entity.toString(),
+					id_role: entity.id_role,
+					phone: entity.phone,
+					nick: nick,
+					name: name,
+					surname: entity.surname,
+					description: descp,
+					mail: email,
+					avatar: avatar,
+					tags_ent: entity.tags_ent,
+					codPos: entity.codPos,
+					id_address: entity.id_address,
+					latitude: entity.latitude,
+					longitude: entity.longitude,
+					location: entity.location,
+					direction: entity.direction,
+					deleted: 0,
+					pass: entity.pass
+			}),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'PUT'
 		})
 		
 		if(res) {
