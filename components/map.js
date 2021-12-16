@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Map, GoogleApiWrapper, InfoWindow,Marker } from 'google-maps-react'
+import React, { useState, useEffect } from 'react'
+import { Map, GoogleApiWrapper, InfoWindow ,Marker } from 'google-maps-react'
 
 const MapContainer = ({
 	google,
@@ -9,19 +9,12 @@ const MapContainer = ({
 	addressList
 }) => {
 
-	//const [selectedActivity, setSelectedActivity] = useState(null)
-
-	const mapStyles = {
-		width: '100%',
-		height: '100%'
-	}
-
 	return (
-		<div>
+		<div className="relative flex flex-col w-full h-full">
 			<Map
 				google = {google}
 				zoom = {zoom}
-				style = {mapStyles}
+				mapId = {process.env. APIKEY_GOOGLE_MAP_ID}	// NO FURULA 5790ab52515cbbb9
 				initialCenter = {center}
 				containerStyle = {containerStyle}
 			>

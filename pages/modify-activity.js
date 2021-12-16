@@ -24,6 +24,22 @@ const ModifyActivity = ({
 	const dd = date.getDay()
 	*/
 
+	const deleteActivity = async event => {
+		event.preventDefault()
+
+		const res = await fetch(
+			`${url}/api/deleteActivityById`,{
+				body: JSON.stringify({	
+					id_activity: activity.id_activity
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			.then(router.push('/activities'))
+	}
+
 	const handleSubmit = async event => {
 		event.preventDefault()	
 

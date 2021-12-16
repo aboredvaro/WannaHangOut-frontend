@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/navbar'
 import log from '../utils/log.js'
 import url from '../utils/server.js'
 import { useRouter } from 'next/router'
-
+import Link from 'next/link'
+import { PersonOutline, CheckmarkCircle, HelpCircleOutline, CloseCircle } from 'react-ionicons'
 const Signup = ({ tags }) => {
 
 	const router = useRouter()
@@ -20,126 +21,42 @@ const Signup = ({ tags }) => {
 		return array.length>0?array:''
 	}
 
-	const [selectedRole, setSelectedRole] = useState('2')
-	const [nickValue, setNick] = useState('')
 	const [nameValue, setName] = useState('')
-	const [surnameValue, setSurname] = useState('')
-	const [descriptionValue, setDescription] = useState('')
 	const [emailValue, setEmail] = useState('')
-	const [phoneValue, setPhone] = useState('')
-	const [cpValue, setCP] = useState('')
-	const [locationValue, setLocation] = useState('')
-	const [directionValue, setDirection] = useState('')
-	const [latitudeValue, setLatitude] = useState('')
-	const [longitudeValue, setLongitude] = useState('')
 	const [passwordValue, setPassword] = useState('')
 	const [passbiValue, setPassbi] = useState('')
-	const [photoValue, setPhoto] = useState('')
-	const [pswVisible, setPswVisible] = useState(false)
-
-	function RoleSelection(props) {
-		if (selectedRole === '2') {
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>
-							<label className="text-gray-800">Nombre: </label>
-							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Nombre" 
-								value = {nameValue}
-								onChange = { (e) => setName(e.target.value)} 
-								required
-								key="user1"/>
-						</div>
-						<div>
-							<label className="text-gray-800">Apellidos: </label>
-							<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="surname" name="surname" placeholder=" Apellidos" 
-								value = {surnameValue}
-								onChange = { (e) => setSurname(e.target.value)} 
-								key="user2"/>
-						</div>
-					</div>
-				</>
-			)
-		} 
-		return(
-			<>
-				<div className="space-y-4 items-center font-medium"key='shop1'>
-					<div>
-						<label className="text-gray-800">Nombre: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="name" name="name" placeholder=" Razón social"
-							value = {nameValue}
-							onChange = { (e) => setName(e.target.value)} 
-							required
-							key="shop1"/>
-					</div>
-				</div>
-			</>
-		)
-	}
-
-	function ShowPassword(props) {
-		if(!pswVisible){
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>
-							<label className="text-gray-800">Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="password" 
-								id="pass" 
-								name="pass" 
-								placeholder=" Contraseña"
-								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}/>
-						</div>
-						<div>
-							<label className="text-gray-800">Repita Su Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="password" 
-								id="passRepe" 
-								name="passRepe" 
-								placeholder=" Repita su contraseña"
-								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}/>
-						</div>
-					</div>
-				</>
-			)
-		} else if(pswVisible) {
-			return(
-				<>
-					<div className="space-y-4 items-center font-medium">
-						<div>						
-							<label className="text-gray-800">Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="text" 
-								placeholder=" Contraseña"
-								value = {passwordValue}
-								onChange = { (e) => setPassword(e.target.value)}/>
-						</div>
-						<div>
-							<label className="text-gray-800">Repita Su Contraseña: </label>
-							<input 
-								className="rounded-lg border border-gray-600 focus:border-gray-600"
-								type="text" 
-								placeholder=" Repita su contraseña"
-								value = {passbiValue}
-								onChange = { (e) => setPassbi(e.target.value)}/>
-						</div>
-					</div>
-				</>
-			)
-		}
-		
-	}
+	const [signUpPage, setSignUpPage] = useState(1)
+	const [checkPsw, setCheckPsw] = useState('')
+	const [barritas, setBarritas] = useState(0)
+	const [match, setMatch] = useState(false)
 
 	const handleSubmit = async event => {
 		event.preventDefault()
 
-		const ses = await fetch(`${url}/api/existNick`, {
+		if(!match || barritas !== 5) return false
+
+		const res = await fetch(
+			`${url}/api/createNewEntity`,{
+				body: JSON.stringify({		
+					id_role: 2,
+					name: nameValue,
+					mail: emailValue,
+					pass: passwordValue
+				}),
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			}
+		).then(response => {
+			if (response.ok) return response.json()
+		})
+
+		if(!isNaN(res)) {
+			router.push('/')
+		}
+
+		/*const ses = await fetch(`${url}/api/existNick`, {
 			body: JSON.stringify({
 				nick: nickValue
 			}),
@@ -147,45 +64,13 @@ const Signup = ({ tags }) => {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST'
-		})
-			.then(response => {
-				if (response.ok)
-					return response.json()})
+		}).then(response => { if (response.ok) return response.json() })
 		
 		if(ses) {
 			alert('Nick en uso')
 			return false
 		}
 		
-		if(!/^\d+$/.test(phoneValue)) {
-			alert('No puede haber letras en su número de teléfono')
-			return false
-		}
-		if(phoneValue.trim().length!==9) {
-			alert('Su número de teléfono debe tener 9 cifras')
-			return false
-		} 
-		if(!/^\d+$/.test(cpValue)) {
-			alert('No puede haber letras en su Código Postal')
-			return false
-		}
-		if(cpValue.trim().length!==5) {
-			alert('Su código postal debe tener 5 cifras')
-			return false
-		}
-		if(!/^\d+$/.test(latitudeValue) || !/^\d+$/.test(longitudeValue)) {
-			alert('No puede haber letras en los campos de latitud y longitud')
-			return false
-		}
-		if(passwordValue.localeCompare(passbiValue)!==0) {
-			alert('Las contraseñas no coiniciden, vuelva a intentarlo')
-			return false
-		}
-		var tags = getSelectedTags()
-		if(tags==='') {
-			alert('Debe seleccionar al menos una etiqueta')
-			return false
-		}
 		const res = await fetch(
 			`${url}/api/createNewEntity`,{
 				body: JSON.stringify({	
@@ -209,141 +94,313 @@ const Signup = ({ tags }) => {
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
-			})
-			.then(response => {
-				if (response.ok)
-					return response.json()})
+			}
+		).then(response => {
+			if (response.ok) return response.json()
+		})
+
 		if(!isNaN(res)) {
 			router.push('/')
-		}
-			
+		}*/
 	}
 
-	const handleCancel = async event =>{
+	/*
+		1. Una minúscula
+		2. Una mayúscula
+		3. Un número
+		4. Un símbolo
+		5. 8 caracteres
+	*/
+	const handlePsw = (psw) => {
+		setCheckPsw('')
+		var cont = 0
+		if(psw === '') {
+			setPassword(psw)
+			setBarritas(0)
+			return false
+		}
+		if(!(psw.length >= 8)){
+			setCheckPsw('Debe contener al menos 8 carácteres')
+		} else cont = cont + 1
+		if(!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(psw)){
+			setCheckPsw('Usa mínimo un símbolo')
+		} else cont = cont + 1
+		if(!/\d/.test(psw)) {
+			setCheckPsw('Usa mínimo un número')
+		} else cont = cont + 1
+		if(!/[A-Z]/.test(psw)) {
+			setCheckPsw('Usa mínimo una mayúscula')
+		} else cont = cont + 1
+		if(!/[a-z]/.test(psw)) {
+			setCheckPsw('Usa mínimo una minúscula')
+		} else cont = cont + 1
+
+		setBarritas(cont)
+
+		if(cont === 5) {
+			setCheckPsw('Contraseña segura, ¡bien hecho!')
+		}
+
+		setPassword(psw)
+	}
+
+	const handlePswBi = (pswBi) => {
+		setMatch(false)
+		if(pswBi === '') {
+			setPassbi(pswBi)
+			return false
+		} 
+
+		(passwordValue === pswBi) ? setMatch(true) : null
+		setPassbi(pswBi)
+	}
+
+	const handleCancel = async event => {
 		router.push('/')
 	}
 
-	function showPSW() {
-		var x = document.getElementById('pass')
-		if(x.type === 'password') {
-			x.type = 'text'
-		} else {
-			x.type = 'password'
+	const previusPage = () => {
+		setSignUpPage(signUpPage - 1)
+	}
+
+	const nextPage = () => {
+		if(/\d/.test(nameValue) && !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
+			alert('El nombre no puede contener números \nEl email introducido no es válido')
+		}else if(/\d/.test(nameValue)) {
+			alert('El nombre no puede contener números')
 		}
-		
+		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
+			alert('El email introducido no es válido')
+		}
+		else { 
+			/*var hash = sha(emailValue)
+			const ses = await fetch(`${url}/api/getEntityByHash?entityHash=${hash}`)
+				.then(response => {
+					if (response.ok)
+						return response.json()})
+			
+			//console.log(ses)
+
+			//if(ses === -1) {*/
+			setSignUpPage(signUpPage + 1)
+			//} else alert('Correo en uso')
+		}
+	}
+
+	function tickVerde() {
+		if(barritas === 5) {
+			return(
+				<>
+					<CheckmarkCircle
+						color={'#4CAF50'} 
+						title={'Tick'}
+						height="16px"
+						width="16px"
+					/>
+				</>
+			)
+		} else return (<></>)
+	}
+
+	function twoPswMatch() {
+		if(match){
+			return(
+				<>
+					{/*Contraseñas coinciden! Viva! */}
+					{((passbiValue !== '') && (barritas === 5)) && <div className='flex fle-row justify-start space-x-1'>
+						<CheckmarkCircle
+							color={'#4CAF50'} 
+							title={'Tick'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">Las contraseñas coinciden</p>
+					</div>}
+				</>
+			)
+		} else if(!match) {
+			return(
+				<>
+					{/*Fallo! :( */}
+					{((passbiValue !== '') && (barritas === 5)) && <div className='flex fle-row justify-start space-x-1'>
+						<CloseCircle
+							color={'#F44336'}
+							title={'Bad password'}
+							height="16px"
+							width="16px"
+						/>
+						<p className="text-xs">¡Las contraseñas no coinciden!</p>
+					</div>}
+				</>
+			)
+		}
+	}
+
+	function pageOne() {
+		return(
+			<>
+				{/*Nombre */}
+				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-x-0.5'>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Nombre</p>
+					</div>
+					<input
+						className="input w-full"
+						value = {nameValue}
+						onChange = { (e) => setName(e.target.value)} 
+						required
+						autoFocus
+					/>
+				</div>
+					
+				{/*Correo */}
+				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-x-0.5'>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Correo</p>
+					</div>
+					<input
+						className="input w-full"
+						value = {emailValue}
+						onChange = { (e) => setEmail(e.target.value)}
+						required
+					/>
+				</div>
+			</>
+		)
+	}
+
+	function pageTwo() {
+		return(
+			<>
+				{/*Contraseña */}
+				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Contraseña</p>
+					</div>
+					<input
+						className="input w-full"
+						type='password'
+						value = {passwordValue}
+						onChange = { (e) => {
+							handlePsw(e.target.value)
+						}}
+						required
+						autoFocus
+					/>
+				</div>
+
+				{/*Indicadores y alertas */}
+				{<div className="flex flex-col space-y-1">
+					{/*Barritas */}
+					<div className='flex flex-row justify-center space-x-0.5'>
+						<div className={(barritas > 0) ? 'w-18.4 h-1 rounded-l-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-l-full shadow-card bg-gray-300'} />
+						<div className={(barritas > 1) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 2) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 3) ? 'w-18.4 h-1 shadow-card bg-green-500' : 'w-18.4 h-1 shadow-card bg-gray-300'} />
+						<div className={(barritas > 4) ? 'w-18.4 h-1 rounded-r-full shadow-card bg-green-500' : 'w-18.4 h-1 rounded-r-full shadow-card bg-gray-300'} />
+					</div>
+					{/*Alerta + (?) */}
+					<div className='flex flex-row justify-between'>
+						<div className='flex fle-row justify-start space-x-1'>
+							{tickVerde()}
+							<p className="text-xs text-gray-700">{checkPsw}</p>
+						</div>
+						<HelpCircleOutline
+							color={'#616161'}
+							title={'ha?'}
+							height="16px"
+							width="16px"
+						/>
+					</div>
+				</div>}
+
+				{/*Repetir contraseña */}
+				<div className="flex flex-col space-y-1">
+					<div className='flex flex-row justify-start space-y-0.5'>
+						<p className='text-sm text-red-500 font-semibold'>*</p>
+						<p className="text-sm font-medium">Repetir contraseña</p>
+					</div>
+					<input
+						className="input w-full"
+						type='password'
+						value = {passbiValue}
+						onChange = { (e) => {handlePswBi(e.target.value)}}
+						required
+						autoFocus
+					/>
+
+					{twoPswMatch()}
+				</div>
+			</>
+		)
 	}
 
 	return (
 		<>
-			<Navbar />
+			<div className='flex-col w-full min-h-screen  bg-gray-50'>
+				<Navbar />
 
-			<div className="w-full flex flex-col space-y-12 py-24 items-center font-medium">
-        
-				<h1 className="text-4xl">Página de registro</h1>
+				<div className='flex flex-col w-full h-full items-center justify-center py-20'>
 
-				<form className="flex flex-col space-y-4" onSubmit={handleSubmit}>
-					<div>
-						<label className="text-gray-800">Rol: </label>
-						<select
-							value = {selectedRole}
-							onChange = { (e) => setSelectedRole(e.target.value)}
-						>
-							<option value='1'>Shop</option>
-							<option value='2'>User</option>
-						</select>
-						{/*}<p>{selectedRole}</p>{*/}
-					</div>
-					<div>
-						<label className="text-gray-800">Nick: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="nick" name="nick" placeholder=" Nick"
-							value = {nickValue}
-							onChange = { (e) => setNick(e.target.value)} 
-							required/>
-					</div>
-					
-					<div>
-						{RoleSelection() }
-					</div>
+					{/*Caja blanca */}
+					<form
+						onSubmit={handleSubmit}
+						className="flex flex-col w-110 p-8 rounded-xl shadow-card bg-white border border-gray-100 space-y-4"
+					>
+						<div className="flex flex-col justify-between space-y-10">
+							{/*N. pagina*/}
+							<div className="flex flex-col space-y-1">
+								<p className="text-xs text-gray-400 font-medium">{signUpPage} de 2</p>
+								<p className="text-2xl text-gray-600 font-medium">
+									{(signUpPage === 1)
+										? 'Datos personales' : (signUpPage === 2)
+											? 'Seguridad' : ''
+									}
+								</p>
+							</div>
 
-					<div>
-						<div><label className="text-gray-800">Descripción: </label></div>
-						<textarea className="resize-y rounded-lg border border-gray-600 focus:border-gray-600"id="description" name="description" placeholder=" Descripción"
-							value = {descriptionValue}
-							onChange = { (e) => setDescription(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Email: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="mail" name="mail" placeholder=" Email"
-							value = {emailValue}
-							onChange = { (e) => setEmail(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Teléfono: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="phone" name="phone" placeholder=" Teléfono"
-							value = {phoneValue}
-							onChange = { (e) => setPhone(e.target.value)}/>
-					</div>
-					<div>
-						<label >Choose tags: </label>
-						{
-							tags.map(({id_tags,name}, i) =>
-								<div className="w-full sm:w-auto" key={i}>
-									<label className="inline-flex items-center">
-							  		<input className="form-radio" type="checkbox" id={name} name={name} value={id_tags}/>
-							  		<span className="ml-2">{name}</span>
-									</label>
-						 		 </div>
-							)
-						}
-					</div>
-					<div>
-						<label className="text-gray-800">Código Postal: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="codPos" name="codPos" placeholder=" Código Postal"
-							value = {cpValue}
-							onChange = { (e) => setCP(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Localidad: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="location" name="location" placeholder=" Localidad"
-							value = {locationValue}
-							onChange = { (e) => setLocation(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Dirección: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="direction" name="direction" placeholder=" Dirección"
-							value = {directionValue}
-							onChange = { (e) => setDirection(e.target.value)}/>
-					</div>
-					<div>
-						<label classirection="text-gray-800">Latitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="latitude" name="latitude" placeholder=" Latitud"
-							value = {latitudeValue}
-							onChange = { (e) => setLatitude(e.target.value)}/>
-					</div>
-					<div>
-						<label className="text-gray-800">Longitud: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="longitude" name="longitude" placeholder=" Longitude"
-							value = {longitudeValue}
-							onChange = { (e) => setLongitude(e.target.value)}/>
-					</div>
-					<div>
-						{ShowPassword ()}
-					</div>
-					<div>
-						<input type="checkbox" 
-							value={pswVisible}
-							onChange = {() => setPswVisible(!pswVisible) } /> Mostrar contraseña
-					</div>
-					<div>
-						<label className="text-gray-800">Foto: </label>
-						<input className="rounded-lg border border-gray-600 focus:border-gray-600"type="text" id="avatar" name="avatar" placeholder=" URL Foto"
-							value = {photoValue}
-							onChange = { (e) => setPhoto(e.target.value)}/>
-					</div>
-					<img className="object-cover w-16 h-16 mr-2 rounded-full" src={photoValue} alt="Foto Perfil"/>
-					<button type="submit" className="rounded-full border-2 border-orange-500 hover:border-orange-500">Crear</button>
-				</form>
-				<button className="w-1/5 rounded-full border-2 border-orange-500 hover:border-orange-500" onClick={()=>handleCancel()}>Cancelar</button>
+							<div className="flex flex-col justify-between space-y-4">
+								
+								{(signUpPage === 1) && pageOne()}
+								{(signUpPage === 2) && pageTwo()}
+
+								{/*Botones atrás y siguiente */}
+								<div className="flex flex-row justify-between space-x-4 items-center">
+									<button
+										type="button"
+										className="btn-terciary w-full"
+										onClick={()=> (signUpPage === 1) ? handleCancel() : previusPage()}
+									>
+										{(signUpPage === 1) ? 'Cancelar' : 'Atrás'}
+									</button>
+									{(signUpPage !== 2) && <button 
+										type="button"
+										className="btn-primary w-full"
+										onClick={()=> nextPage()}
+									>
+										Siguiente
+									</button>}
+									{(signUpPage === 2) && <button 
+										type="submit"
+										className="btn-primary w-full"
+									>
+										Crear cuenta
+									</button>}
+								</div>
+								<div className="relative flex flex-row justify-center space-x-2">
+									<p className="text-sm text-gray-400">¿Ya eres miembro?</p>
+									<Link href="/login">
+										<a className="text-sm text-orange-500 font-medium">Iniciar sesión</a>
+									</Link>
+								</div>
+
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</>
 	    )
@@ -352,7 +409,7 @@ const Signup = ({ tags }) => {
 export async function getServerSideProps() {
 
 	const tags = await fetch(`${url}/api/getAllTags`)
-			 .then(response => response.json())
+		.then(response => response.json())
 	
 	return{
 		props:{

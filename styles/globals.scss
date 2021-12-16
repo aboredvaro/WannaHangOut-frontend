@@ -10,3 +10,19 @@
 a {
   cursor: pointer;
 }
+
+@layer components {
+  .btn-primary {
+    @apply flex flex-row justify-center items-center text-lg md:text-base font-medium text-white px-6 h-12 md:h-10 bg-orange-500 active:bg-orange-600 active:bg-opacity-90 transition-colors duration-150 ease-in-out rounded-lg cursor-pointer
+  }
+  .btn-secondary {
+    @apply flex flex-row justify-center items-center text-lg md:text-base font-medium text-orange-600 px-6 h-12 md:h-10 bg-orange-100 active:bg-orange-200 active:bg-opacity-75 transition-colors duration-150 ease-in-out rounded-lg cursor-pointer
+  }
+  .btn-terciary {
+    @apply flex flex-row justify-center items-center text-lg md:text-base font-medium text-gray-700 px-6 h-12 md:h-10 bg-gray-100 active:bg-gray-200 active:bg-opacity-75 transition-colors duration-150 ease-in-out rounded-lg cursor-pointer
+  }
+
+  .input {
+    @apply w-full text-lg md:text-base h-12 md:h-10 px-3 bg-gray-50 border border-gray-200 focus:border-orange-500 focus:ring-4 focus:ring-orange-100 rounded-lg appearance-none outline-none
+  }
+}
