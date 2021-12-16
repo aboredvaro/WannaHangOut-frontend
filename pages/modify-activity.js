@@ -6,10 +6,21 @@ import { useRouter } from 'next/router'
 
 const ModifyActivity = ({
 	activity,
-	address
+	tags
 }) => {
 
 	const router = useRouter()
+
+	function getSelected(){
+		var array = []
+		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+
+		for(var i = 0; i < checkboxes.length; i++){
+			array.push(checkboxes[i].value)
+		}
+
+		return array.length>0?array:activity.tags
+	}
 
 	const [titleValue, setTitle] = useState(activity.title)
 	const [descriptionValue, setDescription] = useState(activity.description)
@@ -32,6 +43,10 @@ const ModifyActivity = ({
 		router.push('/')
 	}
 
+	function handleShowTags() {
+		setShowTags(true)
+	}
+
 	function formatDate(date) {
 		var d = new Date(date),
 			month = '' + (d.getMonth() + 1),
@@ -49,6 +64,8 @@ const ModifyActivity = ({
 	const handleSubmit = async event => {
 		event.preventDefault()	
 		
+		var auxTags = getSelected()
+
 		const res = await fetch(
 			`${url}/api/updateActivity`,{
 				body: JSON.stringify({	
@@ -60,7 +77,7 @@ const ModifyActivity = ({
 					price: priceValue,
 					dateAct: dateValue,
 					min_duration: durationValue,
-					tags_act: activity.tags_act,
+					tags_act: auxTags,
 					deleted: 0,
 					id_address: activity.id_address,
 					codPos: codPosValue,
@@ -218,6 +235,29 @@ const ModifyActivity = ({
 									/>
 								</div>
 							</div>
+
+							<div className="flex flex-col pl-2">
+
+								<div className="flex flex-row">
+									<div className="flex flex-col">
+										<label className="text-sm font-medium">Categorías</label>
+									</div>
+								</div>
+								
+								<div className="flex flex-col justify-center pb-1">	
+									{
+										tags.map(({id_tags,name}, i) =>		
+											<div className="flex flex-row items-center w-60" key={i}>
+												<input className="items-center justify-center mr-2" type="checkbox" id="tags_act" name="tags_act" value={id_tags}/>
+												<label className="text-base font-regular text-gray-700">{name}</label>
+											</div>
+											
+										)
+									}
+								</div>
+
+							</div> 
+
 							<div className="flex flex-row justify-between space-x-4 items-center">
 									<button
 										type="button"
@@ -249,9 +289,13 @@ export async function getServerSideProps(ctx){
 	const activity = await fetch(`${url}/api/getActivityByID?id_activity=${id}`)
 		.then(response => response.json())
 
+	const tags = await fetch(`${url}/api/getAllTags`)
+		.then(response => response.json())
+
 	return{
 		props:{
-			activity
+			activity,
+			tags
 		}
 	}
 }
