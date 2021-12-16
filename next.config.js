@@ -10,13 +10,9 @@ module.exports = {
 			{
 				source: '/',
 				destination: '/activities',
-				permanent: false,
+				permanent: true,
 			}
 		]
-	},
-	i18n: {
-		locales: ['en'],
-		defaultLocale: 'en',
 	},
 	webpack5: true
 }
