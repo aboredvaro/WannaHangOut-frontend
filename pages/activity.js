@@ -72,8 +72,7 @@ const ActivityPage = ({
 
 	useEffect(() => {
 		// Get user info
-		console.log(activity)
-		const getUserSession = async() => {
+		const getUserSession = async () => {
 			const userSession = session()
 			setIsLogged(userSession)
 
@@ -94,22 +93,36 @@ const ActivityPage = ({
 			window.addEventListener('resize', () => {(typeof ifgetMapHeight !== undefined) && getMapWidth()})
 		}
 
-		// Set map coordinates
+		// Check if user is subscribed to the activity
 
-	})
+		const subscription = async () => {
+			const usersIsInActivity = await fetch(`${url}/api/checkIfUserInActivity?id_entity=${sessionID && sessionID}&id_activity=${activity.id_activity}`)
+				.then(response => response.json())
+
+			setUserIsSubscribed(usersIsInActivity)
+			console.log(usersIsInActivity)
+		}
+		subscription()
+
+	}, [sessionID, activity])
 
 	const [participated, setParticipated] = useState(false)
+	const [userIsSubscribed, setUserIsSubscribed] = useState(null)
 
 	function pastDate() {
 		const today = new Date()
 		return ((new Date(activity.dateAct)) < today)
 	}
 
-	const image = activity.urlPath || 'https://i.imgur.com/y80U1fR_d.webp?maxwidth=1520&fidelity=grand'
-	// Stray Kids 'https://i.imgur.com/UblrPGW_d.webp?maxwidth=760&fidelity=grand'
-	// Twenty One Pilots 'https://i.imgur.com/y80U1fR_d.webp?maxwidth=760&fidelity=grand'
-	// Feria de Proyectos 'https://i.imgur.com/zcs8mDl_d.webp?maxwidth=1520&fidelity=grand'
-	// Random 'https://media.quincemil.com/imagenes/2020/07/17021058/cedeira-640x360.jpg'
+	const handleSubscription = async () => {
+		const subscribed = await fetch(`${url}/api/setEntityToActivity?id_entity=${sessionID && sessionID}&id_activity=${activity.id_activity}`)
+			.then(response => response.json())
+
+		if (subscribed !== -1) {
+			setUserIsSubscribed(true)
+			console.log(subscribed)
+		} 
+	}
 	
 	return (
 		<div className="flex flex-col w-full">
@@ -121,7 +134,7 @@ const ActivityPage = ({
 				{/** Backdrop image */}
 				<div className="opacity-0 xl:opacity-100 absolute top-0 left-0 w-screen h-screen pointer-events-none z-0">
 					<div className="relative overflow-hidden">
-						<img className="w-full filter blur-3xl transform origin-center scale-110" src={image} alt="Foto Actividad"/>
+						<img className="w-full filter blur-3xl transform origin-center scale-110" src={activity && activity.urlPath} alt="Foto Actividad"/>
 						<div className="absolute bottom-0 left-0 w-full h-2/3 bg-gradient-to-t from-gray-100 to-transparent"></div>
 						<div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-gray-100 to-transparent"></div>
 					</div>
@@ -135,7 +148,7 @@ const ActivityPage = ({
 
 						{/** Imagen */}
 						<div className="flex flex-col w-screen lg:max-w-3xl h-auto pointer-events-none select-none">
-							<img id="img" className="w-full" src={image} alt="Foto Actividad"/>
+							<img id="img" className="w-full" src={activity && activity.urlPath} alt="Foto Actividad"/>
 						</div>
 
 						<div className="flex flex-col w-full lg:max-w-sm p-6 justify-between">
@@ -193,7 +206,12 @@ const ActivityPage = ({
 									<span className="text-base font-medium text-gray-700">{activity.price} €</span>
 								}
 
-								<button type="submit" className="btn-primary w-full">Apuntarme</button>
+								<button
+									className="btn-primary w-full"
+									onClick={() => { handleSubscription() }}
+								>
+									{userIsSubscribed ? 'Ya estás apuntado' : 'Apuntarme'}
+								</button>
 							</div>
 						</div>
 					</div>
