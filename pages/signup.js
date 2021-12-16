@@ -172,7 +172,19 @@ const Signup = ({ tags }) => {
 		else if(!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(emailValue)) {
 			alert('El email introducido no es válido')
 		}
-		else { setSignUpPage(signUpPage + 1) } 
+		else { 
+			/*var hash = sha(emailValue)
+			const ses = await fetch(`${url}/api/getEntityByHash?entityHash=${hash}`)
+				.then(response => {
+					if (response.ok)
+						return response.json()})
+			
+			//console.log(ses)
+
+			//if(ses === -1) {*/
+			setSignUpPage(signUpPage + 1)
+			//} else alert('Correo en uso')
+		}
 	}
 
 	function tickVerde() {
@@ -296,12 +308,12 @@ const Signup = ({ tags }) => {
 							{tickVerde()}
 							<p className="text-xs text-gray-700">{checkPsw}</p>
 						</div>
-							<HelpCircleOutline
-								color={'#616161'}
-								title={'ha?'}
-								height="16px"
-								width="16px"
-							/>
+						<HelpCircleOutline
+							color={'#616161'}
+							title={'ha?'}
+							height="16px"
+							width="16px"
+						/>
 					</div>
 				</div>}
 
