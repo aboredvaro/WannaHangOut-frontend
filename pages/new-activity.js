@@ -67,15 +67,10 @@ const CreateActivity = ({
 					'Content-Type': 'application/json'
 				},
 				method: 'POST'
-			})
-			.then(response => {
-				log('HOLAAAAAAA')
-				log(response)
-			})
-			.then(response => {
-				// router.push(`/activity?id=${response}`)
-				router.push(`/profile?id=${sessionID}`)
-			})
+			}).then(response => {
+			// router.push(`/activity?id=${response}`)
+			router.push(`/profile?id=${sessionID}`)
+		})
 
 	}
 
