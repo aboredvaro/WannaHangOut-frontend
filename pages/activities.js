@@ -50,7 +50,7 @@ const Activities = ({
 
 	function getSelectedTags() {
 		var array = []
-		var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+		var checkboxes = document.querySelectorAll('input[name=tags_act]:checked')
 
 		for(var i = 0; i < checkboxes.length; i++){
 			array.push(checkboxes[i].value)
@@ -66,7 +66,7 @@ const Activities = ({
 	const handleSubmit = async event => {
 		event.preventDefault()
 
-		const filteredActivities = await fetch(`${url}/api/filterActivitiesBy?location=${selectedLocation}&paid=${filtersPaid}&free=${filtersFree}&dateAct_max=${event.target.dateMax.value}`)
+		const filteredActivities = await fetch(`${url}/api/filterActivitiesBy?location=${selectedLocation}&paid=${filtersPaid}&free=${filtersFree}&dateAct_max=${event.target.dateMax.value}&tags_act=${getSelectedTags()}`)
 			.then(response => response.json())
 
 		setAcivityList(filteredActivities)
@@ -88,7 +88,7 @@ const Activities = ({
 					
 					<form onSubmit={handleSubmit}>
 						<div className="flex flex-col">
-
+							
 							{/* Seleccion de Ubicacion */}
 							{locations && (
 								<div className="relative flex flex-col h-20 mx-6">
@@ -114,7 +114,7 @@ const Activities = ({
 												leaveFrom="opacity-100"
 												leaveTo="opacity-0"
 											>
-												<Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white border border-gray-200 rounded-md shadow-card max-h-60 sm:text-sm outline-none">
+												<Listbox.Options className="absolute w-full h-44 py-1 mt-1 overflow-auto text-base bg-white border border-gray-200 rounded-md shadow-card max-h-60 sm:text-sm outline-none">
 													{locations.map((location, locationIdx) => (
 														<Listbox.Option
 															key={locationIdx}

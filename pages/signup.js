@@ -53,7 +53,8 @@ const Signup = ({ tags }) => {
 		})
 
 		if(!isNaN(res)) {
-			router.push('/')
+			setSession(sha(emailValue),sha(passwordValue))
+			router.push('/profile?id=' + res)
 		}
 
 		/*const ses = await fetch(`${url}/api/existNick`, {
